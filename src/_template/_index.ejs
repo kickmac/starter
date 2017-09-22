@@ -1,0 +1,26 @@
+<%
+	siteRoot = '../'
+%><!doctype html>
+<html lang="ja">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title><%= siteName %></title>
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width; initial-scale=1.0;">
+	<link rel="stylesheet" href="<%= siteRoot %>assets/styles/styles.css">
+
+	<script type="text/javascript" src="<%= siteRoot %>assets/js/import.js"></script>
+	<!--[if lt IE 9]>
+		<script src="<%= siteRoot %>assets/js/plugins/html5shiv.min.js"></script>
+		<script src="<%= siteRoot %>assets/js/plugins/html5shiv-printshiv.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<div class="wrapper">
+<% include ../_include/_header %>
+
+	</div><!-- /.wrapper -->
+</body>
+</html>

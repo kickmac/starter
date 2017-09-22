@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Style Guide</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./public/styleguide.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script type="text/javascript" src="./public/styleguide.js"></script>
+
+  <link rel="stylesheet" href="../assets/styles/import.css">
+  <script type="text/javascript" src="../assets/js/import.js"></script>
+</head>
+<body>
+  <div class="sgWrapper">
+    <header class="sgGHeader">
+      <div class="sgGHeader_inner">
+        <h1 class="sgGHeader_title">Style Guide</h1>
+        <p class="sgGHeader_btn"><a href="javascript: void(0);"><span></span></a></p>
+      </div>
+      <nav class="sgGNav">
+        <ul class="sgGNav_list">
+          {{#eachRoot}}
+          <li class="sgGNav_item"><a href="section-{{reference}}.html">{{reference}}. {{header}}</a></li>
+          {{/eachRoot}}
+        </ul>
+      </nav><!-- /.sgGNav -->
+    </header><!-- /.sgGHeader -->
+
+    <div class="sgContent">
+      {{#eachSection rootNumber}}
+
+      {{#if markup}}
+      <section class="sgSection">
+        <h3 class="sgSection_title"><span>{{reference}}</span> {{header}}</h3>
+        <div class="sgSection_info">
+          {{#if description}}
+          <div class="sgSection_txt"> {{{description}}}</div>
+          <ul class="sgSection_mods">
+             {{#eachModifier}}
+            <li class="sgSection_mod">{{name}} - {{{description}}}</li>
+            {{/eachModifier}}
+          </ul>
+          {{/if}}
+        </div>
+        <div class="sgSection_view">
+          <p class="sgSection_modLabel">default</p>
+          {{modifierMarkup}}
+        </div>
+
+        {{#eachModifier}}
+        <div class="sgSection_view sgSection_view-mod">
+          <p class="sgSection_modLabel">{{name}}</p>
+          {{modifierMarkup}}
+        </div>
+        {{/eachModifier}}
+        <p class="sgSection_codeBtn"><a href="javascript: void(0);">View Source<span></span></a></p>
+        <div class="sgSection_code">
+          <pre>{{markup}}</pre>
+          <p class="sgSection_copyBtn"><a href="javascript: void(0);">Copy Source</a></p>
+        </div>
+      </section><!-- /.sgSection -->
+
+      {{else}}
+      <div class="sgPageHead">
+        <h2 class="sgPageHead_title">{{header}}</h2>
+         {{#if description}}
+        <p class="sgPageHead_txt">{{{description}}}</p>
+        {{/if}}
+      </div><!-- /.sgPageHead -->
+
+      {{/if}}
+      {{/eachSection}}
+
+    </div><!-- /.sgContent -->
+  </div><!-- /.sgWrapper -->
+</body>
+</html>

@@ -1,0 +1,64 @@
+{
+	// セミコロンの設定（true or false）
+	"always-semicolon": true,
+
+	// インデントのサイズ設定（なし：""、半角スペース2個："  "、タブ："\t" ）
+	"block-indent": "\t",
+
+	// 色コードの設定（lower or camel）
+	"color-case": "lower",
+
+	// 色コードのショートハンド（true or false）
+	"color-shorthand": true,
+
+	// 要素の指定（lower or camel）
+	"element-case": "lower",
+
+	// EOFでの改行（true or false）
+	"eof-newline": false,
+
+	// 小数点数値の0.を省略するか（true or false）
+	"leading-zero": true,
+
+	// クォートの設定（single　or double）
+	"quotes": "single",
+
+	// 「：」の後に入れる文字を設定
+	"space-after-colon": " ",
+
+	// 「>」や「+」の後に入れる文字を設定
+	"space-after-combinator": " ",
+
+	// 「{」のあとに入れる文字を設定
+	"space-after-opening-brace": "\n\t",
+
+	// 複数要素指定時「,」の後に入れる文字を設定
+	"space-after-selector-delimiter": "\n",
+
+	// 「}」の前に入れる文字を設定
+	"space-before-closing-brace": "\n",
+
+	// 「：」の前に入れる文字を設定
+	"space-before-colon": "",
+
+	// 「>」や「+」の前に入れる文字を設定
+	"space-before-combinator": " ",
+
+	// 「{」の前に入れる文字を設定
+	"space-before-opening-brace": " ",
+
+	// 複数要素指定時「,」の前に入れる文字を設定
+	"space-before-selector-delimiter": "",
+
+	// 末尾のスペースを削除するか（true or false）
+	"strip-spaces": true,
+
+	// 値が0の場合に単位を省略するか（true or false）
+	"unitless-zero": true,
+
+	// ベンダープレフィックスを整列するか（true or false）
+	"vendor-prefix-align": true,
+
+	// 空のルールセットを残すか（true or false）
+	"remove-empty-rulesets": true
+}
