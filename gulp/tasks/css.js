@@ -9,18 +9,12 @@ module.exports = function(gulp, $, config) {
 			}))
 			.pipe($.sourcemaps.init())
 			.pipe($.sass())
-			// .pipe($.autoprefixer({
-			// 	browsers: ['last 3 versions', 'ie 8', 'ios 4', 'android 2.3'],
-			// }))
-			// .pipe($.cssbeautify({
-			// 	indent: '\t',
-			// 	autosemicolon: true
-			// }))
-			//.pipe($.cssmin())
 			.pipe($.pleeease({
-				"browsers": ['last 3 versions', 'ie 8', 'ios 4', 'android 2.3'],
-				"mqpacker": true,
+				browsers: ['last 3 versions', 'ie 8', 'ios 4', 'android 2.3'],
+				mqpacker: true,
+				minifier: true,
 			}))
+			.pipe($.header('@charset "utf-8";'))
 			.pipe($.sourcemaps.write('.'))
 			.pipe( gulp.dest(config.css.dest))
 			.pipe($.browserSync.reload({ stream:true }))
@@ -31,13 +25,13 @@ module.exports = function(gulp, $, config) {
 				errorHandler: $.notify.onError("Error: <%= error.message %>")
 			}))
 			.pipe($.sass())
-			.pipe($.autoprefixer({
-				browsers: ['last 3 versions', 'ie 8', 'ios 4', 'android 2.3'],
-			}))
 			.pipe($.sass())
-			.pipe($.autoprefixer({
+			.pipe($.pleeease({
 				browsers: ['last 3 versions', 'ie 8', 'ios 4', 'android 2.3'],
+				mqpacker: true,
+				minifier: false,
 			}))
+			.pipe($.header('@charset "utf-8";'))
 			.pipe($.kss({
 				templateDirectory: config.styleGuide.tempDir
 			}))

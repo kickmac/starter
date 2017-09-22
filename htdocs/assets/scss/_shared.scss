@@ -11,50 +11,85 @@ Styleguide 1.
 
 /* 汎用
 -------------------------------------------------------------*/
-@for $i from 1 through 100 {
+@for $i from 0 through 100 {
 	.mt#{$i} {
 		margin-top: #{$i}px !important;
 	}
-}
-@for $i from 1 through 100 {
 	.mr#{$i} {
 		margin-right: #{$i}px !important;
 	}
-}
-@for $i from 1 through 100 {
 	.mb#{$i} {
 		margin-bottom: #{$i}px !important;
 	}
-}
-@for $i from 1 through 100 {
 	.ml#{$i} {
 		margin-left: #{$i}px !important;
 	}
-}
-@for $i from 1 through 100 {
 	.pt#{$i} {
 		padding-top: #{$i}px !important;
 	}
-}
-@for $i from 1 through 100 {
 	.pr#{$i} {
 		padding-right: #{$i}px !important;
 	}
-}
-@for $i from 1 through 100 {
 	.pb#{$i} {
 		padding-bottom: #{$i}px !important;
 	}
-}
-@for $i from 1 through 100 {
 	.pl#{$i} {
 		padding-left: #{$i}px !important;
 	}
-}
-
-@for $i from 1 through 100 {
 	.indent#{$i}e {
 		text-indent: #{$i*-.1}em !important; padding-left: #{$i*.1}em !important;
+	}
+	@media screen and (max-width: $breakpoint-sp){
+		.mt#{$i}-sp {
+			margin-top: #{$i}px !important;
+		}
+		.mr#{$i}-sp {
+			margin-right: #{$i}px !important;
+		}
+		.mb#{$i}-sp {
+			margin-bottom: #{$i}px !important;
+		}
+		.ml#{$i}-sp {
+			margin-left: #{$i}px !important;
+		}
+		.pt#{$i}-sp {
+			padding-top: #{$i}px !important;
+		}
+		.pr#{$i}-sp {
+			padding-right: #{$i}px !important;
+		}
+		.pb#{$i}-sp {
+			padding-bottom: #{$i}px !important;
+		}
+		.pl#{$i}-sp {
+			padding-left: #{$i}px !important;
+		}
+	}
+	@media screen and (min-width: $breakpoint-sp +1){
+		.mt#{$i}-pc {
+			margin-top: #{$i}px !important;
+		}
+		.mr#{$i}-pc {
+			margin-right: #{$i}px !important;
+		}
+		.mb#{$i}-pc {
+			margin-bottom: #{$i}px !important;
+		}
+		.ml#{$i}-pc {
+			margin-left: #{$i}px !important;
+		}
+		.pt#{$i}-pc {
+			padding-top: #{$i}px !important;
+		}
+		.pr#{$i}-pc {
+			padding-right: #{$i}px !important;
+		}
+		.pb#{$i}-pc {
+			padding-bottom: #{$i}px !important;
+		}
+		.pl#{$i}-pc {
+			padding-left: #{$i}px !important;
+		}
 	}
 }
 
@@ -96,41 +131,16 @@ Styleguide 1.1
 ============================================================*/
 @media screen and (max-width: $breakpoint-sp) {
 	.sp-hidden,
-  .pc-only,
-  .tab-only {
+	.pc-only,
+	.tab-only {
 		display: none !important;
 	}
 }
 
 @media screen and (min-width: $breakpoint-sp + 1) {
 	.pc-hidden,
-  .tab-only,
-  .sp-only {
+	.tab-only,
+	.sp-only {
 		display: none !important;
-	}
-}
-/*============================================================
-  .editor
-============================================================*/
-.editor {
-	table {
-		width: 100%;
-		th,
-		td {
-		}
-		th {
-		}
-	}
-	ul:not([class]),
-	ol:not([class]) {
-		li {
-			display: list-item;
-		}
-	}
-	ul:not([class]) {
-		margin-left: 1.5em;
-	}
-	ol:not([class]) {
-		margin-left: 2em;
 	}
 }

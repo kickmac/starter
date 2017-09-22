@@ -14,16 +14,25 @@ gulp.task('default', ['suite'], function(){
 	$.browserSync.init({
 		server: './htdocs/'
 	});
-	$.watch(config.html.src, function () {
+	$.watch(config.html.src, {
+		//usePolling: true
+	}, function () {
 		gulp.start('html');
 	});
-	$.watch(config.css.src, function () {
+	$.watch(config.css.src, {
+		//usePolling: true
+	}, function () {
 		gulp.start('css');
 	});
-	$.watch(config.js.src, function () {
-		gulp.start('js');
+	$.watch(config.sprite.src, {
+		//usePolling: true
+	}, function () {
+		gulp.start('sprite');
 	});
-	$.watch(config.images.src, function () {
-		gulp.start('images');
-	});
+	// $.watch(config.js.src, function () {
+	// 	gulp.start('js');
+	// });
+	// $.watch(config.images.src, function () {
+	// 	gulp.start('images');
+	// });
 });
