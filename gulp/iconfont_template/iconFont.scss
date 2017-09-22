@@ -1,0 +1,67 @@
+@import '_config';
+@import '_iconFontMixin';
+@font-face {
+	font-family: "icons";
+	src: url("../../../assets/fonts/iconfont/icons.eot");
+	src: url("../../../assets/fonts/iconfont/icons.eot?#iefix") format("eot"),
+	url("../../../assets/fonts/iconfont/icons.woff") format("woff"),
+	url("../../../assets/fonts/iconfont/icons.ttf") format("truetype"),
+	url("../../../assets/fonts/iconfont/icons.svg#icons") format("svg");
+	font-weight: normal;
+	font-style: normal;
+}
+/*
+アイコン
+
+アイコンフォントとsvgスプライト
+
+Styleguide 2.
+*/
+
+/*
+icon font
+
+Markup:
+<ul class="styleguideIconList"><% _.each(glyphs, function(glyph) { %>
+	<li class="styleguideIconList_item styleguideIconList_item-<%= glyph.name %>"><a href="javascript: void(0);"><span>$icons-<%= glyph.name %></span></a></li><% }); %>
+</ul>
+
+@include icons(アイコン名変数);
+
+Styleguide 2.1
+============================================================*/
+.styleguideIconList {
+	margin: -10px 0 0 -10px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	&_item {
+		flex-basis: calc(10% - 10px);
+		margin: 10px 0 0 10px;
+		border: 1px solid #ddd;
+		border-radius: 6px;
+		display: block;
+		& > a {
+			display: block;
+			width: 100%;
+			height: 100%;
+			padding: 10px;
+			text-align: center;
+			text-decoration: none;
+			color: inherit;
+		}
+		span {
+			display: block;
+			margin: 5px 0 0;
+		}
+		<% _.each(glyphs, function(glyph) { %>
+		&-<%= glyph.name %> > a{
+			&:before {
+				@include icons($icons-<%= glyph.name %>);
+					display: inline-block;
+					vertical-align: middle;
+					letter-spacing: normal;
+			}
+		}<% }); %>
+	}
+}
