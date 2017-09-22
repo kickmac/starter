@@ -41,6 +41,19 @@ var copyCode = (function(){
 	}
 })()
 
+var copyIconName = (function(){
+	return function(){
+		var _copyArea = $("<textarea/>")
+			,_txt = $(this).find('span').text();
+
+		_copyArea.text(_txt);
+		$("body").append(_copyArea);
+		_copyArea.select();
+		document.execCommand("copy");
+		_copyArea.remove();
+	}
+})()
+
 $(function() {
 	sgGNav.init();
 	$(document).on('click', '.sgGHeader_btn a', function(event) {
@@ -56,5 +69,10 @@ $(function() {
 	$(document).on('click', '.sgSection_copyBtn a', function(event) {
 		event.preventDefault();
 		copyCode.apply(this);
+	});
+
+	$(document).on('click', '.styleguideIconList_item a', function(event) {
+		event.preventDefault();
+		copyIconName.apply(this);
 	});
 });

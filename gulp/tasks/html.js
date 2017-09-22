@@ -3,7 +3,7 @@ module.exports = function(gulp, $, config) {
 	var ejsConfig = require('../ejs_config.js');
 
 	gulp.task(taskName, function () {
-		gulp.src( config.html.src)
+		return gulp.src( config.html.src)
 			.pipe($.changed(config.html.dest))
 			.pipe($.plumber({
 				errorHandler: $.notify.onError("Error: <%= error.message %>")

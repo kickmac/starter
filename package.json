@@ -9,11 +9,16 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "async": "^2.1.2",
     "browser-sync": "~2.7.12",
-    "gulp": "~3.9.0",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
     "gulp-changed": "~1.2.1",
+    "gulp-consolidate": "^0.2.0",
     "gulp-ejs": "~1.1.0",
     "gulp-header": "^1.8.7",
+    "gulp-iconfont": "^8.0.1",
+    "gulp-iconfont-css": "^2.1.0",
     "gulp-kss": "0.0.2",
     "gulp-load-plugins": "~1.0.0-rc.1",
     "gulp-notify": "~2.2.0",
@@ -22,8 +27,14 @@
     "gulp-run-sequence": "~0.3.2",
     "gulp-sass": "^2.3.1",
     "gulp-sourcemaps": "^1.6.0",
+    "gulp-svg2ttf": "^2.0.0",
+    "gulp-svgicons2svgfont": "^3.0.1",
+    "gulp-ttf2eot": "^1.1.1",
+    "gulp-ttf2woff": "^1.1.0",
     "gulp-watch": "~4.2.4",
     "gulp.spritesmith": "^6.2.1",
-    "require-dir": "~0.3.0"
+    "lodash": "^4.16.6",
+    "require-dir": "~0.3.0",
+    "ttf2eot": "^2.0.0"
   }
 }
