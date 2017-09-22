@@ -3,6 +3,8 @@ var $ = require('gulp-load-plugins')();
 $.browserSync = require('browser-sync');
 $.async = require('async');
 $.del = require('del');
+$.webpack = require('webpack-stream');
+$.vinylNamed = require('vinyl-named');
 var config = require('./gulp/config.js');
 
 require('./gulp/tasks/html.js')(gulp, $, config);
@@ -43,9 +45,10 @@ gulp.task('default', ['suite'], function(){
 	}, function () {
 		gulp.start('sprite');
 	});
-	// $.watch(config.js.src, function () {
-	// 	gulp.start('js');
-	// });
+	$.watch(config.js.src, function () {
+		//usePolling: true
+		gulp.start('js');
+	});
 	// $.watch(config.images.src, function () {
 	// 	gulp.start('images');
 	// });
