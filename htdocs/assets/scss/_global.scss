@@ -1,5 +1,6 @@
 @import '_config';
 @import '_sprite';
+@import '_iconsMixin';
 
 /*
 グローバル
@@ -7,7 +8,7 @@
 gNavとかgHeaderとか
 大まかなレイアウトもここに
 
-Styleguide 2.
+Styleguide 3.
 */
 .test {
 	display: flex

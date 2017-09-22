@@ -1,23 +1,25 @@
 module.exports = function(gulp, $, config) {
-	var taskName = 'css';
+	var taskName = 'kss';
 
 	gulp.task(taskName, function () {
-			console.log('css')
-		return gulp.src( config.css.src)
-			.pipe($.changed(config.css.dest))
+		var src = gulp.src( config.css.src)
+		src
+			// .pipe($.changed(config.css.dest))
 			.pipe($.plumber({
 				errorHandler: $.notify.onError("Error: <%= error.message %>")
 			}))
-			.pipe($.sourcemaps.init())
 			.pipe($.sass())
 			.pipe($.pleeease({
 				browsers: ['last 3 versions', 'ie 8', 'ios 4', 'android 2.3'],
 				mqpacker: true,
-				minifier: true,
+				minifier: false,
 			}))
 			.pipe($.header('@charset "utf-8";'))
-			.pipe($.sourcemaps.write('.'))
-			.pipe( gulp.dest(config.css.dest))
-			.pipe($.browserSync.reload({ stream:true }))
+			.pipe($.kss({
+				templateDirectory: config.styleGuide.tempDir
+			}))
+			.pipe(gulp.dest(config.styleGuide.dest))
+
+		return src;
 	});
 };

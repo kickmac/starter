@@ -18,6 +18,12 @@ module.exports = {
 		src: ['./htdocs/assets/images/_sprite/*', '!./htdocs/assets/images/_sprite/_*', '!./htdocs/assets/images/_sprite/copy_*'],
 		dest: './htdocs/assets/scss'
 	},
+	icons: {
+		tempDir: './gulp/iconfont_template/',
+		scssDir: './htdocs/assets/scss/',
+		src: ['./htdocs/assets/svg/icons/**/*.svg', '!./htdocs/assets/svg/icons/**/_*.svg', '!./htdocs/assets/svg/icons/**/copy_*.svg'],
+		dest: './htdocs/assets/fonts/icons'
+	},
 	images: {
 		src: ['./htdocs/assets/images/**/*', '!./htdocs/assets/images/**/_*', '!./htdocs/assets/images/**/copy_*'],
 		dest: './htdocs/assets/images'
