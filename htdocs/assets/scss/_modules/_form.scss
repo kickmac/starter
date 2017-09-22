@@ -1,0 +1,417 @@
+// @import '../_config';
+// @import '../_sprite';
+// @import '../_sprite_mixin';
+// @import '../_iconsMixin';
+// @import '../_plugins/_magic';
+
+/*
+フォーム
+
+form
+<div class="form_grid">
+	<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
+</div>
+<div class="form_grid">
+	<div class="form_col form_col-4-12pc form_col-6-12sp">
+		<span>姓</span>
+		<input type="text" name="" id="">
+	</div>
+	<div class="form_col form_col-4-12pc form_col-6-12sp">
+		<span>名</span>
+		<input type="text" name="" id="">
+	</div>
+</div>
+あたりが基本形
+
+Markup:
+<form action="" class="form">
+	<table class="form_table">
+		<tbody>
+			<tr>
+				<th class="form_must">ああああ</th>
+				<td>
+					<div class="form_grid">
+						<div class="form_col form_col-1-12pc  form_col-1-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-2-12pc  form_col-2-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-3-12pc  form_col-3-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-4-12pc  form_col-4-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-5-12pc  form_col-5-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-6-12pc  form_col-6-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-7-12pc  form_col-7-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-8-12pc  form_col-8-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-9-12pc  form_col-9-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-10-12pc  form_col-10-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-11-12pc  form_col-11-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-12-12pc  form_col-12-12sp"><input type="text" name="" id=""></div>
+					</div>
+					<p class="form_txt">あいうえおあいうえお</p>
+					<p class="form_error">エラーエラーエラーエラー</p>
+				</td>
+			</tr>
+			<tr>
+				<th>ああああ</th>
+				<td>
+					<div class="form_grid">
+						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th class="form_must">名前</th>
+				<td>
+					<div class="form_grid">
+						<div class="form_col form_col-4-12pc form_col-6-12sp">
+							<span>姓</span>
+							<input type="text" name="" id="">
+						</div>
+						<div class="form_col form_col-4-12pc form_col-6-12sp">
+							<span>名</span>
+							<input type="text" name="" id="">
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th class="form_must">リスト（縦）</th>
+				<td>
+					<ul class="form_list">
+						<li class="form_listItem"><input type="checkbox" name="" id="a01"><label for="a01">チェックボックス</label></li>
+						<li class="form_listItem"><input type="checkbox" name="" id="a02"><label for="a02">チェックボックス</label></li>
+						<li class="form_listItem"><input type="checkbox" name="" id="a03"><label for="a03">チェックボックス</label></li>
+						<li class="form_listItem"><input type="checkbox" name="" id="a04"><label for="a04">チェックボックス</label></li>
+						<li class="form_listItem"><input type="checkbox" name="" id="a05"><label for="a05">チェックボックス</label></li>
+						<li class="form_listItem"><input type="checkbox" name="" id="a06"><label for="a06">チェックボックス</label></li>
+					</ul>
+					<p class="form_txt">あいうえおあいうえお</p>
+					<p class="form_error">エラーエラーエラーエラー</p>
+				</td>
+			</tr>
+			<tr>
+				<th class="form_must">リスト（横）</th>
+				<td>
+					<ul class="form_list form_list-hr">
+						<li class="form_listItem"><input type="radio" name="radio" id="b01"><label for="b01">ラジオボタン</label></li>
+						<li class="form_listItem"><input type="radio" name="radio" id="b02"><label for="b02">ラジオボタン</label></li>
+						<li class="form_listItem"><input type="radio" name="radio" id="b03"><label for="b03">ラジオボタン</label></li>
+						<li class="form_listItem"><input type="radio" name="radio" id="b04"><label for="b04">ラジオボタン</label></li>
+						<li class="form_listItem"><input type="radio" name="radio" id="b05"><label for="b05">ラジオボタン</label></li>
+						<li class="form_listItem"><input type="radio" name="radio" id="b06"><label for="b06">ラジオボタン</label></li>
+					</ul>
+					<p class="form_txt">あいうえおあいうえお</p>
+					<p class="form_error">エラーエラーエラーエラー</p>
+				</td>
+			</tr>
+			<tr>
+				<th class="form_must">郵便番号</th>
+				<td>
+					<div class="form_grid">
+						<div class="form_col form_col-5-12pc  form_col-10-12sp">
+							<input type="text" name="" id="">
+							<span>-</span>
+							<input type="text" name="" id="">
+							<span><a href="" class="btn">検索</a></span>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th class="form_must">セレクトボックス</th>
+				<td>
+					<div class="form_grid">
+						<div class="form_col form_col-5-12pc  form_col-6-12sp">
+							<select name="" id="">
+								<option value="">あああああああ</option>
+								<option value="">あああああああ</option>
+								<option value="">あああああああ</option>
+							</select>
+						</div>
+						<div class="form_col form_col-5-12pc  form_col-6-12sp">
+							<select name="" id="">
+								<option value="">あああああああ</option>
+								<option value="">あああああああ</option>
+								<option value="">あああああああ</option>
+							</select>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th class="form_must">テキストエリア</th>
+				<td>
+					<div class="form_grid">
+						<div class="form_col form_col-8-12pc  form_col-12-12sp">
+							<textarea name="" id=""></textarea>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table><!-- /.form_table -->
+</form><!-- /.form -->
+
+Styleguide #{$guideNum}
+============================================================*/
+.form {
+	$this: &;
+	$gutter-h: 15px;
+	$gutter-v: 15px;
+	$gutter-hMin: 8px;
+	$gutter-vMin: 8px;
+	&_table {
+		table-layout: fixed;
+	}
+	th {
+		white-space: nowrap;
+		vertical-align: top;
+		padding-top: 16px;
+	}
+	td {
+		& > #{$this}_grid:first-child {
+			margin-top: $gutter-v*-1;
+		}
+		& > #{$this}_list-hr:first-child {
+			margin-top: $gutter-vMin*-1;
+		}
+	}
+	&_must {
+		position: relative;
+		padding-right: 60px;
+		&:after {
+			content: '必須';
+			display: block;
+			font-weight: normal;
+			background: #a00;
+			font-size: rem(11px, pc);
+			color: #fff;
+			border-radius: 2px;
+			position: absolute;
+			top: 15px;
+			right: 10px;
+			line-height: 1;
+			padding: 6px 5px 4px;
+		}
+	}
+	&_grid {
+		display: flex;
+		display: -webkit-flex;
+		flex-wrap: wrap;
+		-webkit-flex-wrap: wrap;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		margin: $gutter-v*-1 0 0 $gutter-h*-1;
+	}
+	&_col {
+		margin: $gutter-v 0 0 $gutter-h;
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-start;
+		align-items: center;
+		& > span,
+		& > [type="text"],
+		& > [type="password"],
+		& > select,
+		& > textarea {
+			margin: 0 0 0 $gutter-hMin;
+		}
+		& > span {
+			flex-grow: 0;
+			flex-shrink: 0;
+		}
+		& > [type="text"],
+		& > [type="password"],
+		& > select,
+		& > textarea {
+			flex-grow: 1;
+			flex-shrink: 1;
+		}
+		& > :first-child {
+			margin-left: 0;
+		}
+		@for $i from 1 to 13 {
+			&-#{$i}-12 {
+				width: calc(100%/12 * #{$i} - #{$gutter-h});
+			}
+		}
+	}
+	&_list {
+		padding-top: 4px;
+		& > :first-child {
+			margin-top: 0;
+		}
+		&-hr {
+			display: flex;
+			display: -webkit-flex;
+			flex-wrap: wrap;
+			-webkit-flex-wrap: wrap;
+			flex-direction: row;
+			justify-content: flex-start;
+			align-items: flex-start;
+			margin: $gutter-vMin*-1 0 0 $gutter-h*-1;
+			#{$this}_listItem {
+				margin: $gutter-vMin 0 0 $gutter-h;
+			}
+		}
+	}
+	&_listItem {
+		margin: $gutter-vMin 0 0;
+	}
+	&_txt {
+		margin: $gutter-vMin 0 0;
+		color: #888;
+	}
+	&_error {
+		margin: $gutter-vMin 0 0;
+		color: #f00;
+	}
+	&_zipBtn {
+		align-self: stretch;
+		& > .btn {
+			padding: 0;
+			height: 100%;
+			&:before {
+				content: '';
+				display: inline-block;
+				vertical-align: middle;
+				letter-spacing: normal;
+				width: 0;
+				height: 100%;
+			}
+		}
+	}
+}
+@media screen and (min-width: $breakpoint-sp + 1){
+	.form {
+		$this: &;
+		$gutter-h: 15px;
+		$gutter-v: 15px;
+		$gutter-hMin: 8px;
+		$gutter-vMin: 8px;
+		&_table {
+		}
+		td {
+			& > #{$this}_grid:first-child {
+				margin-top: $gutter-v*-1;
+			}
+			& > #{$this}_list-hr:first-child {
+				margin-top: $gutter-vMin*-1;
+			}
+		}
+		&_must {
+		}
+		&_grid {
+			margin: $gutter-v*-1 0 0 $gutter-h*-1;
+		}
+		&_col {
+			margin: $gutter-v 0 0 $gutter-h;
+			@for $i from 1 to 13 {
+				&-#{$i}-12pc {
+					width: calc(100%/12 * #{$i} - #{$gutter-h});
+				}
+			}
+		}
+		&_set {
+		}
+		&_list {
+			&-hr {
+				margin: $gutter-vMin*-1 0 0 $gutter-h*-1;
+				#{$this}_listItem {
+					margin: $gutter-vMin 0 0 $gutter-h;
+				}
+			}
+		}
+		&_listItem {
+			margin: $gutter-vMin 0 0;
+		}
+		&_txt {
+			margin: $gutter-vMin 0 0;
+		}
+		&_error {
+			margin: $gutter-vMin 0 0;
+		}
+	}
+}
+@media screen and (max-width: $breakpoint-sp){
+	.form {
+		$this: &;
+		$gutter-h: 10px;
+		$gutter-v: 10px;
+		$gutter-hMin: 8px;
+		$gutter-vMin: 8px;
+		&_table {
+			display: block;
+		}
+		tbody,
+		tr,
+		th,
+		td {
+			display: block;
+			padding: 0;
+			border: none;
+		}
+
+		tr {
+			margin: 20px 0 0;
+		}
+		th {
+			padding: 5px;
+		}
+		td {
+			margin: $gutter-h 0 0;
+			& > #{$this}_grid:first-child {
+				margin-top: $gutter-v*-1;
+			}
+			& > #{$this}_list-hr:first-child {
+				margin-top: $gutter-vMin*-1;
+			}
+		}
+		& &_must {
+			padding-right: 45px;
+			&:after {
+				top: 5px;
+				right: 5px;
+			}
+		}
+		&_grid {
+			margin: $gutter-v*-1 0 0 $gutter-h*-1;
+		}
+		&_col {
+			margin: $gutter-v 0 0 $gutter-h;
+			@for $i from 1 to 13 {
+				&-#{$i}-12sp {
+					width: calc(100%/12 * #{$i} - #{$gutter-h});
+				}
+			}
+		}
+		&_set {
+		}
+		&_list {
+			&-hr {
+				margin: $gutter-vMin*-1 0 0 $gutter-h*-1;
+				#{$this}_listItem {
+					margin: $gutter-vMin 0 0 $gutter-h;
+				}
+			}
+		}
+		&_listItem {
+			margin: $gutter-vMin 0 0;
+		}
+		&_txt {
+			margin: $gutter-vMin 0 0;
+		}
+		&_error {
+			margin: $gutter-vMin 0 0;
+		}
+	}
+}

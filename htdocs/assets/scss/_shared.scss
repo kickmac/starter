@@ -1,8 +1,8 @@
-@import '_config';
-@import '_sprite';
-@import '_sprite_mixin';
-@import '_iconsMixin';
-@import './_plugins/_magic';
+// @import '_config';
+// @import '_sprite';
+// @import '_sprite_mixin';
+// @import '_iconsMixin';
+// @import './_plugins/_magic';
 
 /*
 便利クラス
@@ -72,6 +72,9 @@ Styleguide 1.
 	.w#{$i}p {
 		width: #{$i}% !important;
 	}
+	.w#{$i}e {
+		width: #{$i*.1}em !important;
+	}
 	@media screen and (max-width: $breakpoint-sp){
 		.mt#{$i}-sp {
 			margin-top: #{$i}px !important;
@@ -128,6 +131,9 @@ Styleguide 1.
 		.w#{$i}p-sp {
 			width: #{$i}% !important;
 		}
+		.w#{$i}e-sp {
+			width: #{$i*.1}em !important;
+		}
 
 	}
 	@media screen and (min-width: $breakpoint-sp +1){
@@ -180,11 +186,14 @@ Styleguide 1.
 		.pl#{$i}e-pc {
 			padding-left: #{$i * .1}em !important;
 		}
-		.w#{$i*10}-px {
+		.w#{$i*10}-pc {
 			width: #{$i*10}px !important;
 		}
-		.w#{$i}p-px {
+		.w#{$i}p-pc {
 			width: #{$i}% !important;
+		}
+		.w#{$i}e-pc {
+			width: #{$i*.1}em !important;
 		}
 
 	}
@@ -400,4 +409,18 @@ Markup:
 Styleguide 1.4
 ============================================================*/
 .color {
+}
+
+
+/*
+アイコン付き文字
+
+.iconTxt
+
+Markup:
+<p class="{$modifiers}">アイコン付き文字</p>
+
+Styleguide 1.5
+============================================================*/
+.iconTxt {
 }

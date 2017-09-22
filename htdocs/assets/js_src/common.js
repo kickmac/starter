@@ -1,7 +1,14 @@
 var $$$ = $$$ || {};
 
 $(function(){
+	$$$.pcsp.init();
+	$$$.viewport.init();
 	$$$.resizeend.init();
+	$$$.tab.init();
+	$('[data-agree-target]:checked').each(function (index, el) {
+		$$$.agree.change.call($(this));
+	});
+
 	/*************************************************************************************
 	* window load
 	*************************************************************************************/
@@ -16,6 +23,7 @@ $(function(){
 		$$$.pcsp.judge();
 		$.fn.matchHeight._update();
 		$$$.accordion.init();
+		$$$.tree.init();
 	});
 
 	/*************************************************************************************
@@ -36,13 +44,27 @@ $(function(){
 		event.preventDefault();
 		$$$.accordion.toggle.call($(this))
 	});
+	$(document).on('click', '[data-tab-item]', function(event) {
+		event.preventDefault();
+		$$$.tab.show.call($(this))
+	});
+	$(document).on('click', '.tree_toggle', function(event) {
+		event.preventDefault();
+		$$$.tree.toggle.call($(this))
+	});
 
 	/*************************************************************************************
 	* その他イベント
 	*************************************************************************************/
+	// 同意しますかのやつ
+	$(document).on('change', '[data-agree-target]', function(event) {
+		event.preventDefault();
+		$$$.agree.change.call($(this))
+	});
+
 
 	/*************************************************************************************
-	* プラグイン
+	* モーダル
 	*************************************************************************************/
 	//modal
 	$('[data-modal]').lightGallery({
@@ -50,6 +72,9 @@ $(function(){
 		download: false,
 		counter: false,
 		zoom: true,
+		hash: false,
+		share: false,
+		fullScreen: false,
 	});
 
 	//modal-gallery
@@ -58,6 +83,34 @@ $(function(){
 		download: false,
 		counter: true,
 		zoom: true,
+		hash: false,
+		share: false,
+		fullScreen: false,
 	});
+
+	//modal-iframe
+	$('[data-modal-iframe]').attr('data-iframe', 'true').lightGallery({
+		selector: 'this',
+		download: false,
+		counter: false,
+		zoom: false,
+		hash: false,
+		share: false,
+		fullScreen: false,
+	});
+
+	//modal-contents
+	$(document).on('click', '[data-modal-contents]', function(event) {
+		event.preventDefault();
+		$$$.contentsModal.open.call($(this))
+	});
+	$(document).on('click', '.contentsModal_close, .contentsModal_overlay', function(event) {
+		event.preventDefault();
+		$$$.contentsModal.close($(this))
+	});
+
+	/*************************************************************************************
+	* プラグイン
+	*************************************************************************************/
 
 })
