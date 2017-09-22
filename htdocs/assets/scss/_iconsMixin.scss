@@ -2,7 +2,7 @@
 	font-family: "icons";
 	src: url('../fonts/icons/icons.eot');
 	src: url('../fonts/icons/icons.eot?#iefix') format('eot'),
-		url('../fonts/icons/icons.woff2') format('woff2'),
+		// url('../fonts/icons/icons.woff2') format('woff2'),
 		url('../fonts/icons/icons.woff') format('woff'),
 		url('../fonts/icons/icons.ttf') format('truetype'),
 		url('../fonts/icons/icons.svg#icons') format('svg');
@@ -54,7 +54,6 @@ $icons-circleArrow-up: "\EA04";
 @mixin icons($code) {
 	content: $code;
 	font-family: "icons";
-	font-size: inherit;
 	text-rendering: auto;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;

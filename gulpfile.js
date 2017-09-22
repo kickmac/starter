@@ -3,8 +3,6 @@ var $ = require('gulp-load-plugins')();
 $.browserSync = require('browser-sync');
 $.async = require('async');
 $.del = require('del');
-$.webpack = require('webpack-stream');
-$.vinylNamed = require('vinyl-named');
 var config = require('./gulp/config.js');
 
 require('./gulp/tasks/html.js')(gulp, $, config);
@@ -19,34 +17,35 @@ require('./gulp/tasks/suite.js')(gulp, $, config);
 
 gulp.task('default', ['suite'], function(){
 	$.browserSync.init({
-		server: './htdocs/',
+		server: config.dest,
 		// proxy: './htdocs/'
 	});
 	$.watch(config.html.src, {
-		//usePolling: true
+		// usePolling: true
 	}, function () {
 		gulp.start('html');
 	});
 
 	$.watch(config.css.src, {
-		//usePolling: true
+		// usePolling: true
 	}, function () {
 		$.runSequence(['css', 'kss'], 'iconsCssMove');
 	});
 
 	$.watch(config.icons.src, {
-		//usePolling: true
+		// usePolling: true
 	}, function () {
 		gulp.start('iconfont');
 	});
 
 	$.watch(config.sprite.src, {
-		//usePolling: true
+		// usePolling: true
 	}, function () {
 		gulp.start('sprite');
 	});
-	$.watch(config.js.src, function () {
-		//usePolling: true
+	$.watch(config.js.src, {
+		// usePolling: true
+	}, function () {
 		gulp.start('js');
 	});
 	// $.watch(config.images.src, function () {

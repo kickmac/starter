@@ -2,6 +2,7 @@
 @import '_sprite';
 @import '_sprite_mixin';
 @import '_iconsMixin';
+@import './_plugins/_magic';
 
 /*
 便利クラス
@@ -65,6 +66,12 @@ Styleguide 1.
 	.indent#{$i}e {
 		text-indent: #{$i*-.1}em !important; padding-left: #{$i*.1}em !important;
 	}
+	.w#{$i*10} {
+		width: #{$i*10}px !important;
+	}
+	.w#{$i}p {
+		width: #{$i}% !important;
+	}
 	@media screen and (max-width: $breakpoint-sp){
 		.mt#{$i}-sp {
 			margin-top: #{$i}px !important;
@@ -114,6 +121,12 @@ Styleguide 1.
 		}
 		.pl#{$i}e-sp {
 			padding-left: #{$i * .1}em !important;
+		}
+		.w#{$i*10}-sp {
+			width: #{$i*10}px !important;
+		}
+		.w#{$i}p-sp {
+			width: #{$i}% !important;
 		}
 
 	}
@@ -167,6 +180,12 @@ Styleguide 1.
 		.pl#{$i}e-pc {
 			padding-left: #{$i * .1}em !important;
 		}
+		.w#{$i*10}-px {
+			width: #{$i*10}px !important;
+		}
+		.w#{$i}p-px {
+			width: #{$i}% !important;
+		}
 
 	}
 }
@@ -219,6 +238,29 @@ Styleguide 1.
 .vat { vertical-align: top !important; }
 .vam { vertical-align: middle !important; }
 .vab { vertical-align: bottom !important; }
+
+@media screen and (min-width: $breakpoint-sp + 1){
+	.fLeft-pc { float: left !important; }
+	.fRight-pc { float: right !important; }
+	.tLeft-pc { text-align: left !important; }
+	.tCenter-pc { text-align: center !important; }
+	.tRight-pc { text-align: right !important; }
+	.vat-pc { vertical-align: top !important; }
+	.vam-pc { vertical-align: middle !important; }
+	.vab-pc { vertical-align: bottom !important; }
+}
+@media screen and (max-width: $breakpoint-sp){
+	.fLeft-sp { float: left !important; }
+	.fRight-sp { float: right !important; }
+	.tLeft-sp { text-align: left !important; }
+	.tCenter-sp { text-align: center !important; }
+	.tRight-sp { text-align: right !important; }
+	.vat-sp { vertical-align: top !important; }
+	.vam-sp { vertical-align: middle !important; }
+	.vab-sp { vertical-align: bottom !important; }
+}
+
+
 .clearfix:before,
 .clearfix:after {
 	content: ".";
@@ -283,4 +325,79 @@ Styleguide 1.2
 	.pageAnc {
 
 	}
+}
+
+/*
+フォントサイズ
+
+.font
+
+Markup:
+<p class="{$modifiers}">フォントサイズ</p>
+
+.font-lll - lll
+.font-ll - ll
+.font-l - l
+.font-s - s
+.font-ss - ss
+.font-sss - sss
+
+Styleguide 1.3
+============================================================*/
+.font {
+	&-lll {
+		font-size: rem(map-get($font-size, 'pc') + 6, pc);
+	}
+	&-ll {
+		font-size: rem(map-get($font-size, 'pc') + 4, pc);
+	}
+	&-l {
+		font-size: rem(map-get($font-size, 'pc') + 2, pc);
+	}
+	&-s {
+		font-size: rem(map-get($font-size, 'pc') - 2, pc);
+	}
+	&-ss {
+		font-size: rem(map-get($font-size, 'pc') - 3, pc);
+	}
+	&-sss {
+		font-size: rem(map-get($font-size, 'pc') - 4, pc);
+	}
+}
+@media screen and (max-width: $breakpoint-sp){
+	.font {
+		&-lll {
+			font-size: rem(map-get($font-size, 'sp') + 6, sp);
+		}
+		&-ll {
+			font-size: rem(map-get($font-size, 'sp') + 4, sp);
+		}
+		&-l {
+			font-size: rem(map-get($font-size, 'sp') + 2, sp);
+		}
+		&-s {
+			font-size: rem(map-get($font-size, 'sp') - 2, sp);
+		}
+		&-ss {
+			font-size: rem(map-get($font-size, 'sp') - 3, sp);
+		}
+		&-sss {
+			font-size: rem(map-get($font-size, 'sp') - 4, sp);
+		}
+	}
+}
+
+/*
+フォントカラー
+
+.color
+
+Markup:
+<p class="{$modifiers}">フォントカラー</p>
+
+.color-red - red
+
+Styleguide 1.4
+============================================================*/
+.color {
 }

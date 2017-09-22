@@ -2,6 +2,7 @@
 @import '_sprite';
 @import '_sprite_mixin';
 @import '_iconsMixin';
+@import './_plugins/_magic';
 
 /*
 モジュール
@@ -10,3 +11,159 @@
 
 Styleguide 5.
 */
+
+/*
+パンクズ
+
+pankuzu
+
+Markup:
+<nav class="pankuzu">
+	<ul class="pankuzu_list">
+		<li class="pankuzu_item"><a href="/">トップ</a></li>
+		<li class="pankuzu_item">メッセージ</li>
+	</ul>
+</nav><!-- /.pankuzu -->
+
+Styleguide 5.1
+============================================================*/
+.pankuzu {
+	$this: &;
+	margin: 20px 0 0;
+	& > :first-child {
+		margin-top: 0;
+	}
+	&_list {
+		margin: 0;
+		letter-spacing: -.44em;
+		& > :first-child {
+			&:before {
+				content: none;
+			}
+		}
+	}
+	&_item {
+		display: inline-block;
+		vertical-align: top;
+		letter-spacing: normal;
+		font-size: rem(12px, pc);
+		& > a {
+			text-decoration: underline;
+			&:hover {
+				text-decoration: none;
+			}
+		}
+		&:before {
+			content: '　>　';
+		}
+	}
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.pankuzu {
+		$this: &;
+		&_list {
+		}
+		&_item {
+			font-size: rem(11px, sp);
+		}
+	}
+}
+
+/*
+画像とテキスト
+
+imgTxt
+
+Markup:
+<div class="imgTxt {$modifiers}">
+	<div class="imgTxt_left"><figure><img src="http://satyr.io/300x300/dddddd?text=This+is+Dummy+Image!!!&texture=cross" alt="ダミーイメージ"></figure></div>
+	<div class="imgTxt_body">
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+	</div>
+</div><!-- /.imgTxt -->
+<div class="imgTxt {$modifiers}">
+	<div class="imgTxt_right"><figure><img src="http://satyr.io/300x300/dddddd?text=This+is+Dummy+Image!!!&texture=cross" alt="ダミーイメージ"></figure></div>
+	<div class="imgTxt_body">
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+	</div>
+</div><!-- /.imgTxt -->
+
+.imgTxt-vat - 縦方向上揃え
+.imgTxt-vam - 縦方向中央揃え
+.imgTxt-vat - 縦方向下揃え
+
+Styleguide 5.2
+============================================================*/
+.imgTxt {
+	$this: &;
+	margin: 20px 0 0;
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	&-vat {
+		align-items: flex-start;
+	}
+	&-vam {
+		align-items: center;
+	}
+	&-vab {
+		align-items: flex-end;
+	}
+	&_left {
+		margin: 0 30px 0 0;
+		flex-grow: 0;
+		flex-shrink: 0;
+		order: 0;
+		& > :first-child {
+			margin-top: 0;
+		}
+	}
+	&_right {
+		margin: 0 0 0 30px;
+		flex-grow: 0;
+		flex-shrink: 0;
+		order: 2;
+		& > :first-child {
+			margin-top: 0;
+		}
+	}
+	&_body {
+		order: 1;
+		& > :first-child {
+			margin-top: 0;
+		}
+	}
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.imgTxt {
+		$this: &;
+		display: block;
+		& > :first-child {
+			margin-top: 0;
+		}
+		&_left {
+			margin: 20px 0 0;
+		}
+		&_right {
+			margin: 20px 0 0;
+		}
+		&_body {
+			margin: 20px 0 0;
+			& > :first-child {
+				margin-top: 0;
+			}
+		}
+	}
+}
