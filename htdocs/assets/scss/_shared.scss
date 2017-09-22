@@ -1,5 +1,6 @@
 @import '_config';
 @import '_sprite';
+@import '_sprite_mixin';
 @import '_iconsMixin';
 
 /*
@@ -25,6 +26,18 @@ Styleguide 1.
 	.ml#{$i} {
 		margin-left: #{$i}px !important;
 	}
+	.mt#{$i}e {
+		margin-top: #{$i * .1}em !important;
+	}
+	.mr#{$i}e {
+		margin-right: #{$i * .1}em !important;
+	}
+	.mb#{$i}e {
+		margin-bottom: #{$i * .1}em !important;
+	}
+	.ml#{$i}e {
+		margin-left: #{$i * .1}em !important;
+	}
 	.pt#{$i} {
 		padding-top: #{$i}px !important;
 	}
@@ -36,6 +49,18 @@ Styleguide 1.
 	}
 	.pl#{$i} {
 		padding-left: #{$i}px !important;
+	}
+	.pt#{$i}e {
+		padding-top: #{$i * .1}em !important;
+	}
+	.pr#{$i}e {
+		padding-right: #{$i * .1}em !important;
+	}
+	.pb#{$i}e {
+		padding-bottom: #{$i * .1}em !important;
+	}
+	.pl#{$i}e {
+		padding-left: #{$i * .1}em !important;
 	}
 	.indent#{$i}e {
 		text-indent: #{$i*-.1}em !important; padding-left: #{$i*.1}em !important;
@@ -53,6 +78,19 @@ Styleguide 1.
 		.ml#{$i}-sp {
 			margin-left: #{$i}px !important;
 		}
+		.mt#{$i}e-sp {
+			margin-top: #{$i * .1}em !important;
+		}
+		.mr#{$i}e-sp {
+			margin-right: #{$i * .1}em !important;
+		}
+		.mb#{$i}e-sp {
+			margin-bottom: #{$i * .1}em !important;
+		}
+		.ml#{$i}e-sp {
+			margin-left: #{$i * .1}em !important;
+		}
+
 		.pt#{$i}-sp {
 			padding-top: #{$i}px !important;
 		}
@@ -65,6 +103,19 @@ Styleguide 1.
 		.pl#{$i}-sp {
 			padding-left: #{$i}px !important;
 		}
+		.pt#{$i}e-sp {
+			padding-top: #{$i * .1}em !important;
+		}
+		.pr#{$i}e-sp {
+			padding-right: #{$i * .1}em !important;
+		}
+		.pb#{$i}e-sp {
+			padding-bottom: #{$i * .1}em !important;
+		}
+		.pl#{$i}e-sp {
+			padding-left: #{$i * .1}em !important;
+		}
+
 	}
 	@media screen and (min-width: $breakpoint-sp +1){
 		.mt#{$i}-pc {
@@ -79,6 +130,19 @@ Styleguide 1.
 		.ml#{$i}-pc {
 			margin-left: #{$i}px !important;
 		}
+		.mt#{$i}e-pc {
+			margin-top: #{$i * .1}em !important;
+		}
+		.mr#{$i}e-pc {
+			margin-right: #{$i * .1}em !important;
+		}
+		.mb#{$i}e-pc {
+			margin-bottom: #{$i * .1}em !important;
+		}
+		.ml#{$i}e-pc {
+			margin-left: #{$i * .1}em !important;
+		}
+
 		.pt#{$i}-pc {
 			padding-top: #{$i}px !important;
 		}
@@ -91,6 +155,59 @@ Styleguide 1.
 		.pl#{$i}-pc {
 			padding-left: #{$i}px !important;
 		}
+		.pt#{$i}e-pc {
+			padding-top: #{$i * .1}em !important;
+		}
+		.pr#{$i}e-pc {
+			padding-right: #{$i * .1}em !important;
+		}
+		.pb#{$i}e-pc {
+			padding-bottom: #{$i * .1}em !important;
+		}
+		.pl#{$i}e-pc {
+			padding-left: #{$i * .1}em !important;
+		}
+
+	}
+}
+.mta {
+	margin-top: auto !important;
+}
+.mra {
+	margin-right: auto !important;
+}
+.mba {
+	margin-bottom: auto !important;
+}
+.mla {
+	margin-left: auto !important;
+}
+@media screen and (min-width: $breakpoint-sp+1){
+	.mta-pc {
+		margin-top: auto !important;
+	}
+	.mra-pc {
+		margin-right: auto !important;
+	}
+	.mba-pc {
+		margin-bottom: auto !important;
+	}
+	.mla-pc {
+		margin-left: auto !important;
+	}
+}
+@media screen and (max-width: $breakpoint-sp){
+	.mta-sp {
+		margin-top: auto !important;
+	}
+	.mra-sp {
+		margin-right: auto !important;
+	}
+	.mba-sp {
+		margin-bottom: auto !important;
+	}
+	.mla-sp {
+		margin-left: auto !important;
 	}
 }
 
@@ -143,5 +260,27 @@ Styleguide 1.1
 	.tab-only,
 	.sp-only {
 		display: none !important;
+	}
+}
+
+/*
+ページアンカーターゲット
+
+pageAnc
+
+Markup:
+<a class="pageAnc" name="anc04" id="anc04"></a>
+
+Styleguide 1.2
+============================================================*/
+.pageAnc {
+	position: relative;
+	width: 0;
+	height: 0;
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.pageAnc {
+
 	}
 }
