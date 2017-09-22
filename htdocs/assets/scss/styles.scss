@@ -1,9 +1,8 @@
-@import '_config';
-@import '_sprite';
-@import '_sprite_mixin';
-@import '_iconsMixin';
+@import './_config';
+@import './_iconFontMixin';
+@import './_svgSpriteMixin';
 @import './_plugins/_magic';
-@import "_font-awesome/_font-awesome";
+@import '_font-awesome/_font-awesome';
 
 @import "_default";
 
@@ -17,8 +16,6 @@ Styleguide 1.
 $guideNum: '1.1'; @import "./_shared/_styleguideColorList";
 $guideNum: '1.2'; @import "./_shared/_responsiveHidden";
 $guideNum: '1.3'; @import "./_shared/_super";
-
-@import "_icons";
 
 /*
 グローバル

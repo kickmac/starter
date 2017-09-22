@@ -1,4 +1,11 @@
 module.exports = {
-	delimiter: '?'
-	,siteName: 'サイト名'
+	data: {
+		siteName: 'サイト名',
+	},
+	options: {
+		delimiter: '?',
+	},
+	settings: {
+		ext: '.html',
+	}
 };

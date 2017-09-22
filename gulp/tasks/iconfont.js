@@ -1,47 +1,33 @@
 module.exports = function(gulp, $, config) {
-	var taskName = 'iconfont';
+	var taskName = 'iconFont';
+	var fontName = 'icons';
 
 	gulp.task(taskName, function () {
-		var fontName = 'icons';
 		var src = gulp.src(config.iconFont.src);
 		//svg to svgfont
 		var svgFont = src.pipe($.svgicons2svgfont({
-				fontName: fontName
+				fontName: fontName,
+				normalize: true,
 			})).on('glyphs', function(glyphs) {
-				console.log(glyphs);
 				$.async.parallel([
 					function(cb){
-						gulp.src(config.iconFont.tempDir + '_iconsMixin.scss')
+						gulp.src(config.iconFont.tempDir + '_iconFontMixin.scss')
 							.pipe($.consolidate('lodash', {
 								glyphs: glyphs,
 								fontName: fontName,
-								fontPath: '../fonts/icons/',
+								fontPath: '../fonts/iconfont/',
 								className: 'icons'
 							}))
 							.pipe(gulp.dest(config.iconFont.scssDir));
 							// .on('finish', cb);
 
-						gulp.src(config.iconFont.tempDir + '_icons.scss')
+						gulp.src(config.iconFont.tempDir + 'iconFont.scss')
 							.pipe($.consolidate('lodash', {
 								glyphs: glyphs,
-								fontName: fontName,
-								fontPath: '../fonts/icons/',
-								className: 'icons'
 							}))
 							.pipe(gulp.dest(config.iconFont.scssDir))
 							.on('finish', cb);
 
-					},
-					function(cb){
-						gulp.src(config.iconFont.tempDir + 'icons.scss')
-							.pipe($.consolidate('lodash', {
-								glyphs: glyphs,
-								fontName: fontName,
-								fontPath: '../../../assets/fonts/icons/',
-								className: 'icons'
-							}))
-							.pipe(gulp.dest(config.iconFont.scssDir))
-							.on('finish', cb);
 					}
 				], function(){
 					$.browserSync.reload({ stream:true })
@@ -65,60 +51,3 @@ module.exports = function(gulp, $, config) {
 
 	});
 };
-
-// module.exports = function(gulp, $, config) {
-// 	var taskName = 'iconfont';
-
-// 	gulp.task(taskName, function () {
-// 		var fontName = 'icons';
-// 		var runTimestamp = Math.round(Date.now()/1000);
-// 		var iconStream = gulp.src(config.iconFont.src)
-// 			.pipe($.changed(config.css.dest))
-// 			.pipe($.plumber({
-// 				errorHandler: $.notify.onError("Error: <%= error.message %>")
-// 			}))
-// 			.pipe($.iconfont({
-// 				fontName: fontName,
-// 				formats: ['ttf', 'eot', 'woff', 'woff2', 'svg'],
-// 				timestamp: runTimestamp
-// 			}))
-
-// 		$.async.parallel([
-// 			function makeMixin (cb) {
-// 				iconStream.on('glyphs', function(glyphs, options) {
-// 					gulp.src(config.iconFont.tempDir + '_iconsMixin.scss')
-// 						.pipe($.consolidate('lodash', {
-// 							glyphs: glyphs,
-// 							fontName: fontName,
-// 							fontPath: '../fonts/icons/',
-// 							className: 'icons'
-// 						}))
-// 						.pipe(gulp.dest(config.iconFont.scssDir))
-// 						.on('finish', cb);
-// 				});
-// 			},
-// 			function makeScss (cb) {
-// 				iconStream.on('glyphs', function(glyphs, options) {
-// 					gulp.src(config.iconFont.tempDir + 'icons.scss')
-// 						.pipe($.consolidate('lodash', {
-// 							glyphs: glyphs,
-// 							fontName: fontName,
-// 							fontPath: '../../../assets/fonts/icons/',
-// 							className: 'icons'
-// 						}))
-// 						.pipe(gulp.dest(config.iconFont.scssDir))
-// 						.on('finish', cb);
-// 				});
-// 			},
-// 			function handleFonts (cb) {
-// 				iconStream
-// 					.pipe(gulp.dest(config.iconFont.dest))
-// 					.on('finish', cb);
-// 			}
-// 		], function(){
-// 			$.browserSync.reload({ stream:true })
-// 			return iconStream;
-// 		});
-
-// 	});
-// };

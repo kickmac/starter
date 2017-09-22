@@ -1,17 +1,25 @@
 @import '_config';
-@import '_sprite';
-@import '_iconsMixin';
-
+@import '_iconFontMixin';
+@font-face {
+	font-family: "icons";
+	src: url("../../../assets/fonts/iconfont/icons.eot");
+	src: url("../../../assets/fonts/iconfont/icons.eot?#iefix") format("eot"),
+	url("../../../assets/fonts/iconfont/icons.woff") format("woff"),
+	url("../../../assets/fonts/iconfont/icons.ttf") format("truetype"),
+	url("../../../assets/fonts/iconfont/icons.svg#icons") format("svg");
+	font-weight: normal;
+	font-style: normal;
+}
 /*
-アイコンフォント
+アイコン
 
-自作アイコンフォントのリスト
+アイコンフォントとsvgスプライト
 
 Styleguide 2.
 */
 
 /*
-icons
+icon font
 
 Markup:
 <ul class="styleguideIconList">
@@ -21,17 +29,10 @@ Markup:
 	<li class="styleguideIconList_item styleguideIconList_item-circleArrow-up"><a href="javascript: void(0);"><span>$icons-circleArrow-up</span></a></li>
 </ul>
 
+@include icons(アイコン名変数);
+
 Styleguide 2.1
 ============================================================*/
-@font-face {
-	font-family: icons;
-	src: url(../../../assets/fonts/icons//icons.eot);
-	src: url(../../../assets/fonts/icons//icons.eot?#iefix) format("eot"),
-	// url(../../../assets/fonts/icons//icons.woff2) format("woff2"),
-	url(../../../assets/fonts/icons//icons.woff) format("woff"),
-	url(../../../assets/fonts/icons//icons.ttf) format("truetype"),
-	url(../../../assets/fonts/icons//icons.svg#icons) format("svg")
-}
 .styleguideIconList {
 	margin: -10px 0 0 -10px;
 	display: flex;

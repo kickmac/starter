@@ -7959,6 +7959,8 @@ $$$.contentsModal = function () {
     var _ajax = function _ajax(url) {
         $.ajax({
             url: url
+            // dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+            // data: {param1: 'value1'},
         }).done(function (data) {
             $('.contentsModal_contents').append(data);
         }).fail(function () {

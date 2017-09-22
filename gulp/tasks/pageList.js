@@ -1,9 +1,8 @@
 module.exports = function(gulp, $, config) {
-	var taskName = 'list';
+	var taskName = 'pageList';
 	var ejsConfig = require('../ejs_config.js');
 
 	var fs = require('fs');
-	var async = require('async');
 	var iconv = require('iconv-lite');
 
 
@@ -16,7 +15,7 @@ module.exports = function(gulp, $, config) {
 
 	var tree = {};
 	var createTree = function(list){
-		async.each(list, function(data){
+		$.async.each(list, function(data){
 			dirCmd = makeDir(data);
 			makeFile(data, dirCmd);
 		});
@@ -83,10 +82,17 @@ module.exports = function(gulp, $, config) {
 			.pipe( $.plumber({
 				errorHandler: $.notify.onError("Error: <%= error.message %>")
 			}) )
-			.pipe($.ejs({
-				jsonData: json,
-				delimiter: '?'
-			}))
+			.pipe($.ejs(
+				{
+					jsonData: json,
+				},
+				{
+					delimiter: '?',
+				},
+				{
+					ext: '.html',
+				}
+			))
 			.pipe(gulp.dest( config.list.dest ))
 			.pipe($.browserSync.reload({ stream:true }));
 	}

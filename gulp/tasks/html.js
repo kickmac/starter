@@ -8,7 +8,7 @@ module.exports = function(gulp, $, config) {
 			.pipe($.plumber({
 				errorHandler: $.notify.onError("Error: <%= error.message %>")
 			}))
-			.pipe($.ejs(ejsConfig))
+			.pipe($.ejs(ejsConfig.data, ejsConfig.options, ejsConfig.settings))
 			// .pipe($.rename({
 				// extname: ".php"
 			// }))
