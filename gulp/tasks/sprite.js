@@ -8,7 +8,7 @@ module.exports = function(gulp, $, config) {
 				imgName: 'sprite.png',
 				cssName: '_sprite.scss',
 				imgPath : '../images/sprite.png',
-				algorithm: 'diagonal',
+				algorithm: 'diagonal', //'top-down | left-right | diagonal | alt-diagonal | binary-tree',
 				// cssOpts: {// スプライト用SCSS内のmixinの記述をなくす
 				// 	functions: false
 				// },
