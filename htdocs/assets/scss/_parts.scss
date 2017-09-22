@@ -1,8 +1,8 @@
-@import '_config';
-@import '_sprite';
-@import '_sprite_mixin';
-@import '_iconsMixin';
-@import './_plugins/_magic';
+// @import '_config';
+// @import '_sprite';
+// @import '_sprite_mixin';
+// @import '_iconsMixin';
+// @import './_plugins/_magic';
 
 /*
 パーツ
@@ -98,6 +98,16 @@ Styleguide 4.2.2
 		&-l {
 		}
 	}
+	&-left {
+		#{$this}_btn {
+			margin-right: auto;
+		}
+	}
+	&-right {
+		#{$this}_btn {
+			margin-left: auto;
+		}
+	}
 
 	&-hr {
 		display: flex;
@@ -107,6 +117,12 @@ Styleguide 4.2.2
 		}
 		#{$this}_btn {
 		}
+	}
+	&-hr.btns-left {
+		justify-content: flex-start;
+	}
+	&-hr.btns-right {
+		justify-content: flex-end;
 	}
 }
 

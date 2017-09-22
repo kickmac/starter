@@ -4776,6 +4776,13 @@ jQuery.extend(jQuery.easing, {
         }, a.fn.lightGallery.modules.Thumbnail = f;
     }(jQuery, window, document);
 });
+$.fn.extend({
+    switchClass: function switchClass(before, after) {
+        $(this).removeClass(before);
+        $(this).addClass(after);
+    }
+});
+
 var $$$ = $$$ || {};
 /*************************************************************************************
 * resizeend(幅のみ)
@@ -4979,6 +4986,144 @@ $$$.accordion = function () {
     return {
         init: _init,
         toggle: _toggle
+    };
+}();
+
+/*************************************************************************************
+* オーバーレイ
+*************************************************************************************/
+$$$.overlay = function () {
+    var _init = function _init(args) {};
+    var _open = function _open() {
+        $('.overlay').switchClass('overlay-isClose', 'overlay-isOpen');
+    };
+    var _close = function _close() {
+        if ($('.overlay').hasClass('overlay-isOpen')) {
+            $('.overlay').switchClass('overlay-isOpen', 'overlay-isClose');
+        }
+    };
+    var _toggle = function _toggle() {
+        if ($('.overlay').hasClass('overlay-isOpen')) {
+            $('.overlay').switchClass('overlay-isOpen', 'overlay-isClose');
+        } else {
+            $('.overlay').switchClass('overlay-isClose', 'overlay-isOpen');
+        }
+    };
+
+    return {
+        init: _init,
+        open: _open,
+        close: _close,
+        toggle: _toggle
+    };
+}();
+
+/*************************************************************************************
+* アラート
+*************************************************************************************/
+$$$.alert = function () {
+    var _init = function _init() {
+        $('body').append('<div class="customDialog">\
+				<div class="customDialog_overlay"></div>\
+				<div class="customDialog_inner">\
+				</div>\
+			</div>');
+    };
+    var _pause = function _pause() {
+        return new Promise(function (resolve, reject) {
+            $(document).on('click', '.customDialog_btn-ok > a', function (event) {
+                event.preventDefault();
+                resolve();
+            });
+        });
+    };
+    var _open = function _open(options) {
+        if (!$('.customDialog')[0]) {
+            _init();
+        }
+
+        $('.customDialog_inner').html('');
+        var _contents = '<p class="customDialog_txt">' + options.text + '</p><ul class="customDialog_btns"><li class="customDialog_btn customDialog_btn-ok"><a href="javascript: void(0);">OK</a></li></ul>';
+        $('.customDialog_inner').append(_contents);
+
+        $('.customDialog').switchClass('customDialog-isClose', 'customDialog-isOpen');
+
+        _pause().then(function () {
+            _close();
+            if (options.ok) {
+                options.ok();
+            }
+        }, function () {
+            _close();
+        });
+    };
+
+    var _close = function _close() {
+        $('.customDialog').switchClass('customDialog-isOpen', 'customDialog-isClose');
+        $(document).off('.click', '.customDialog_btn > a');
+    };
+
+    return {
+        open: _open
+    };
+}();
+
+/*************************************************************************************
+* confirm
+*************************************************************************************/
+$$$.confirm = function () {
+    var _init = function _init() {
+        $('body').append('<div class="customDialog">\
+				<div class="customDialog_overlay"></div>\
+				<div class="customDialog_inner">\
+				</div>\
+			</div>');
+    };
+    var _pause = function _pause() {
+        return new Promise(function (resolve, reject) {
+            $(document).on('click', '.customDialog_btn-ok > a', function (event) {
+                event.preventDefault();
+                resolve();
+            });
+            $(document).on('click', '.customDialog_btn-cancel > a', function (event) {
+                event.preventDefault();
+                reject();
+            });
+        });
+    };
+    var _open = function _open(options) {
+        if (!$('.customDialog')[0]) {
+            _init();
+        }
+
+        $('.customDialog_inner').html('');
+        var _contents = '<p class="customDialog_txt">' + options.text + '</p><ul class="customDialog_btns"><li class="customDialog_btn customDialog_btn-cancel"><a href="javascript: void(0);">キャンセル</a></li><li class="customDialog_btn customDialog_btn-ok"><a href="javascript: void(0);">OK</a></li></ul>';
+        $('.customDialog_inner').append(_contents);
+
+        $('.customDialog').switchClass('customDialog-isClose', 'customDialog-isOpen');
+
+        _pause().then(function () {
+            _close();
+            if (options.ok) {
+                options.ok();
+            }
+            return true;
+        }, function () {
+            _close();
+            if (options.cancel) {
+                options.cancel();
+            }
+            return false;
+        });
+    };
+
+    var _close = function _close() {
+        $('.customDialog').switchClass('customDialog-isOpen', 'customDialog-isClose');
+        $(document).off('.click', '.customDialog_btn > a');
+    };
+
+    return {
+        open: _open
     };
 }();
 

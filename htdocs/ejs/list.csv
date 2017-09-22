@@ -1,0 +1,5 @@
+id,finish,name,path,url
+1,0,TOP,,/index.html
+2,0,第二階層インデックス,/second/,/2nd/index.html
+3,0,第二階層ページ,/second/index/,/2nd/detail.html
+4,0,aaa,,/aaa.html

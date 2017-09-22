@@ -1,8 +1,8 @@
-// @import '_config';
-// @import '_sprite';
-// @import '_sprite_mixin';
-// @import '_iconsMixin';
-// @import './_plugins/_magic';
+@import '_config';
+@import '_sprite';
+@import '_sprite_mixin';
+@import '_iconsMixin';
+@import './_plugins/_magic';
 
 /*!
  * ress.css • v1.1.1
@@ -269,17 +269,9 @@ textarea {
 	font-family: inherit;
 	border: 1px solid $gray-border;
 }
-textarea {
-	resize: vertical;
-}
 table {
 	width: 100%;
 	border-collapse: collapse;
-}
-thead {
-	th {
-		text-align: center;
-	}
 }
 th,
 td {
@@ -290,15 +282,14 @@ td {
 	}
 }
 ul {
-	& > li {
+	li {
 		display: block;
 	}
 }
 ul:not([class]),
-ul.dotList,
 ol {
 	margin-left: 2em;
-	& > li {
+	li {
 		display: list-item;
 	}
 }
@@ -322,5 +313,9 @@ button {
 	}
 	a,
 	button {
+		transition: none;
+		&:hover {
+			opacity: 1;
+		}
 	}
 }

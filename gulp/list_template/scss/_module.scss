@@ -1,0 +1,101 @@
+@import '_config';
+@import '_sprite';
+@import '_sprite_mixin';
+@import '_iconsMixin';
+@import './_plugins/_magic';
+
+.pageTree {
+	$this: &;
+	$box-w: 250px;
+	$box-h: 64px;
+	$gutter: 30px;
+	$line-w: 6px;
+	& > &_cate:first-child {
+		&:before {
+			content: none;
+		}
+		& > :first-child {
+			&:before {
+				content: none;
+			}
+		}
+
+	}
+	&_cate {
+		margin: #{$gutter} 0 0 calc(#{$gutter} * 2);
+		position: relative;
+		&:before {
+			content: '';
+			display: block;
+			width: calc(#{$line-w});
+			height: calc(100% + #{$gutter});
+			background: #666;
+			position: absolute;
+			top: calc(#{$gutter} * -1);
+			left: calc(#{$gutter} / -1);
+		}
+	}
+	&_cate > :last-child {
+		&:before {
+			height: calc(#{$box-h} / 2 + #{$gutter});
+		}
+	}
+	&_item > :last-child {
+		&:before {
+			content: none;
+		}
+	}
+	&_item {
+		margin-top: $gutter;
+		position: relative;
+		// width: $box-w;
+		&:before {
+			content: '';
+			display: block;
+			width: calc(#{$line-w});
+			height: calc(100% + #{$gutter});
+			background: #666;
+			position: absolute;
+			top: calc(#{$gutter} * -1);
+			left: calc(#{$gutter} / -1);
+		}
+		&:after {
+			content: '';
+			display: block;
+			width: calc(#{$gutter});
+			height: $line-w;
+			background: #666;
+			position: absolute;
+			top: calc(#{$box-h}/2 - #{$line-w}/2);
+			left: calc(#{$gutter} / -1);
+		}
+		& > a,
+		& > div {
+			text-decoration: none;
+			color: #fff;
+			padding: 10px;
+			min-width: $box-w;
+			display: inline-flex;
+			align-items: center;
+			position: relative;
+			z-index: 100;
+			border-radius: 4px;
+		}
+		& > a {
+			background: #00a;
+		}
+		& > div {
+			background: #333;
+		}
+
+	}
+	&_itemInner {
+	}
+	&_name {
+		margin: 0;
+	}
+	&_num {
+		margin: 0;
+	}
+}
+

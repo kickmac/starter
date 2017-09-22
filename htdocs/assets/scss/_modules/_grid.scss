@@ -1,0 +1,86 @@
+// @import '../_config';
+// @import '../_sprite';
+// @import '../_sprite_mixin';
+// @import '../_iconsMixin';
+// @import '../_plugins/_magic';
+
+/*
+grid
+
+グリッド
+
+grid_col-分母-分子（10/10まで）
+
+Markup:
+<div class="grid">
+	<div class="grid_col grid_col-2-1pc grid_col-5-1sp">PC:1/2  SP:1/5</div>
+	<div class="grid_col grid_col-2-1pc grid_col-5-4sp">PC:1/2  SP:4/5</div>
+	<div class="grid_col grid_col-3-1pc grid_col-3-2sp">PC:1/3  SP:2/3</div>
+	<div class="grid_col grid_col-3-2pc grid_col-3-1sp">PC:2/3  SP:1/3</div>
+	<div class="grid_col grid_col-4-1pc grid_col-4-2sp">PC:1/4  SP:2/4</div>
+	<div class="grid_col grid_col-4-3pc grid_col-4-2sp">PC:3/4  SP:2/4</div>
+	<div class="grid_col grid_col-5-3pc grid_col-1-1sp">PC:3/5  SP:1/1</div>
+	<div class="grid_col grid_col-5-2pc grid_col-1-1sp">PC:2/5  SP:100%</div>
+</div><!-- /.grid -->
+
+Styleguide #{$guideNum}
+============================================================*/
+.grid {
+	$this: &;
+	$gutter-h: 20px;
+	$gutter-v: 20px;
+	display: flex;
+	display: -webkit-flex;
+	flex-wrap: wrap;
+	-webkit-flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: stretch;
+	margin: 0 0 0 $gutter-h*-1;
+	&_col {
+		margin: 0 0 0 $gutter-h;
+		flex-basis: auto;
+		@for $i from 1 to 10 {
+			@for $ii from 1 to 10 {
+				&-#{$i}-#{$ii} {
+					width: calc(100%/#{$i} * #{$ii} - #{$gutter-h});
+				}
+			}
+		}
+	}
+}
+@media screen and (min-width: $breakpoint-sp + 1){
+	.grid {
+		$this: &;
+		$gutter-h: 20px;
+		$gutter-v: 20px;
+		&_col {
+			margin: 0 0 0 $gutter-h;
+			@for $i from 1 to 10 {
+				@for $ii from 1 to 10 {
+					&-#{$i}-#{$ii}pc {
+						width: calc(100%/#{$i} * #{$ii} - #{$gutter-h});
+					}
+				}
+			}
+		}
+	}
+}
+@media screen and (max-width: $breakpoint-sp){
+	.grid {
+		$this: &;
+		$gutter-h: 20px;
+		$gutter-v: 20px;
+		margin: 0 0 0 $gutter-h*-1;
+		&_col {
+			margin: 0 0 0 $gutter-h;
+			@for $i from 1 to 10 {
+				@for $ii from 1 to 10 {
+					&-#{$i}-#{$ii}sp {
+						width: calc(100%/#{$i} * #{$ii} - #{$gutter-h});
+					}
+				}
+			}
+		}
+	}
+}
