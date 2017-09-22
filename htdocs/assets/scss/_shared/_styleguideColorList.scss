@@ -1,0 +1,112 @@
+// @import '../_config';
+// @import '../_sprite';
+// @import '../_sprite_mixin';
+// @import '../_iconsMixin';
+// @import '../_plugins/_magic';
+
+/*
+色サンプル
+
+styleguideColorList
+
+Markup:
+<ul class="styleguideColorList">
+	<li class="styleguideColorList_item styleguideColorList_item-red"><a href="javascript: void(0);"><span></span></a></li>
+	<li class="styleguideColorList_item styleguideColorList_item-red-light"><a href="javascript: void(0);"><span></span></a></li>
+	<li class="styleguideColorList_item styleguideColorList_item-blue"><a href="javascript: void(0);"><span></span></a></li>
+	<li class="styleguideColorList_item styleguideColorList_item-blue-light"><a href="javascript: void(0);"><span></span></a></li>
+	<li class="styleguideColorList_item styleguideColorList_item-gray"><a href="javascript: void(0);"><span></span></a></li>
+	<li class="styleguideColorList_item styleguideColorList_item-gray-light"><a href="javascript: void(0);"><span></span></a></li>
+	<li class="styleguideColorList_item styleguideColorList_item-gray-border"><a href="javascript: void(0);"><span></span></a></li>
+	<li class="styleguideColorList_item styleguideColorList_item-black"><a href="javascript: void(0);"><span></span></a></li>
+</ul>
+
+Styleguide #{$guideNum}
+============================================================*/
+.styleguideColorList {
+	$this: &;
+	margin: 0 0 0 -10px;
+	display: flex;
+	display: -webkit-flex;
+	&_item {
+		margin: 10px 0 0 10px;
+		width: calc(100%/11 - 10px);
+		& > a {
+			display: block;
+			text-decoration: none;
+			text-align: center;
+			word-break: break-all;
+			text-align: center;
+			color: inherit;
+			&:before {
+				content: '';
+				display: block;
+				padding-top: 100%;
+				background: #000;
+			}
+			&:after {
+				display: none;
+				text-align: center;
+			}
+			& > span {
+				display: block;
+			}
+		}
+		&-red {
+			& > a {
+				&:before { background: $red; }
+				&:after { content: '$red'; }
+				& > span:before { content: '#{$red}'; }
+			}
+		}
+		&-red-light {
+			& > a {
+				&:before { background: $red-light; }
+				&:after { content: '$red-light'; }
+				& > span:before { content: '#{$red-light}'; }
+			}
+		}
+		&-blue {
+			& > a {
+				&:before { background: $blue; }
+				&:after { content: '$blue'; }
+				& > span:before { content: '#{$blue}'; }
+			}
+		}
+		&-blue-light {
+			& > a {
+				&:before { background: $blue-light; }
+				&:after { content: '$blue-light'; }
+				& > span:before { content: '#{$blue-light}'; }
+			}
+		}
+		&-gray {
+			& > a {
+				&:before { background: $gray; }
+				&:after { content: '$gray'; }
+				& > span:before { content: '#{$gray}'; }
+			}
+		}
+		&-gray-light {
+			& > a {
+				&:before { background: $gray-light; }
+				&:after { content: '$gray-light'; }
+				& > span:before { content: '#{$gray-light}'; }
+			}
+		}
+		&-gray-border {
+			& > a {
+				&:before { background: $gray-border; }
+				&:after { content: '$gray-border'; }
+				& > span:before { content: '#{$gray-border}'; }
+			}
+		}
+		&-black {
+			& > a {
+				&:before { background: $black; }
+				&:after { content: '$black'; }
+				& > span:before { content: '#{$black}'; }
+			}
+		}
+	}
+}

@@ -2687,74 +2687,6 @@ jQuery.extend(jQuery.easing, {
         b._update(!0, a);
     });
 })(jQuery);
-/*!
- * jQuery resizeend - A jQuery plugin that allows for window resize-end event handling.
- * 
- * Copyright (c) 2015 Erik Nielsen
- * 
- * Licensed under the MIT license:
- *    http://www.opensource.org/licenses/mit-license.php
- * 
- * Project home:
- *    http://312development.com
- * 
- * Version:  0.2.0
- * 
- */
-
-!function (a) {
-    var b = window.Chicago || { utils: { now: Date.now || function () {
-                return new Date().getTime();
-            }, uid: function uid(a) {
-                return (a || "id") + b.utils.now() + "RAND" + Math.ceil(1e5 * Math.random());
-            }, is: { number: function number(a) {
-                    return !isNaN(parseFloat(a)) && isFinite(a);
-                }, fn: function fn(a) {
-                    return "function" == typeof a;
-                }, object: function object(a) {
-                    return "[object Object]" === Object.prototype.toString.call(a);
-                } }, debounce: function debounce(a, b, c) {
-                var d;return function () {
-                    var e = this,
-                        f = arguments,
-                        g = function g() {
-                        d = null, c || a.apply(e, f);
-                    },
-                        h = c && !d;d && clearTimeout(d), d = setTimeout(g, b), h && a.apply(e, f);
-                };
-            } }, $: window.jQuery || null };if ("function" == typeof define && define.amd && define("chicago", function () {
-        return b.load = function (a, c, d, e) {
-            var f = a.split(","),
-                g = [],
-                h = (e.config && e.config.chicago && e.config.chicago.base ? e.config.chicago.base : "").replace(/\/+$/g, "");if (!h) throw new Error("Please define base path to jQuery resize.end in the requirejs config.");for (var i = 0; i < f.length;) {
-                var j = f[i].replace(/\./g, "/");g.push(h + "/" + j), i += 1;
-            }c(g, function () {
-                d(b);
-            });
-        }, b;
-    }), window && window.jQuery) return a(b, window, window.document);if (!window.jQuery) throw new Error("jQuery resize.end requires jQuery");
-}(function (a, b, c) {
-    a.$win = a.$(b), a.$doc = a.$(c), a.events || (a.events = {}), a.events.resizeend = { defaults: { delay: 250 }, setup: function setup() {
-            var b,
-                c = arguments,
-                d = { delay: a.$.event.special.resizeend.defaults.delay };a.utils.is.fn(c[0]) ? b = c[0] : a.utils.is.number(c[0]) ? d.delay = c[0] : a.utils.is.object(c[0]) && (d = a.$.extend({}, d, c[0]));var e = a.utils.uid("resizeend"),
-                f = a.$.extend({ delay: a.$.event.special.resizeend.defaults.delay }, d),
-                g = f,
-                h = function h(b) {
-                g && clearTimeout(g), g = setTimeout(function () {
-                    return g = null, b.type = "resizeend.chicago.dom", a.$(b.target).trigger("resizeend", b);
-                }, f.delay);
-            };return a.$(this).data("chicago.event.resizeend.uid", e), a.$(this).on("resize", a.utils.debounce(h, 100)).data(e, h);
-        }, teardown: function teardown() {
-            var b = a.$(this).data("chicago.event.resizeend.uid");return a.$(this).off("resize", a.$(this).data(b)), a.$(this).removeData(b), a.$(this).removeData("chicago.event.resizeend.uid");
-        } }, function () {
-        a.$.event.special.resizeend = a.events.resizeend, a.$.fn.resizeend = function (b, c) {
-            return this.each(function () {
-                a.$(this).on("resizeend", b, c);
-            });
-        };
-    }();
-});
 /*
      _ _      _       _
  ___| (_) ___| | __  (_)___
@@ -3178,10 +3110,1134 @@ jQuery.extend(jQuery.easing, {
         }return a;
     };
 });
-/*! lightgallery - v1.3.9 - 2017-03-05
+/*!
+ * @overview es6-promise - a tiny implementation of Promises/A+.
+ * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
+ * @license   Licensed under MIT license
+ *            See https://raw.githubusercontent.com/stefanpenner/es6-promise/master/LICENSE
+ * @version   4.1.0+f9a5575b
+ */
+
+(function (global, factory) {
+    (typeof exports === "undefined" ? "undefined" : _typeof(exports)) === 'object' && typeof module !== 'undefined' ? module.exports = factory() : typeof define === 'function' && define.amd ? define(factory) : global.ES6Promise = factory();
+})(window, function () {
+    'use strict';
+
+    function objectOrFunction(x) {
+        return typeof x === 'function' || (typeof x === "undefined" ? "undefined" : _typeof(x)) === 'object' && x !== null;
+    }
+
+    function isFunction(x) {
+        return typeof x === 'function';
+    }
+
+    var _isArray = undefined;
+    if (!Array.isArray) {
+        _isArray = function _isArray(x) {
+            return Object.prototype.toString.call(x) === '[object Array]';
+        };
+    } else {
+        _isArray = Array.isArray;
+    }
+
+    var isArray = _isArray;
+
+    var len = 0;
+    var vertxNext = undefined;
+    var customSchedulerFn = undefined;
+
+    var asap = function asap(callback, arg) {
+        queue[len] = callback;
+        queue[len + 1] = arg;
+        len += 2;
+        if (len === 2) {
+            // If len is 2, that means that we need to schedule an async flush.
+            // If additional callbacks are queued before the queue is flushed, they
+            // will be processed by this flush that we are scheduling.
+            if (customSchedulerFn) {
+                customSchedulerFn(flush);
+            } else {
+                scheduleFlush();
+            }
+        }
+    };
+
+    function setScheduler(scheduleFn) {
+        customSchedulerFn = scheduleFn;
+    }
+
+    function setAsap(asapFn) {
+        asap = asapFn;
+    }
+
+    var browserWindow = typeof window !== 'undefined' ? window : undefined;
+    var browserGlobal = browserWindow || {};
+    var BrowserMutationObserver = browserGlobal.MutationObserver || browserGlobal.WebKitMutationObserver;
+    var isNode = typeof self === 'undefined' && typeof process !== 'undefined' && {}.toString.call(process) === '[object process]';
+
+    // test for web worker but not in IE10
+    var isWorker = typeof Uint8ClampedArray !== 'undefined' && typeof importScripts !== 'undefined' && typeof MessageChannel !== 'undefined';
+
+    // node
+    function useNextTick() {
+        // node version 0.10.x displays a deprecation warning when nextTick is used recursively
+        // see https://github.com/cujojs/when/issues/410 for details
+        return function () {
+            return process.nextTick(flush);
+        };
+    }
+
+    // vertx
+    function useVertxTimer() {
+        if (typeof vertxNext !== 'undefined') {
+            return function () {
+                vertxNext(flush);
+            };
+        }
+
+        return useSetTimeout();
+    }
+
+    function useMutationObserver() {
+        var iterations = 0;
+        var observer = new BrowserMutationObserver(flush);
+        var node = document.createTextNode('');
+        observer.observe(node, { characterData: true });
+
+        return function () {
+            node.data = iterations = ++iterations % 2;
+        };
+    }
+
+    // web worker
+    function useMessageChannel() {
+        var channel = new MessageChannel();
+        channel.port1.onmessage = flush;
+        return function () {
+            return channel.port2.postMessage(0);
+        };
+    }
+
+    function useSetTimeout() {
+        // Store setTimeout reference so es6-promise will be unaffected by
+        // other code modifying setTimeout (like sinon.useFakeTimers())
+        var globalSetTimeout = setTimeout;
+        return function () {
+            return globalSetTimeout(flush, 1);
+        };
+    }
+
+    var queue = new Array(1000);
+    function flush() {
+        for (var i = 0; i < len; i += 2) {
+            var callback = queue[i];
+            var arg = queue[i + 1];
+
+            callback(arg);
+
+            queue[i] = undefined;
+            queue[i + 1] = undefined;
+        }
+
+        len = 0;
+    }
+
+    function attemptVertx() {
+        try {
+            var r = require;
+            var vertx = r('vertx');
+            vertxNext = vertx.runOnLoop || vertx.runOnContext;
+            return useVertxTimer();
+        } catch (e) {
+            return useSetTimeout();
+        }
+    }
+
+    var scheduleFlush = undefined;
+    // Decide what async method to use to triggering processing of queued callbacks:
+    if (isNode) {
+        scheduleFlush = useNextTick();
+    } else if (BrowserMutationObserver) {
+        scheduleFlush = useMutationObserver();
+    } else if (isWorker) {
+        scheduleFlush = useMessageChannel();
+    } else if (browserWindow === undefined && typeof require === 'function') {
+        scheduleFlush = attemptVertx();
+    } else {
+        scheduleFlush = useSetTimeout();
+    }
+
+    function then(onFulfillment, onRejection) {
+        var _arguments = arguments;
+
+        var parent = this;
+
+        var child = new this.constructor(noop);
+
+        if (child[PROMISE_ID] === undefined) {
+            makePromise(child);
+        }
+
+        var _state = parent._state;
+
+        if (_state) {
+            (function () {
+                var callback = _arguments[_state - 1];
+                asap(function () {
+                    return invokeCallback(_state, child, callback, parent._result);
+                });
+            })();
+        } else {
+            subscribe(parent, child, onFulfillment, onRejection);
+        }
+
+        return child;
+    }
+
+    /**
+      `Promise.resolve` returns a promise that will become resolved with the
+      passed `value`. It is shorthand for the following:
+    
+      ```javascript
+      let promise = new Promise(function(resolve, reject){
+        resolve(1);
+      });
+    
+      promise.then(function(value){
+        // value === 1
+      });
+      ```
+    
+      Instead of writing the above, your code now simply becomes the following:
+    
+      ```javascript
+      let promise = Promise.resolve(1);
+    
+      promise.then(function(value){
+        // value === 1
+      });
+      ```
+    
+      @method resolve
+      @static
+      @param {Any} value value that the returned promise will be resolved with
+      Useful for tooling.
+      @return {Promise} a promise that will become fulfilled with the given
+      `value`
+    */
+    function resolve(object) {
+        /*jshint validthis:true */
+        var Constructor = this;
+
+        if (object && (typeof object === "undefined" ? "undefined" : _typeof(object)) === 'object' && object.constructor === Constructor) {
+            return object;
+        }
+
+        var promise = new Constructor(noop);
+        _resolve(promise, object);
+        return promise;
+    }
+
+    var PROMISE_ID = Math.random().toString(36).substring(16);
+
+    function noop() {}
+
+    var PENDING = void 0;
+    var FULFILLED = 1;
+    var REJECTED = 2;
+
+    var GET_THEN_ERROR = new ErrorObject();
+
+    function selfFulfillment() {
+        return new TypeError("You cannot resolve a promise with itself");
+    }
+
+    function cannotReturnOwn() {
+        return new TypeError('A promises callback cannot return that same promise.');
+    }
+
+    function getThen(promise) {
+        try {
+            return promise.then;
+        } catch (error) {
+            GET_THEN_ERROR.error = error;
+            return GET_THEN_ERROR;
+        }
+    }
+
+    function tryThen(then, value, fulfillmentHandler, rejectionHandler) {
+        try {
+            then.call(value, fulfillmentHandler, rejectionHandler);
+        } catch (e) {
+            return e;
+        }
+    }
+
+    function handleForeignThenable(promise, thenable, then) {
+        asap(function (promise) {
+            var sealed = false;
+            var error = tryThen(then, thenable, function (value) {
+                if (sealed) {
+                    return;
+                }
+                sealed = true;
+                if (thenable !== value) {
+                    _resolve(promise, value);
+                } else {
+                    fulfill(promise, value);
+                }
+            }, function (reason) {
+                if (sealed) {
+                    return;
+                }
+                sealed = true;
+
+                _reject(promise, reason);
+            }, 'Settle: ' + (promise._label || ' unknown promise'));
+
+            if (!sealed && error) {
+                sealed = true;
+                _reject(promise, error);
+            }
+        }, promise);
+    }
+
+    function handleOwnThenable(promise, thenable) {
+        if (thenable._state === FULFILLED) {
+            fulfill(promise, thenable._result);
+        } else if (thenable._state === REJECTED) {
+            _reject(promise, thenable._result);
+        } else {
+            subscribe(thenable, undefined, function (value) {
+                return _resolve(promise, value);
+            }, function (reason) {
+                return _reject(promise, reason);
+            });
+        }
+    }
+
+    function handleMaybeThenable(promise, maybeThenable, then$$) {
+        if (maybeThenable.constructor === promise.constructor && then$$ === then && maybeThenable.constructor.resolve === resolve) {
+            handleOwnThenable(promise, maybeThenable);
+        } else {
+            if (then$$ === GET_THEN_ERROR) {
+                _reject(promise, GET_THEN_ERROR.error);
+                GET_THEN_ERROR.error = null;
+            } else if (then$$ === undefined) {
+                fulfill(promise, maybeThenable);
+            } else if (isFunction(then$$)) {
+                handleForeignThenable(promise, maybeThenable, then$$);
+            } else {
+                fulfill(promise, maybeThenable);
+            }
+        }
+    }
+
+    function _resolve(promise, value) {
+        if (promise === value) {
+            _reject(promise, selfFulfillment());
+        } else if (objectOrFunction(value)) {
+            handleMaybeThenable(promise, value, getThen(value));
+        } else {
+            fulfill(promise, value);
+        }
+    }
+
+    function publishRejection(promise) {
+        if (promise._onerror) {
+            promise._onerror(promise._result);
+        }
+
+        publish(promise);
+    }
+
+    function fulfill(promise, value) {
+        if (promise._state !== PENDING) {
+            return;
+        }
+
+        promise._result = value;
+        promise._state = FULFILLED;
+
+        if (promise._subscribers.length !== 0) {
+            asap(publish, promise);
+        }
+    }
+
+    function _reject(promise, reason) {
+        if (promise._state !== PENDING) {
+            return;
+        }
+        promise._state = REJECTED;
+        promise._result = reason;
+
+        asap(publishRejection, promise);
+    }
+
+    function subscribe(parent, child, onFulfillment, onRejection) {
+        var _subscribers = parent._subscribers;
+        var length = _subscribers.length;
+
+        parent._onerror = null;
+
+        _subscribers[length] = child;
+        _subscribers[length + FULFILLED] = onFulfillment;
+        _subscribers[length + REJECTED] = onRejection;
+
+        if (length === 0 && parent._state) {
+            asap(publish, parent);
+        }
+    }
+
+    function publish(promise) {
+        var subscribers = promise._subscribers;
+        var settled = promise._state;
+
+        if (subscribers.length === 0) {
+            return;
+        }
+
+        var child = undefined,
+            callback = undefined,
+            detail = promise._result;
+
+        for (var i = 0; i < subscribers.length; i += 3) {
+            child = subscribers[i];
+            callback = subscribers[i + settled];
+
+            if (child) {
+                invokeCallback(settled, child, callback, detail);
+            } else {
+                callback(detail);
+            }
+        }
+
+        promise._subscribers.length = 0;
+    }
+
+    function ErrorObject() {
+        this.error = null;
+    }
+
+    var TRY_CATCH_ERROR = new ErrorObject();
+
+    function tryCatch(callback, detail) {
+        try {
+            return callback(detail);
+        } catch (e) {
+            TRY_CATCH_ERROR.error = e;
+            return TRY_CATCH_ERROR;
+        }
+    }
+
+    function invokeCallback(settled, promise, callback, detail) {
+        var hasCallback = isFunction(callback),
+            value = undefined,
+            error = undefined,
+            succeeded = undefined,
+            failed = undefined;
+
+        if (hasCallback) {
+            value = tryCatch(callback, detail);
+
+            if (value === TRY_CATCH_ERROR) {
+                failed = true;
+                error = value.error;
+                value.error = null;
+            } else {
+                succeeded = true;
+            }
+
+            if (promise === value) {
+                _reject(promise, cannotReturnOwn());
+                return;
+            }
+        } else {
+            value = detail;
+            succeeded = true;
+        }
+
+        if (promise._state !== PENDING) {
+            // noop
+        } else if (hasCallback && succeeded) {
+            _resolve(promise, value);
+        } else if (failed) {
+            _reject(promise, error);
+        } else if (settled === FULFILLED) {
+            fulfill(promise, value);
+        } else if (settled === REJECTED) {
+            _reject(promise, value);
+        }
+    }
+
+    function initializePromise(promise, resolver) {
+        try {
+            resolver(function resolvePromise(value) {
+                _resolve(promise, value);
+            }, function rejectPromise(reason) {
+                _reject(promise, reason);
+            });
+        } catch (e) {
+            _reject(promise, e);
+        }
+    }
+
+    var id = 0;
+    function nextId() {
+        return id++;
+    }
+
+    function makePromise(promise) {
+        promise[PROMISE_ID] = id++;
+        promise._state = undefined;
+        promise._result = undefined;
+        promise._subscribers = [];
+    }
+
+    function Enumerator(Constructor, input) {
+        this._instanceConstructor = Constructor;
+        this.promise = new Constructor(noop);
+
+        if (!this.promise[PROMISE_ID]) {
+            makePromise(this.promise);
+        }
+
+        if (isArray(input)) {
+            this._input = input;
+            this.length = input.length;
+            this._remaining = input.length;
+
+            this._result = new Array(this.length);
+
+            if (this.length === 0) {
+                fulfill(this.promise, this._result);
+            } else {
+                this.length = this.length || 0;
+                this._enumerate();
+                if (this._remaining === 0) {
+                    fulfill(this.promise, this._result);
+                }
+            }
+        } else {
+            _reject(this.promise, validationError());
+        }
+    }
+
+    function validationError() {
+        return new Error('Array Methods must be provided an Array');
+    };
+
+    Enumerator.prototype._enumerate = function () {
+        var length = this.length;
+        var _input = this._input;
+
+        for (var i = 0; this._state === PENDING && i < length; i++) {
+            this._eachEntry(_input[i], i);
+        }
+    };
+
+    Enumerator.prototype._eachEntry = function (entry, i) {
+        var c = this._instanceConstructor;
+        var resolve$$ = c.resolve;
+
+        if (resolve$$ === resolve) {
+            var _then = getThen(entry);
+
+            if (_then === then && entry._state !== PENDING) {
+                this._settledAt(entry._state, i, entry._result);
+            } else if (typeof _then !== 'function') {
+                this._remaining--;
+                this._result[i] = entry;
+            } else if (c === Promise) {
+                var promise = new c(noop);
+                handleMaybeThenable(promise, entry, _then);
+                this._willSettleAt(promise, i);
+            } else {
+                this._willSettleAt(new c(function (resolve$$) {
+                    return resolve$$(entry);
+                }), i);
+            }
+        } else {
+            this._willSettleAt(resolve$$(entry), i);
+        }
+    };
+
+    Enumerator.prototype._settledAt = function (state, i, value) {
+        var promise = this.promise;
+
+        if (promise._state === PENDING) {
+            this._remaining--;
+
+            if (state === REJECTED) {
+                _reject(promise, value);
+            } else {
+                this._result[i] = value;
+            }
+        }
+
+        if (this._remaining === 0) {
+            fulfill(promise, this._result);
+        }
+    };
+
+    Enumerator.prototype._willSettleAt = function (promise, i) {
+        var enumerator = this;
+
+        subscribe(promise, undefined, function (value) {
+            return enumerator._settledAt(FULFILLED, i, value);
+        }, function (reason) {
+            return enumerator._settledAt(REJECTED, i, reason);
+        });
+    };
+
+    /**
+      `Promise.all` accepts an array of promises, and returns a new promise which
+      is fulfilled with an array of fulfillment values for the passed promises, or
+      rejected with the reason of the first passed promise to be rejected. It casts all
+      elements of the passed iterable to promises as it runs this algorithm.
+    
+      Example:
+    
+      ```javascript
+      let promise1 = resolve(1);
+      let promise2 = resolve(2);
+      let promise3 = resolve(3);
+      let promises = [ promise1, promise2, promise3 ];
+    
+      Promise.all(promises).then(function(array){
+        // The array here would be [ 1, 2, 3 ];
+      });
+      ```
+    
+      If any of the `promises` given to `all` are rejected, the first promise
+      that is rejected will be given as an argument to the returned promises's
+      rejection handler. For example:
+    
+      Example:
+    
+      ```javascript
+      let promise1 = resolve(1);
+      let promise2 = reject(new Error("2"));
+      let promise3 = reject(new Error("3"));
+      let promises = [ promise1, promise2, promise3 ];
+    
+      Promise.all(promises).then(function(array){
+        // Code here never runs because there are rejected promises!
+      }, function(error) {
+        // error.message === "2"
+      });
+      ```
+    
+      @method all
+      @static
+      @param {Array} entries array of promises
+      @param {String} label optional string for labeling the promise.
+      Useful for tooling.
+      @return {Promise} promise that is fulfilled when all `promises` have been
+      fulfilled, or rejected if any of them become rejected.
+      @static
+    */
+    function all(entries) {
+        return new Enumerator(this, entries).promise;
+    }
+
+    /**
+      `Promise.race` returns a new promise which is settled in the same way as the
+      first passed promise to settle.
+    
+      Example:
+    
+      ```javascript
+      let promise1 = new Promise(function(resolve, reject){
+        setTimeout(function(){
+          resolve('promise 1');
+        }, 200);
+      });
+    
+      let promise2 = new Promise(function(resolve, reject){
+        setTimeout(function(){
+          resolve('promise 2');
+        }, 100);
+      });
+    
+      Promise.race([promise1, promise2]).then(function(result){
+        // result === 'promise 2' because it was resolved before promise1
+        // was resolved.
+      });
+      ```
+    
+      `Promise.race` is deterministic in that only the state of the first
+      settled promise matters. For example, even if other promises given to the
+      `promises` array argument are resolved, but the first settled promise has
+      become rejected before the other promises became fulfilled, the returned
+      promise will become rejected:
+    
+      ```javascript
+      let promise1 = new Promise(function(resolve, reject){
+        setTimeout(function(){
+          resolve('promise 1');
+        }, 200);
+      });
+    
+      let promise2 = new Promise(function(resolve, reject){
+        setTimeout(function(){
+          reject(new Error('promise 2'));
+        }, 100);
+      });
+    
+      Promise.race([promise1, promise2]).then(function(result){
+        // Code here never runs
+      }, function(reason){
+        // reason.message === 'promise 2' because promise 2 became rejected before
+        // promise 1 became fulfilled
+      });
+      ```
+    
+      An example real-world use case is implementing timeouts:
+    
+      ```javascript
+      Promise.race([ajax('foo.json'), timeout(5000)])
+      ```
+    
+      @method race
+      @static
+      @param {Array} promises array of promises to observe
+      Useful for tooling.
+      @return {Promise} a promise which settles in the same way as the first passed
+      promise to settle.
+    */
+    function race(entries) {
+        /*jshint validthis:true */
+        var Constructor = this;
+
+        if (!isArray(entries)) {
+            return new Constructor(function (_, reject) {
+                return reject(new TypeError('You must pass an array to race.'));
+            });
+        } else {
+            return new Constructor(function (resolve, reject) {
+                var length = entries.length;
+                for (var i = 0; i < length; i++) {
+                    Constructor.resolve(entries[i]).then(resolve, reject);
+                }
+            });
+        }
+    }
+
+    /**
+      `Promise.reject` returns a promise rejected with the passed `reason`.
+      It is shorthand for the following:
+    
+      ```javascript
+      let promise = new Promise(function(resolve, reject){
+        reject(new Error('WHOOPS'));
+      });
+    
+      promise.then(function(value){
+        // Code here doesn't run because the promise is rejected!
+      }, function(reason){
+        // reason.message === 'WHOOPS'
+      });
+      ```
+    
+      Instead of writing the above, your code now simply becomes the following:
+    
+      ```javascript
+      let promise = Promise.reject(new Error('WHOOPS'));
+    
+      promise.then(function(value){
+        // Code here doesn't run because the promise is rejected!
+      }, function(reason){
+        // reason.message === 'WHOOPS'
+      });
+      ```
+    
+      @method reject
+      @static
+      @param {Any} reason value that the returned promise will be rejected with.
+      Useful for tooling.
+      @return {Promise} a promise rejected with the given `reason`.
+    */
+    function reject(reason) {
+        /*jshint validthis:true */
+        var Constructor = this;
+        var promise = new Constructor(noop);
+        _reject(promise, reason);
+        return promise;
+    }
+
+    function needsResolver() {
+        throw new TypeError('You must pass a resolver function as the first argument to the promise constructor');
+    }
+
+    function needsNew() {
+        throw new TypeError("Failed to construct 'Promise': Please use the 'new' operator, this object constructor cannot be called as a function.");
+    }
+
+    /**
+      Promise objects represent the eventual result of an asynchronous operation. The
+      primary way of interacting with a promise is through its `then` method, which
+      registers callbacks to receive either a promise's eventual value or the reason
+      why the promise cannot be fulfilled.
+    
+      Terminology
+      -----------
+    
+      - `promise` is an object or function with a `then` method whose behavior conforms to this specification.
+      - `thenable` is an object or function that defines a `then` method.
+      - `value` is any legal JavaScript value (including undefined, a thenable, or a promise).
+      - `exception` is a value that is thrown using the throw statement.
+      - `reason` is a value that indicates why a promise was rejected.
+      - `settled` the final resting state of a promise, fulfilled or rejected.
+    
+      A promise can be in one of three states: pending, fulfilled, or rejected.
+    
+      Promises that are fulfilled have a fulfillment value and are in the fulfilled
+      state.  Promises that are rejected have a rejection reason and are in the
+      rejected state.  A fulfillment value is never a thenable.
+    
+      Promises can also be said to *resolve* a value.  If this value is also a
+      promise, then the original promise's settled state will match the value's
+      settled state.  So a promise that *resolves* a promise that rejects will
+      itself reject, and a promise that *resolves* a promise that fulfills will
+      itself fulfill.
+    
+    
+      Basic Usage:
+      ------------
+    
+      ```js
+      let promise = new Promise(function(resolve, reject) {
+        // on success
+        resolve(value);
+    
+        // on failure
+        reject(reason);
+      });
+    
+      promise.then(function(value) {
+        // on fulfillment
+      }, function(reason) {
+        // on rejection
+      });
+      ```
+    
+      Advanced Usage:
+      ---------------
+    
+      Promises shine when abstracting away asynchronous interactions such as
+      `XMLHttpRequest`s.
+    
+      ```js
+      function getJSON(url) {
+        return new Promise(function(resolve, reject){
+          let xhr = new XMLHttpRequest();
+    
+          xhr.open('GET', url);
+          xhr.onreadystatechange = handler;
+          xhr.responseType = 'json';
+          xhr.setRequestHeader('Accept', 'application/json');
+          xhr.send();
+    
+          function handler() {
+            if (this.readyState === this.DONE) {
+              if (this.status === 200) {
+                resolve(this.response);
+              } else {
+                reject(new Error('getJSON: `' + url + '` failed with status: [' + this.status + ']'));
+              }
+            }
+          };
+        });
+      }
+    
+      getJSON('/posts.json').then(function(json) {
+        // on fulfillment
+      }, function(reason) {
+        // on rejection
+      });
+      ```
+    
+      Unlike callbacks, promises are great composable primitives.
+    
+      ```js
+      Promise.all([
+        getJSON('/posts'),
+        getJSON('/comments')
+      ]).then(function(values){
+        values[0] // => postsJSON
+        values[1] // => commentsJSON
+    
+        return values;
+      });
+      ```
+    
+      @class Promise
+      @param {function} resolver
+      Useful for tooling.
+      @constructor
+    */
+    function Promise(resolver) {
+        this[PROMISE_ID] = nextId();
+        this._result = this._state = undefined;
+        this._subscribers = [];
+
+        if (noop !== resolver) {
+            typeof resolver !== 'function' && needsResolver();
+            this instanceof Promise ? initializePromise(this, resolver) : needsNew();
+        }
+    }
+
+    Promise.all = all;
+    Promise.race = race;
+    Promise.resolve = resolve;
+    Promise.reject = reject;
+    Promise._setScheduler = setScheduler;
+    Promise._setAsap = setAsap;
+    Promise._asap = asap;
+
+    Promise.prototype = {
+        constructor: Promise,
+
+        /**
+          The primary way of interacting with a promise is through its `then` method,
+          which registers callbacks to receive either a promise's eventual value or the
+          reason why the promise cannot be fulfilled.
+           ```js
+          findUser().then(function(user){
+            // user is available
+          }, function(reason){
+            // user is unavailable, and you are given the reason why
+          });
+          ```
+           Chaining
+          --------
+           The return value of `then` is itself a promise.  This second, 'downstream'
+          promise is resolved with the return value of the first promise's fulfillment
+          or rejection handler, or rejected if the handler throws an exception.
+           ```js
+          findUser().then(function (user) {
+            return user.name;
+          }, function (reason) {
+            return 'default name';
+          }).then(function (userName) {
+            // If `findUser` fulfilled, `userName` will be the user's name, otherwise it
+            // will be `'default name'`
+          });
+           findUser().then(function (user) {
+            throw new Error('Found user, but still unhappy');
+          }, function (reason) {
+            throw new Error('`findUser` rejected and we're unhappy');
+          }).then(function (value) {
+            // never reached
+          }, function (reason) {
+            // if `findUser` fulfilled, `reason` will be 'Found user, but still unhappy'.
+            // If `findUser` rejected, `reason` will be '`findUser` rejected and we're unhappy'.
+          });
+          ```
+          If the downstream promise does not specify a rejection handler, rejection reasons will be propagated further downstream.
+           ```js
+          findUser().then(function (user) {
+            throw new PedagogicalException('Upstream error');
+          }).then(function (value) {
+            // never reached
+          }).then(function (value) {
+            // never reached
+          }, function (reason) {
+            // The `PedgagocialException` is propagated all the way down to here
+          });
+          ```
+           Assimilation
+          ------------
+           Sometimes the value you want to propagate to a downstream promise can only be
+          retrieved asynchronously. This can be achieved by returning a promise in the
+          fulfillment or rejection handler. The downstream promise will then be pending
+          until the returned promise is settled. This is called *assimilation*.
+           ```js
+          findUser().then(function (user) {
+            return findCommentsByAuthor(user);
+          }).then(function (comments) {
+            // The user's comments are now available
+          });
+          ```
+           If the assimliated promise rejects, then the downstream promise will also reject.
+           ```js
+          findUser().then(function (user) {
+            return findCommentsByAuthor(user);
+          }).then(function (comments) {
+            // If `findCommentsByAuthor` fulfills, we'll have the value here
+          }, function (reason) {
+            // If `findCommentsByAuthor` rejects, we'll have the reason here
+          });
+          ```
+           Simple Example
+          --------------
+           Synchronous Example
+           ```javascript
+          let result;
+           try {
+            result = findResult();
+            // success
+          } catch(reason) {
+            // failure
+          }
+          ```
+           Errback Example
+           ```js
+          findResult(function(result, err){
+            if (err) {
+              // failure
+            } else {
+              // success
+            }
+          });
+          ```
+           Promise Example;
+           ```javascript
+          findResult().then(function(result){
+            // success
+          }, function(reason){
+            // failure
+          });
+          ```
+           Advanced Example
+          --------------
+           Synchronous Example
+           ```javascript
+          let author, books;
+           try {
+            author = findAuthor();
+            books  = findBooksByAuthor(author);
+            // success
+          } catch(reason) {
+            // failure
+          }
+          ```
+           Errback Example
+           ```js
+           function foundBooks(books) {
+           }
+           function failure(reason) {
+           }
+           findAuthor(function(author, err){
+            if (err) {
+              failure(err);
+              // failure
+            } else {
+              try {
+                findBoooksByAuthor(author, function(books, err) {
+                  if (err) {
+                    failure(err);
+                  } else {
+                    try {
+                      foundBooks(books);
+                    } catch(reason) {
+                      failure(reason);
+                    }
+                  }
+                });
+              } catch(error) {
+                failure(err);
+              }
+              // success
+            }
+          });
+          ```
+           Promise Example;
+           ```javascript
+          findAuthor().
+            then(findBooksByAuthor).
+            then(function(books){
+              // found books
+          }).catch(function(reason){
+            // something went wrong
+          });
+          ```
+           @method then
+          @param {Function} onFulfilled
+          @param {Function} onRejected
+          Useful for tooling.
+          @return {Promise}
+        */
+        then: then,
+
+        /**
+          `catch` is simply sugar for `then(undefined, onRejection)` which makes it the same
+          as the catch block of a try/catch statement.
+           ```js
+          function findAuthor(){
+            throw new Error('couldn't find that author');
+          }
+           // synchronous
+          try {
+            findAuthor();
+          } catch(reason) {
+            // something went wrong
+          }
+           // async with promises
+          findAuthor().catch(function(reason){
+            // something went wrong
+          });
+          ```
+           @method catch
+          @param {Function} onRejection
+          Useful for tooling.
+          @return {Promise}
+        */
+        'catch': function _catch(onRejection) {
+            return this.then(null, onRejection);
+        }
+    };
+
+    function polyfill() {
+        var local = undefined;
+
+        if (typeof global !== 'undefined') {
+            local = global;
+        } else if (typeof self !== 'undefined') {
+            local = self;
+        } else {
+            try {
+                local = Function('return this')();
+            } catch (e) {
+                throw new Error('polyfill failed because global object is unavailable in this environment');
+            }
+        }
+
+        var P = local.Promise;
+
+        if (P) {
+            var promiseToString = null;
+            try {
+                promiseToString = Object.prototype.toString.call(P.resolve());
+            } catch (e) {
+                // silently ignored
+            }
+
+            if (promiseToString === '[object Promise]' && !P.cast) {
+                return;
+            }
+        }
+
+        local.Promise = Promise;
+    }
+
+    // Strange compat..
+    Promise.polyfill = polyfill;
+    Promise.Promise = Promise;
+
+    Promise.polyfill();
+
+    return Promise;
+});
+//# sourceMappingURL=es6-promise.auto.map
+
+/*! lightgallery - v1.5.0 - 2017-07-16
 * http://sachinchoolur.github.io/lightGallery/
 * Copyright (c) 2017 Sachin N; Licensed GPLv3 */
-
+/*! lightgallery - v1.5.0 - 2017-07-16
+* http://sachinchoolur.github.io/lightGallery/
+* Copyright (c) 2017 Sachin N; Licensed GPLv3 */
 (function (root, factory) {
     factory(jQuery);
 })(undefined, function ($) {
@@ -3415,6 +4471,10 @@ jQuery.extend(jQuery.easing, {
                 if (_this.s.mousewheel) {
                     _this.mousewheel();
                 }
+            } else {
+                _this.$slide.on('click.lg', function () {
+                    _this.$el.trigger('onSlideClick.lg');
+                });
             }
 
             _this.counter();
@@ -3457,7 +4517,7 @@ jQuery.extend(jQuery.easing, {
 
             // Create controlls
             if (this.s.controls && this.$items.length > 1) {
-                controls = '<div class="lg-actions">' + '<div class="lg-prev lg-icon">' + this.s.prevHtml + '</div>' + '<div class="lg-next lg-icon">' + this.s.nextHtml + '</div>' + '</div>';
+                controls = '<div class="lg-actions">' + '<button class="lg-prev lg-icon">' + this.s.prevHtml + '</button>' + '<button class="lg-next lg-icon">' + this.s.nextHtml + '</button>' + '</div>';
             }
 
             if (this.s.appendSubHtmlTo === '.lg-sub-html') {
@@ -3582,10 +4642,15 @@ jQuery.extend(jQuery.easing, {
                 html = this.$items.eq(index).attr('data-html');
             }
 
-            if (!src && html) {
-                return {
-                    html5: true
-                };
+            if (!src) {
+                if (html) {
+                    return {
+                        html5: true
+                    };
+                } else {
+                    console.error('lightGallery :- data-src is not pvovided on slide item ' + (index + 1) + '. Please make sure the selector property is properly configured. More info - http://sachinchoolur.github.io/lightGallery/demos/html-markup.html');
+                    return false;
+                }
             }
 
             var youtube = src.match(/\/\/(?:www\.)?youtu(?:\.be|be\.com)\/(?:watch\?v=|embed\/)?([a-z0-9\-\_\%]+)/i);
@@ -3810,7 +4875,7 @@ jQuery.extend(jQuery.easing, {
             var _isVideo = _this.isVideo(_src, index);
             if (!_this.$slide.eq(index).hasClass('lg-loaded')) {
                 if (iframe) {
-                    _this.$slide.eq(index).prepend('<div class="lg-video-cont" style="max-width:' + _this.s.iframeMaxWidth + '"><div class="lg-video"><iframe class="lg-object" frameborder="0" src="' + _src + '"  allowfullscreen="true"></iframe></div></div>');
+                    _this.$slide.eq(index).prepend('<div class="lg-video-cont lg-has-iframe" style="max-width:' + _this.s.iframeMaxWidth + '"><div class="lg-video"><iframe class="lg-object" frameborder="0" src="' + _src + '"  allowfullscreen="true"></iframe></div></div>');
                 } else if (_hasPoster) {
                     var videoClass = '';
                     if (_isVideo && _isVideo.youtube) {
@@ -4481,301 +5546,1883 @@ jQuery.extend(jQuery.easing, {
     })();
 });
 
-/*! lg-video - v1.0.0 - 2016-09-20
+/*! lg-autoplay - v1.0.4 - 2017-03-28
 * http://sachinchoolur.github.io/lightGallery
-* Copyright (c) 2016 Sachin N; Licensed GPLv3 */
-!function (a, b) {
-    "function" == typeof define && define.amd ? define([], function () {
-        return b();
-    }) : "object" == (typeof exports === "undefined" ? "undefined" : _typeof(exports)) ? module.exports = b() : b();
-}(undefined, function () {
-    !function (a, b, c, d) {
-        "use strict";
-        var e = { videoMaxWidth: "855px", youtubePlayerParams: !1, vimeoPlayerParams: !1, dailymotionPlayerParams: !1, vkPlayerParams: !1, videojs: !1, videojsOptions: {} },
-            f = function f(b) {
-            return this.core = a(b).data("lightGallery"), this.$el = a(b), this.core.s = a.extend({}, e, this.core.s), this.videoLoaded = !1, this.init(), this;
-        };f.prototype.init = function () {
-            var b = this;b.core.$el.on("hasVideo.lg.tm", function (a, c, d, e) {
-                if (b.core.$slide.eq(c).find(".lg-video").append(b.loadVideo(d, "lg-object", !0, c, e)), e) if (b.core.s.videojs) try {
-                    videojs(b.core.$slide.eq(c).find(".lg-html5").get(0), b.core.s.videojsOptions, function () {
-                        b.videoLoaded || this.play();
-                    });
-                } catch (a) {
-                    console.error("Make sure you have included videojs");
-                } else b.core.$slide.eq(c).find(".lg-html5").get(0).play();
-            }), b.core.$el.on("onAferAppendSlide.lg.tm", function (a, c) {
-                b.core.$slide.eq(c).find(".lg-video-cont").css("max-width", b.core.s.videoMaxWidth), b.videoLoaded = !0;
-            });var c = function c(a) {
-                if (a.find(".lg-object").hasClass("lg-has-poster") && a.find(".lg-object").is(":visible")) if (a.hasClass("lg-has-video")) {
-                    var c = a.find(".lg-youtube").get(0),
-                        d = a.find(".lg-vimeo").get(0),
-                        e = a.find(".lg-dailymotion").get(0),
-                        f = a.find(".lg-html5").get(0);if (c) c.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', "*");else if (d) try {
-                        $f(d).api("play");
-                    } catch (a) {
-                        console.error("Make sure you have included froogaloop2 js");
-                    } else if (e) e.contentWindow.postMessage("play", "*");else if (f) if (b.core.s.videojs) try {
-                        videojs(f).play();
-                    } catch (a) {
-                        console.error("Make sure you have included videojs");
-                    } else f.play();a.addClass("lg-video-playing");
+* Copyright (c) 2017 Sachin N; Licensed GPLv3 */
+
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module unless amdModuleId is set
+        define(['jquery'], function (a0) {
+            return factory(a0);
+        });
+    } else if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === 'object') {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory(require('jquery'));
+    } else {
+        factory(jQuery);
+    }
+})(undefined, function ($) {
+
+    (function () {
+
+        'use strict';
+
+        var defaults = {
+            autoplay: false,
+            pause: 5000,
+            progressBar: true,
+            fourceAutoplay: false,
+            autoplayControls: true,
+            appendAutoplayControlsTo: '.lg-toolbar'
+        };
+
+        /**
+         * Creates the autoplay plugin.
+         * @param {object} element - lightGallery element
+         */
+        var Autoplay = function Autoplay(element) {
+
+            this.core = $(element).data('lightGallery');
+
+            this.$el = $(element);
+
+            // Execute only if items are above 1
+            if (this.core.$items.length < 2) {
+                return false;
+            }
+
+            this.core.s = $.extend({}, defaults, this.core.s);
+            this.interval = false;
+
+            // Identify if slide happened from autoplay
+            this.fromAuto = true;
+
+            // Identify if autoplay canceled from touch/drag
+            this.canceledOnTouch = false;
+
+            // save fourceautoplay value
+            this.fourceAutoplayTemp = this.core.s.fourceAutoplay;
+
+            // do not allow progress bar if browser does not support css3 transitions
+            if (!this.core.doCss()) {
+                this.core.s.progressBar = false;
+            }
+
+            this.init();
+
+            return this;
+        };
+
+        Autoplay.prototype.init = function () {
+            var _this = this;
+
+            // append autoplay controls
+            if (_this.core.s.autoplayControls) {
+                _this.controls();
+            }
+
+            // Create progress bar
+            if (_this.core.s.progressBar) {
+                _this.core.$outer.find('.lg').append('<div class="lg-progress-bar"><div class="lg-progress"></div></div>');
+            }
+
+            // set progress
+            _this.progress();
+
+            // Start autoplay
+            if (_this.core.s.autoplay) {
+                _this.$el.one('onSlideItemLoad.lg.tm', function () {
+                    _this.startlAuto();
+                });
+            }
+
+            // cancel interval on touchstart and dragstart
+            _this.$el.on('onDragstart.lg.tm touchstart.lg.tm', function () {
+                if (_this.interval) {
+                    _this.cancelAuto();
+                    _this.canceledOnTouch = true;
+                }
+            });
+
+            // restore autoplay if autoplay canceled from touchstart / dragstart
+            _this.$el.on('onDragend.lg.tm touchend.lg.tm onSlideClick.lg.tm', function () {
+                if (!_this.interval && _this.canceledOnTouch) {
+                    _this.startlAuto();
+                    _this.canceledOnTouch = false;
+                }
+            });
+        };
+
+        Autoplay.prototype.progress = function () {
+
+            var _this = this;
+            var _$progressBar;
+            var _$progress;
+
+            _this.$el.on('onBeforeSlide.lg.tm', function () {
+
+                // start progress bar animation
+                if (_this.core.s.progressBar && _this.fromAuto) {
+                    _$progressBar = _this.core.$outer.find('.lg-progress-bar');
+                    _$progress = _this.core.$outer.find('.lg-progress');
+                    if (_this.interval) {
+                        _$progress.removeAttr('style');
+                        _$progressBar.removeClass('lg-start');
+                        setTimeout(function () {
+                            _$progress.css('transition', 'width ' + (_this.core.s.speed + _this.core.s.pause) + 'ms ease 0s');
+                            _$progressBar.addClass('lg-start');
+                        }, 20);
+                    }
+                }
+
+                // Remove setinterval if slide is triggered manually and fourceautoplay is false
+                if (!_this.fromAuto && !_this.core.s.fourceAutoplay) {
+                    _this.cancelAuto();
+                }
+
+                _this.fromAuto = false;
+            });
+        };
+
+        // Manage autoplay via play/stop buttons
+        Autoplay.prototype.controls = function () {
+            var _this = this;
+            var _html = '<span class="lg-autoplay-button lg-icon"></span>';
+
+            // Append autoplay controls
+            $(this.core.s.appendAutoplayControlsTo).append(_html);
+
+            _this.core.$outer.find('.lg-autoplay-button').on('click.lg', function () {
+                if ($(_this.core.$outer).hasClass('lg-show-autoplay')) {
+                    _this.cancelAuto();
+                    _this.core.s.fourceAutoplay = false;
                 } else {
-                    a.addClass("lg-video-playing lg-has-video");var g,
-                        h,
-                        i = function i(c, d) {
-                        if (a.find(".lg-video").append(b.loadVideo(c, "", !1, b.core.index, d)), d) if (b.core.s.videojs) try {
-                            videojs(b.core.$slide.eq(b.core.index).find(".lg-html5").get(0), b.core.s.videojsOptions, function () {
-                                this.play();
-                            });
-                        } catch (a) {
-                            console.error("Make sure you have included videojs");
-                        } else b.core.$slide.eq(b.core.index).find(".lg-html5").get(0).play();
-                    };b.core.s.dynamic ? (g = b.core.s.dynamicEl[b.core.index].src, h = b.core.s.dynamicEl[b.core.index].html, i(g, h)) : (g = b.core.$items.eq(b.core.index).attr("href") || b.core.$items.eq(b.core.index).attr("data-src"), h = b.core.$items.eq(b.core.index).attr("data-html"), i(g, h));var j = a.find(".lg-object");a.find(".lg-video").append(j), a.find(".lg-video-object").hasClass("lg-html5") || (a.removeClass("lg-complete"), a.find(".lg-video-object").on("load.lg error.lg", function () {
-                        a.addClass("lg-complete");
-                    }));
+                    if (!_this.interval) {
+                        _this.startlAuto();
+                        _this.core.s.fourceAutoplay = _this.fourceAutoplayTemp;
+                    }
                 }
-            };b.core.doCss() && b.core.$items.length > 1 && (b.core.s.enableSwipe && b.core.isTouch || b.core.s.enableDrag && !b.core.isTouch) ? b.core.$el.on("onSlideClick.lg.tm", function () {
-                var a = b.core.$slide.eq(b.core.index);c(a);
-            }) : b.core.$slide.on("click.lg", function () {
-                c(a(this));
-            }), b.core.$el.on("onBeforeSlide.lg.tm", function (c, d, e) {
-                var f = b.core.$slide.eq(d),
-                    g = f.find(".lg-youtube").get(0),
-                    h = f.find(".lg-vimeo").get(0),
-                    i = f.find(".lg-dailymotion").get(0),
-                    j = f.find(".lg-vk").get(0),
-                    k = f.find(".lg-html5").get(0);if (g) g.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', "*");else if (h) try {
-                    $f(h).api("pause");
-                } catch (a) {
-                    console.error("Make sure you have included froogaloop2 js");
-                } else if (i) i.contentWindow.postMessage("pause", "*");else if (k) if (b.core.s.videojs) try {
-                    videojs(k).pause();
-                } catch (a) {
-                    console.error("Make sure you have included videojs");
-                } else k.pause();j && a(j).attr("src", a(j).attr("src").replace("&autoplay", "&noplay"));var l;l = b.core.s.dynamic ? b.core.s.dynamicEl[e].src : b.core.$items.eq(e).attr("href") || b.core.$items.eq(e).attr("data-src");var m = b.core.isVideo(l, e) || {};(m.youtube || m.vimeo || m.dailymotion || m.vk) && b.core.$outer.addClass("lg-hide-download");
-            }), b.core.$el.on("onAfterSlide.lg.tm", function (a, c) {
-                b.core.$slide.eq(c).removeClass("lg-video-playing");
             });
-        }, f.prototype.loadVideo = function (b, c, d, e, f) {
-            var g = "",
-                h = 1,
-                i = "",
-                j = this.core.isVideo(b, e) || {};if (d && (h = this.videoLoaded ? 0 : 1), j.youtube) i = "?wmode=opaque&autoplay=" + h + "&enablejsapi=1", this.core.s.youtubePlayerParams && (i = i + "&" + a.param(this.core.s.youtubePlayerParams)), g = '<iframe class="lg-video-object lg-youtube ' + c + '" width="560" height="315" src="//www.youtube.com/embed/' + j.youtube[1] + i + '" frameborder="0" allowfullscreen></iframe>';else if (j.vimeo) i = "?autoplay=" + h + "&api=1", this.core.s.vimeoPlayerParams && (i = i + "&" + a.param(this.core.s.vimeoPlayerParams)), g = '<iframe class="lg-video-object lg-vimeo ' + c + '" width="560" height="315"  src="//player.vimeo.com/video/' + j.vimeo[1] + i + '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';else if (j.dailymotion) i = "?wmode=opaque&autoplay=" + h + "&api=postMessage", this.core.s.dailymotionPlayerParams && (i = i + "&" + a.param(this.core.s.dailymotionPlayerParams)), g = '<iframe class="lg-video-object lg-dailymotion ' + c + '" width="560" height="315" src="//www.dailymotion.com/embed/video/' + j.dailymotion[1] + i + '" frameborder="0" allowfullscreen></iframe>';else if (j.html5) {
-                var k = f.substring(0, 1);"." !== k && "#" !== k || (f = a(f).html()), g = f;
-            } else j.vk && (i = "&autoplay=" + h, this.core.s.vkPlayerParams && (i = i + "&" + a.param(this.core.s.vkPlayerParams)), g = '<iframe class="lg-video-object lg-vk ' + c + '" width="560" height="315" src="http://vk.com/video_ext.php?' + j.vk[1] + i + '" frameborder="0" allowfullscreen></iframe>');return g;
-        }, f.prototype.destroy = function () {
-            this.videoLoaded = !1;
-        }, a.fn.lightGallery.modules.video = f;
-    }(jQuery, window, document);
+        };
+
+        // Autostart gallery
+        Autoplay.prototype.startlAuto = function () {
+            var _this = this;
+
+            _this.core.$outer.find('.lg-progress').css('transition', 'width ' + (_this.core.s.speed + _this.core.s.pause) + 'ms ease 0s');
+            _this.core.$outer.addClass('lg-show-autoplay');
+            _this.core.$outer.find('.lg-progress-bar').addClass('lg-start');
+
+            _this.interval = setInterval(function () {
+                if (_this.core.index + 1 < _this.core.$items.length) {
+                    _this.core.index++;
+                } else {
+                    _this.core.index = 0;
+                }
+
+                _this.fromAuto = true;
+                _this.core.slide(_this.core.index, false, false, 'next');
+            }, _this.core.s.speed + _this.core.s.pause);
+        };
+
+        // cancel Autostart
+        Autoplay.prototype.cancelAuto = function () {
+            clearInterval(this.interval);
+            this.interval = false;
+            this.core.$outer.find('.lg-progress').removeAttr('style');
+            this.core.$outer.removeClass('lg-show-autoplay');
+            this.core.$outer.find('.lg-progress-bar').removeClass('lg-start');
+        };
+
+        Autoplay.prototype.destroy = function () {
+
+            this.cancelAuto();
+            this.core.$outer.find('.lg-progress-bar').remove();
+        };
+
+        $.fn.lightGallery.modules.autoplay = Autoplay;
+    })();
 });
-/*! lg-zoom - v1.0.2 - 2016-11-20
+
+/*! lg-fullscreen - v1.0.1 - 2016-09-30
 * http://sachinchoolur.github.io/lightGallery
 * Copyright (c) 2016 Sachin N; Licensed GPLv3 */
-!function (a, b) {
-    "function" == typeof define && define.amd ? define(["jquery"], function (a) {
-        return b(a);
-    }) : "object" == (typeof exports === "undefined" ? "undefined" : _typeof(exports)) ? module.exports = b(require("jquery")) : b(jQuery);
-}(undefined, function (a) {
-    !function () {
-        "use strict";
-        var b = { scale: 1, zoom: !0, actualSize: !0, enableZoomAfter: 300 },
-            c = function c(_c2) {
-            return this.core = a(_c2).data("lightGallery"), this.core.s = a.extend({}, b, this.core.s), this.core.s.zoom && this.core.doCss() && (this.init(), this.zoomabletimeout = !1, this.pageX = a(window).width() / 2, this.pageY = a(window).height() / 2 + a(window).scrollTop()), this;
-        };c.prototype.init = function () {
-            var b = this,
-                c = '<span id="lg-zoom-in" class="lg-icon"></span><span id="lg-zoom-out" class="lg-icon"></span>';b.core.s.actualSize && (c += '<span id="lg-actual-size" class="lg-icon"></span>'), this.core.$outer.find(".lg-toolbar").append(c), b.core.$el.on("onSlideItemLoad.lg.tm.zoom", function (c, d, e) {
-                var f = b.core.s.enableZoomAfter + e;a("body").hasClass("lg-from-hash") && e ? f = 0 : a("body").removeClass("lg-from-hash"), b.zoomabletimeout = setTimeout(function () {
-                    b.core.$slide.eq(d).addClass("lg-zoomable");
-                }, f + 30);
-            });var d = 1,
-                e = function e(c) {
-                var d,
-                    e,
-                    f = b.core.$outer.find(".lg-current .lg-image"),
-                    g = (a(window).width() - f.prop("offsetWidth")) / 2,
-                    h = (a(window).height() - f.prop("offsetHeight")) / 2 + a(window).scrollTop();d = b.pageX - g, e = b.pageY - h;var i = (c - 1) * d,
-                    j = (c - 1) * e;f.css("transform", "scale3d(" + c + ", " + c + ", 1)").attr("data-scale", c), f.parent().css({ left: -i + "px", top: -j + "px" }).attr("data-x", i).attr("data-y", j);
-            },
-                f = function f() {
-                d > 1 ? b.core.$outer.addClass("lg-zoomed") : b.resetZoom(), d < 1 && (d = 1), e(d);
-            },
-                g = function g(c, e, _g, h) {
-                var i,
-                    j = e.prop("offsetWidth");i = b.core.s.dynamic ? b.core.s.dynamicEl[_g].width || e[0].naturalWidth || j : b.core.$items.eq(_g).attr("data-width") || e[0].naturalWidth || j;var k;b.core.$outer.hasClass("lg-zoomed") ? d = 1 : i > j && (k = i / j, d = k || 2), h ? (b.pageX = a(window).width() / 2, b.pageY = a(window).height() / 2 + a(window).scrollTop()) : (b.pageX = c.pageX || c.originalEvent.targetTouches[0].pageX, b.pageY = c.pageY || c.originalEvent.targetTouches[0].pageY), f(), setTimeout(function () {
-                    b.core.$outer.removeClass("lg-grabbing").addClass("lg-grab");
-                }, 10);
-            },
-                h = !1;b.core.$el.on("onAferAppendSlide.lg.tm.zoom", function (a, c) {
-                var d = b.core.$slide.eq(c).find(".lg-image");d.on("dblclick", function (a) {
-                    g(a, d, c);
-                }), d.on("touchstart", function (a) {
-                    h ? (clearTimeout(h), h = null, g(a, d, c)) : h = setTimeout(function () {
-                        h = null;
-                    }, 300), a.preventDefault();
-                });
-            }), a(window).on("resize.lg.zoom scroll.lg.zoom orientationchange.lg.zoom", function () {
-                b.pageX = a(window).width() / 2, b.pageY = a(window).height() / 2 + a(window).scrollTop(), e(d);
-            }), a("#lg-zoom-out").on("click.lg", function () {
-                b.core.$outer.find(".lg-current .lg-image").length && (d -= b.core.s.scale, f());
-            }), a("#lg-zoom-in").on("click.lg", function () {
-                b.core.$outer.find(".lg-current .lg-image").length && (d += b.core.s.scale, f());
-            }), a("#lg-actual-size").on("click.lg", function (a) {
-                g(a, b.core.$slide.eq(b.core.index).find(".lg-image"), b.core.index, !0);
-            }), b.core.$el.on("onBeforeSlide.lg.tm", function () {
-                d = 1, b.resetZoom();
-            }), b.core.isTouch || b.zoomDrag(), b.core.isTouch && b.zoomSwipe();
-        }, c.prototype.resetZoom = function () {
-            this.core.$outer.removeClass("lg-zoomed"), this.core.$slide.find(".lg-img-wrap").removeAttr("style data-x data-y"), this.core.$slide.find(".lg-image").removeAttr("style data-scale"), this.pageX = a(window).width() / 2, this.pageY = a(window).height() / 2 + a(window).scrollTop();
-        }, c.prototype.zoomSwipe = function () {
-            var a = this,
-                b = {},
-                c = {},
-                d = !1,
-                e = !1,
-                f = !1;a.core.$slide.on("touchstart.lg", function (c) {
-                if (a.core.$outer.hasClass("lg-zoomed")) {
-                    var d = a.core.$slide.eq(a.core.index).find(".lg-object");f = d.prop("offsetHeight") * d.attr("data-scale") > a.core.$outer.find(".lg").height(), e = d.prop("offsetWidth") * d.attr("data-scale") > a.core.$outer.find(".lg").width(), (e || f) && (c.preventDefault(), b = { x: c.originalEvent.targetTouches[0].pageX, y: c.originalEvent.targetTouches[0].pageY });
+
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module unless amdModuleId is set
+        define(['jquery'], function (a0) {
+            return factory(a0);
+        });
+    } else if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === 'object') {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory(require('jquery'));
+    } else {
+        factory(jQuery);
+    }
+})(undefined, function ($) {
+
+    (function () {
+
+        'use strict';
+
+        var defaults = {
+            fullScreen: true
+        };
+
+        var Fullscreen = function Fullscreen(element) {
+
+            // get lightGallery core plugin data
+            this.core = $(element).data('lightGallery');
+
+            this.$el = $(element);
+
+            // extend module defalut settings with lightGallery core settings
+            this.core.s = $.extend({}, defaults, this.core.s);
+
+            this.init();
+
+            return this;
+        };
+
+        Fullscreen.prototype.init = function () {
+            var fullScreen = '';
+            if (this.core.s.fullScreen) {
+
+                // check for fullscreen browser support
+                if (!document.fullscreenEnabled && !document.webkitFullscreenEnabled && !document.mozFullScreenEnabled && !document.msFullscreenEnabled) {
+                    return;
+                } else {
+                    fullScreen = '<span class="lg-fullscreen lg-icon"></span>';
+                    this.core.$outer.find('.lg-toolbar').append(fullScreen);
+                    this.fullScreen();
                 }
-            }), a.core.$slide.on("touchmove.lg", function (g) {
-                if (a.core.$outer.hasClass("lg-zoomed")) {
-                    var h,
-                        i,
-                        j = a.core.$slide.eq(a.core.index).find(".lg-img-wrap");g.preventDefault(), d = !0, c = { x: g.originalEvent.targetTouches[0].pageX, y: g.originalEvent.targetTouches[0].pageY }, a.core.$outer.addClass("lg-zoom-dragging"), i = f ? -Math.abs(j.attr("data-y")) + (c.y - b.y) : -Math.abs(j.attr("data-y")), h = e ? -Math.abs(j.attr("data-x")) + (c.x - b.x) : -Math.abs(j.attr("data-x")), (Math.abs(c.x - b.x) > 15 || Math.abs(c.y - b.y) > 15) && j.css({ left: h + "px", top: i + "px" });
-                }
-            }), a.core.$slide.on("touchend.lg", function () {
-                a.core.$outer.hasClass("lg-zoomed") && d && (d = !1, a.core.$outer.removeClass("lg-zoom-dragging"), a.touchendZoom(b, c, e, f));
+            }
+        };
+
+        Fullscreen.prototype.requestFullscreen = function () {
+            var el = document.documentElement;
+            if (el.requestFullscreen) {
+                el.requestFullscreen();
+            } else if (el.msRequestFullscreen) {
+                el.msRequestFullscreen();
+            } else if (el.mozRequestFullScreen) {
+                el.mozRequestFullScreen();
+            } else if (el.webkitRequestFullscreen) {
+                el.webkitRequestFullscreen();
+            }
+        };
+
+        Fullscreen.prototype.exitFullscreen = function () {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
+        };
+
+        // https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Using_full_screen_mode
+        Fullscreen.prototype.fullScreen = function () {
+            var _this = this;
+
+            $(document).on('fullscreenchange.lg webkitfullscreenchange.lg mozfullscreenchange.lg MSFullscreenChange.lg', function () {
+                _this.core.$outer.toggleClass('lg-fullscreen-on');
             });
-        }, c.prototype.zoomDrag = function () {
-            var b = this,
-                c = {},
-                d = {},
-                e = !1,
-                f = !1,
-                g = !1,
-                h = !1;b.core.$slide.on("mousedown.lg.zoom", function (d) {
-                var f = b.core.$slide.eq(b.core.index).find(".lg-object");h = f.prop("offsetHeight") * f.attr("data-scale") > b.core.$outer.find(".lg").height(), g = f.prop("offsetWidth") * f.attr("data-scale") > b.core.$outer.find(".lg").width(), b.core.$outer.hasClass("lg-zoomed") && a(d.target).hasClass("lg-object") && (g || h) && (d.preventDefault(), c = { x: d.pageX, y: d.pageY }, e = !0, b.core.$outer.scrollLeft += 1, b.core.$outer.scrollLeft -= 1, b.core.$outer.removeClass("lg-grab").addClass("lg-grabbing"));
-            }), a(window).on("mousemove.lg.zoom", function (a) {
-                if (e) {
-                    var i,
-                        j,
-                        k = b.core.$slide.eq(b.core.index).find(".lg-img-wrap");f = !0, d = { x: a.pageX, y: a.pageY }, b.core.$outer.addClass("lg-zoom-dragging"), j = h ? -Math.abs(k.attr("data-y")) + (d.y - c.y) : -Math.abs(k.attr("data-y")), i = g ? -Math.abs(k.attr("data-x")) + (d.x - c.x) : -Math.abs(k.attr("data-x")), k.css({ left: i + "px", top: j + "px" });
+
+            this.core.$outer.find('.lg-fullscreen').on('click.lg', function () {
+                if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+                    _this.requestFullscreen();
+                } else {
+                    _this.exitFullscreen();
                 }
-            }), a(window).on("mouseup.lg.zoom", function (a) {
-                e && (e = !1, b.core.$outer.removeClass("lg-zoom-dragging"), !f || c.x === d.x && c.y === d.y || (d = { x: a.pageX, y: a.pageY }, b.touchendZoom(c, d, g, h)), f = !1), b.core.$outer.removeClass("lg-grabbing").addClass("lg-grab");
             });
-        }, c.prototype.touchendZoom = function (a, b, c, d) {
-            var e = this,
-                f = e.core.$slide.eq(e.core.index).find(".lg-img-wrap"),
-                g = e.core.$slide.eq(e.core.index).find(".lg-object"),
-                h = -Math.abs(f.attr("data-x")) + (b.x - a.x),
-                i = -Math.abs(f.attr("data-y")) + (b.y - a.y),
-                j = (e.core.$outer.find(".lg").height() - g.prop("offsetHeight")) / 2,
-                k = Math.abs(g.prop("offsetHeight") * Math.abs(g.attr("data-scale")) - e.core.$outer.find(".lg").height() + j),
-                l = (e.core.$outer.find(".lg").width() - g.prop("offsetWidth")) / 2,
-                m = Math.abs(g.prop("offsetWidth") * Math.abs(g.attr("data-scale")) - e.core.$outer.find(".lg").width() + l);(Math.abs(b.x - a.x) > 15 || Math.abs(b.y - a.y) > 15) && (d && (i <= -k ? i = -k : i >= -j && (i = -j)), c && (h <= -m ? h = -m : h >= -l && (h = -l)), d ? f.attr("data-y", Math.abs(i)) : i = -Math.abs(f.attr("data-y")), c ? f.attr("data-x", Math.abs(h)) : h = -Math.abs(f.attr("data-x")), f.css({ left: h + "px", top: i + "px" }));
-        }, c.prototype.destroy = function () {
-            var b = this;b.core.$el.off(".lg.zoom"), a(window).off(".lg.zoom"), b.core.$slide.off(".lg.zoom"), b.core.$el.off(".lg.tm.zoom"), b.resetZoom(), clearTimeout(b.zoomabletimeout), b.zoomabletimeout = !1;
-        }, a.fn.lightGallery.modules.zoom = c;
-    }();
+        };
+
+        Fullscreen.prototype.destroy = function () {
+
+            // exit from fullscreen if activated
+            this.exitFullscreen();
+
+            $(document).off('fullscreenchange.lg webkitfullscreenchange.lg mozfullscreenchange.lg MSFullscreenChange.lg');
+        };
+
+        $.fn.lightGallery.modules.fullscreen = Fullscreen;
+    })();
 });
-/*! lg-thumbnail - v1.0.0 - 2016-09-20
+
+/*! lg-pager - v1.0.2 - 2017-01-22
 * http://sachinchoolur.github.io/lightGallery
-* Copyright (c) 2016 Sachin N; Licensed GPLv3 */
-!function (a, b) {
-    "function" == typeof define && define.amd ? define([], function () {
-        return b();
-    }) : "object" == (typeof exports === "undefined" ? "undefined" : _typeof(exports)) ? module.exports = b() : b();
-}(undefined, function () {
-    !function (a, b, c, d) {
-        "use strict";
-        var e = { thumbnail: !0, animateThumb: !0, currentPagerPosition: "middle", thumbWidth: 100, thumbContHeight: 100, thumbMargin: 5, exThumbImage: !1, showThumbByDefault: !0, toogleThumb: !0, pullCaptionUp: !0, enableThumbDrag: !0, enableThumbSwipe: !0, swipeThreshold: 50, loadYoutubeThumbnail: !0, youtubeThumbSize: 1, loadVimeoThumbnail: !0, vimeoThumbSize: "thumbnail_small", loadDailymotionThumbnail: !0 },
-            f = function f(b) {
-            return this.core = a(b).data("lightGallery"), this.core.s = a.extend({}, e, this.core.s), this.$el = a(b), this.$thumbOuter = null, this.thumbOuterWidth = 0, this.thumbTotalWidth = this.core.$items.length * (this.core.s.thumbWidth + this.core.s.thumbMargin), this.thumbIndex = this.core.index, this.left = 0, this.init(), this;
-        };f.prototype.init = function () {
-            var a = this;this.core.s.thumbnail && this.core.$items.length > 1 && (this.core.s.showThumbByDefault && setTimeout(function () {
-                a.core.$outer.addClass("lg-thumb-open");
-            }, 700), this.core.s.pullCaptionUp && this.core.$outer.addClass("lg-pull-caption-up"), this.build(), this.core.s.animateThumb ? (this.core.s.enableThumbDrag && !this.core.isTouch && this.core.doCss() && this.enableThumbDrag(), this.core.s.enableThumbSwipe && this.core.isTouch && this.core.doCss() && this.enableThumbSwipe(), this.thumbClickable = !1) : this.thumbClickable = !0, this.toogle(), this.thumbkeyPress());
-        }, f.prototype.build = function () {
-            function c(a, b, c) {
-                var d,
-                    h = e.core.isVideo(a, c) || {},
-                    i = "";h.youtube || h.vimeo || h.dailymotion ? h.youtube ? d = e.core.s.loadYoutubeThumbnail ? "//img.youtube.com/vi/" + h.youtube[1] + "/" + e.core.s.youtubeThumbSize + ".jpg" : b : h.vimeo ? e.core.s.loadVimeoThumbnail ? (d = "//i.vimeocdn.com/video/error_" + g + ".jpg", i = h.vimeo[1]) : d = b : h.dailymotion && (d = e.core.s.loadDailymotionThumbnail ? "//www.dailymotion.com/thumbnail/video/" + h.dailymotion[1] : b) : d = b, f += '<div data-vimeo-id="' + i + '" class="lg-thumb-item" style="width:' + e.core.s.thumbWidth + "px; margin-right: " + e.core.s.thumbMargin + 'px"><img src="' + d + '" /></div>', i = "";
-            }var d,
-                e = this,
-                f = "",
-                g = "",
-                h = '<div class="lg-thumb-outer"><div class="lg-thumb group"></div></div>';switch (this.core.s.vimeoThumbSize) {case "thumbnail_large":
-                    g = "640";break;case "thumbnail_medium":
-                    g = "200x150";break;case "thumbnail_small":
-                    g = "100x75";}if (e.core.$outer.addClass("lg-has-thumb"), e.core.$outer.find(".lg").append(h), e.$thumbOuter = e.core.$outer.find(".lg-thumb-outer"), e.thumbOuterWidth = e.$thumbOuter.width(), e.core.s.animateThumb && e.core.$outer.find(".lg-thumb").css({ width: e.thumbTotalWidth + "px", position: "relative" }), this.core.s.animateThumb && e.$thumbOuter.css("height", e.core.s.thumbContHeight + "px"), e.core.s.dynamic) for (var i = 0; i < e.core.s.dynamicEl.length; i++) {
-                c(e.core.s.dynamicEl[i].src, e.core.s.dynamicEl[i].thumb, i);
-            } else e.core.$items.each(function (b) {
-                e.core.s.exThumbImage ? c(a(this).attr("href") || a(this).attr("data-src"), a(this).attr(e.core.s.exThumbImage), b) : c(a(this).attr("href") || a(this).attr("data-src"), a(this).find("img").attr("src"), b);
-            });e.core.$outer.find(".lg-thumb").html(f), d = e.core.$outer.find(".lg-thumb-item"), d.each(function () {
-                var b = a(this),
-                    c = b.attr("data-vimeo-id");c && a.getJSON("//www.vimeo.com/api/v2/video/" + c + ".json?callback=?", { format: "json" }, function (a) {
-                    b.find("img").attr("src", a[0][e.core.s.vimeoThumbSize]);
+* Copyright (c) 2017 Sachin N; Licensed GPLv3 */
+
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module unless amdModuleId is set
+        define(['jquery'], function (a0) {
+            return factory(a0);
+        });
+    } else if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === 'object') {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory(require('jquery'));
+    } else {
+        factory(jQuery);
+    }
+})(undefined, function ($) {
+
+    (function () {
+
+        'use strict';
+
+        var defaults = {
+            pager: false
+        };
+
+        var Pager = function Pager(element) {
+
+            this.core = $(element).data('lightGallery');
+
+            this.$el = $(element);
+            this.core.s = $.extend({}, defaults, this.core.s);
+            if (this.core.s.pager && this.core.$items.length > 1) {
+                this.init();
+            }
+
+            return this;
+        };
+
+        Pager.prototype.init = function () {
+            var _this = this;
+            var pagerList = '';
+            var $pagerCont;
+            var $pagerOuter;
+            var timeout;
+
+            _this.core.$outer.find('.lg').append('<div class="lg-pager-outer"></div>');
+
+            if (_this.core.s.dynamic) {
+                for (var i = 0; i < _this.core.s.dynamicEl.length; i++) {
+                    pagerList += '<span class="lg-pager-cont"> <span class="lg-pager"></span><div class="lg-pager-thumb-cont"><span class="lg-caret"></span> <img src="' + _this.core.s.dynamicEl[i].thumb + '" /></div></span>';
+                }
+            } else {
+                _this.core.$items.each(function () {
+
+                    if (!_this.core.s.exThumbImage) {
+                        pagerList += '<span class="lg-pager-cont"> <span class="lg-pager"></span><div class="lg-pager-thumb-cont"><span class="lg-caret"></span> <img src="' + $(this).find('img').attr('src') + '" /></div></span>';
+                    } else {
+                        pagerList += '<span class="lg-pager-cont"> <span class="lg-pager"></span><div class="lg-pager-thumb-cont"><span class="lg-caret"></span> <img src="' + $(this).attr(_this.core.s.exThumbImage) + '" /></div></span>';
+                    }
                 });
-            }), d.eq(e.core.index).addClass("active"), e.core.$el.on("onBeforeSlide.lg.tm", function () {
-                d.removeClass("active"), d.eq(e.core.index).addClass("active");
-            }), d.on("click.lg touchend.lg", function () {
-                var b = a(this);setTimeout(function () {
-                    (e.thumbClickable && !e.core.lgBusy || !e.core.doCss()) && (e.core.index = b.index(), e.core.slide(e.core.index, !1, !0));
-                }, 50);
-            }), e.core.$el.on("onBeforeSlide.lg.tm", function () {
-                e.animateThumb(e.core.index);
-            }), a(b).on("resize.lg.thumb orientationchange.lg.thumb", function () {
+            }
+
+            $pagerOuter = _this.core.$outer.find('.lg-pager-outer');
+
+            $pagerOuter.html(pagerList);
+
+            $pagerCont = _this.core.$outer.find('.lg-pager-cont');
+            $pagerCont.on('click.lg touchend.lg', function () {
+                var _$this = $(this);
+                _this.core.index = _$this.index();
+                _this.core.slide(_this.core.index, false, true, false);
+            });
+
+            $pagerOuter.on('mouseover.lg', function () {
+                clearTimeout(timeout);
+                $pagerOuter.addClass('lg-pager-hover');
+            });
+
+            $pagerOuter.on('mouseout.lg', function () {
+                timeout = setTimeout(function () {
+                    $pagerOuter.removeClass('lg-pager-hover');
+                });
+            });
+
+            _this.core.$el.on('onBeforeSlide.lg.tm', function (e, prevIndex, index) {
+                $pagerCont.removeClass('lg-pager-active');
+                $pagerCont.eq(index).addClass('lg-pager-active');
+            });
+        };
+
+        Pager.prototype.destroy = function () {};
+
+        $.fn.lightGallery.modules.pager = Pager;
+    })();
+});
+
+/*! lg-thumbnail - v1.0.3 - 2017-02-05
+* http://sachinchoolur.github.io/lightGallery
+* Copyright (c) 2017 Sachin N; Licensed GPLv3 */
+
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module unless amdModuleId is set
+        define(['jquery'], function (a0) {
+            return factory(a0);
+        });
+    } else if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === 'object') {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory(require('jquery'));
+    } else {
+        factory(jQuery);
+    }
+})(undefined, function ($) {
+
+    (function () {
+
+        'use strict';
+
+        var defaults = {
+            thumbnail: true,
+
+            animateThumb: true,
+            currentPagerPosition: 'middle',
+
+            thumbWidth: 100,
+            thumbContHeight: 100,
+            thumbMargin: 5,
+
+            exThumbImage: false,
+            showThumbByDefault: true,
+            toogleThumb: true,
+            pullCaptionUp: true,
+
+            enableThumbDrag: true,
+            enableThumbSwipe: true,
+            swipeThreshold: 50,
+
+            loadYoutubeThumbnail: true,
+            youtubeThumbSize: 1,
+
+            loadVimeoThumbnail: true,
+            vimeoThumbSize: 'thumbnail_small',
+
+            loadDailymotionThumbnail: true
+        };
+
+        var Thumbnail = function Thumbnail(element) {
+
+            // get lightGallery core plugin data
+            this.core = $(element).data('lightGallery');
+
+            // extend module default settings with lightGallery core settings
+            this.core.s = $.extend({}, defaults, this.core.s);
+
+            this.$el = $(element);
+            this.$thumbOuter = null;
+            this.thumbOuterWidth = 0;
+            this.thumbTotalWidth = this.core.$items.length * (this.core.s.thumbWidth + this.core.s.thumbMargin);
+            this.thumbIndex = this.core.index;
+
+            // Thumbnail animation value
+            this.left = 0;
+
+            this.init();
+
+            return this;
+        };
+
+        Thumbnail.prototype.init = function () {
+            var _this = this;
+            if (this.core.s.thumbnail && this.core.$items.length > 1) {
+                if (this.core.s.showThumbByDefault) {
+                    setTimeout(function () {
+                        _this.core.$outer.addClass('lg-thumb-open');
+                    }, 700);
+                }
+
+                if (this.core.s.pullCaptionUp) {
+                    this.core.$outer.addClass('lg-pull-caption-up');
+                }
+
+                this.build();
+                if (this.core.s.animateThumb) {
+                    if (this.core.s.enableThumbDrag && !this.core.isTouch && this.core.doCss()) {
+                        this.enableThumbDrag();
+                    }
+
+                    if (this.core.s.enableThumbSwipe && this.core.isTouch && this.core.doCss()) {
+                        this.enableThumbSwipe();
+                    }
+
+                    this.thumbClickable = false;
+                } else {
+                    this.thumbClickable = true;
+                }
+
+                this.toogle();
+                this.thumbkeyPress();
+            }
+        };
+
+        Thumbnail.prototype.build = function () {
+            var _this = this;
+            var thumbList = '';
+            var vimeoErrorThumbSize = '';
+            var $thumb;
+            var html = '<div class="lg-thumb-outer">' + '<div class="lg-thumb lg-group">' + '</div>' + '</div>';
+
+            switch (this.core.s.vimeoThumbSize) {
+                case 'thumbnail_large':
+                    vimeoErrorThumbSize = '640';
+                    break;
+                case 'thumbnail_medium':
+                    vimeoErrorThumbSize = '200x150';
+                    break;
+                case 'thumbnail_small':
+                    vimeoErrorThumbSize = '100x75';
+            }
+
+            _this.core.$outer.addClass('lg-has-thumb');
+
+            _this.core.$outer.find('.lg').append(html);
+
+            _this.$thumbOuter = _this.core.$outer.find('.lg-thumb-outer');
+            _this.thumbOuterWidth = _this.$thumbOuter.width();
+
+            if (_this.core.s.animateThumb) {
+                _this.core.$outer.find('.lg-thumb').css({
+                    width: _this.thumbTotalWidth + 'px',
+                    position: 'relative'
+                });
+            }
+
+            if (this.core.s.animateThumb) {
+                _this.$thumbOuter.css('height', _this.core.s.thumbContHeight + 'px');
+            }
+
+            function getThumb(src, thumb, index) {
+                var isVideo = _this.core.isVideo(src, index) || {};
+                var thumbImg;
+                var vimeoId = '';
+
+                if (isVideo.youtube || isVideo.vimeo || isVideo.dailymotion) {
+                    if (isVideo.youtube) {
+                        if (_this.core.s.loadYoutubeThumbnail) {
+                            thumbImg = '//img.youtube.com/vi/' + isVideo.youtube[1] + '/' + _this.core.s.youtubeThumbSize + '.jpg';
+                        } else {
+                            thumbImg = thumb;
+                        }
+                    } else if (isVideo.vimeo) {
+                        if (_this.core.s.loadVimeoThumbnail) {
+                            thumbImg = '//i.vimeocdn.com/video/error_' + vimeoErrorThumbSize + '.jpg';
+                            vimeoId = isVideo.vimeo[1];
+                        } else {
+                            thumbImg = thumb;
+                        }
+                    } else if (isVideo.dailymotion) {
+                        if (_this.core.s.loadDailymotionThumbnail) {
+                            thumbImg = '//www.dailymotion.com/thumbnail/video/' + isVideo.dailymotion[1];
+                        } else {
+                            thumbImg = thumb;
+                        }
+                    }
+                } else {
+                    thumbImg = thumb;
+                }
+
+                thumbList += '<div data-vimeo-id="' + vimeoId + '" class="lg-thumb-item" style="width:' + _this.core.s.thumbWidth + 'px; margin-right: ' + _this.core.s.thumbMargin + 'px"><img src="' + thumbImg + '" /></div>';
+                vimeoId = '';
+            }
+
+            if (_this.core.s.dynamic) {
+                for (var i = 0; i < _this.core.s.dynamicEl.length; i++) {
+                    getThumb(_this.core.s.dynamicEl[i].src, _this.core.s.dynamicEl[i].thumb, i);
+                }
+            } else {
+                _this.core.$items.each(function (i) {
+
+                    if (!_this.core.s.exThumbImage) {
+                        getThumb($(this).attr('href') || $(this).attr('data-src'), $(this).find('img').attr('src'), i);
+                    } else {
+                        getThumb($(this).attr('href') || $(this).attr('data-src'), $(this).attr(_this.core.s.exThumbImage), i);
+                    }
+                });
+            }
+
+            _this.core.$outer.find('.lg-thumb').html(thumbList);
+
+            $thumb = _this.core.$outer.find('.lg-thumb-item');
+
+            // Load vimeo thumbnails
+            $thumb.each(function () {
+                var $this = $(this);
+                var vimeoVideoId = $this.attr('data-vimeo-id');
+
+                if (vimeoVideoId) {
+                    $.getJSON('//www.vimeo.com/api/v2/video/' + vimeoVideoId + '.json?callback=?', {
+                        format: 'json'
+                    }, function (data) {
+                        $this.find('img').attr('src', data[0][_this.core.s.vimeoThumbSize]);
+                    });
+                }
+            });
+
+            // manage active class for thumbnail
+            $thumb.eq(_this.core.index).addClass('active');
+            _this.core.$el.on('onBeforeSlide.lg.tm', function () {
+                $thumb.removeClass('active');
+                $thumb.eq(_this.core.index).addClass('active');
+            });
+
+            $thumb.on('click.lg touchend.lg', function () {
+                var _$this = $(this);
                 setTimeout(function () {
-                    e.animateThumb(e.core.index), e.thumbOuterWidth = e.$thumbOuter.width();
+
+                    // In IE9 and bellow touch does not support
+                    // Go to slide if browser does not support css transitions
+                    if (_this.thumbClickable && !_this.core.lgBusy || !_this.core.doCss()) {
+                        _this.core.index = _$this.index();
+                        _this.core.slide(_this.core.index, false, true, false);
+                    }
+                }, 50);
+            });
+
+            _this.core.$el.on('onBeforeSlide.lg.tm', function () {
+                _this.animateThumb(_this.core.index);
+            });
+
+            $(window).on('resize.lg.thumb orientationchange.lg.thumb', function () {
+                setTimeout(function () {
+                    _this.animateThumb(_this.core.index);
+                    _this.thumbOuterWidth = _this.$thumbOuter.width();
                 }, 200);
             });
-        }, f.prototype.setTranslate = function (a) {
-            this.core.$outer.find(".lg-thumb").css({ transform: "translate3d(-" + a + "px, 0px, 0px)" });
-        }, f.prototype.animateThumb = function (a) {
-            var b = this.core.$outer.find(".lg-thumb");if (this.core.s.animateThumb) {
-                var c;switch (this.core.s.currentPagerPosition) {case "left":
-                        c = 0;break;case "middle":
-                        c = this.thumbOuterWidth / 2 - this.core.s.thumbWidth / 2;break;case "right":
-                        c = this.thumbOuterWidth - this.core.s.thumbWidth;}this.left = (this.core.s.thumbWidth + this.core.s.thumbMargin) * a - 1 - c, this.left > this.thumbTotalWidth - this.thumbOuterWidth && (this.left = this.thumbTotalWidth - this.thumbOuterWidth), this.left < 0 && (this.left = 0), this.core.lGalleryOn ? (b.hasClass("on") || this.core.$outer.find(".lg-thumb").css("transition-duration", this.core.s.speed + "ms"), this.core.doCss() || b.animate({ left: -this.left + "px" }, this.core.s.speed)) : this.core.doCss() || b.css("left", -this.left + "px"), this.setTranslate(this.left);
+        };
+
+        Thumbnail.prototype.setTranslate = function (value) {
+            // jQuery supports Automatic CSS prefixing since jQuery 1.8.0
+            this.core.$outer.find('.lg-thumb').css({
+                transform: 'translate3d(-' + value + 'px, 0px, 0px)'
+            });
+        };
+
+        Thumbnail.prototype.animateThumb = function (index) {
+            var $thumb = this.core.$outer.find('.lg-thumb');
+            if (this.core.s.animateThumb) {
+                var position;
+                switch (this.core.s.currentPagerPosition) {
+                    case 'left':
+                        position = 0;
+                        break;
+                    case 'middle':
+                        position = this.thumbOuterWidth / 2 - this.core.s.thumbWidth / 2;
+                        break;
+                    case 'right':
+                        position = this.thumbOuterWidth - this.core.s.thumbWidth;
+                }
+                this.left = (this.core.s.thumbWidth + this.core.s.thumbMargin) * index - 1 - position;
+                if (this.left > this.thumbTotalWidth - this.thumbOuterWidth) {
+                    this.left = this.thumbTotalWidth - this.thumbOuterWidth;
+                }
+
+                if (this.left < 0) {
+                    this.left = 0;
+                }
+
+                if (this.core.lGalleryOn) {
+                    if (!$thumb.hasClass('on')) {
+                        this.core.$outer.find('.lg-thumb').css('transition-duration', this.core.s.speed + 'ms');
+                    }
+
+                    if (!this.core.doCss()) {
+                        $thumb.animate({
+                            left: -this.left + 'px'
+                        }, this.core.s.speed);
+                    }
+                } else {
+                    if (!this.core.doCss()) {
+                        $thumb.css('left', -this.left + 'px');
+                    }
+                }
+
+                this.setTranslate(this.left);
             }
-        }, f.prototype.enableThumbDrag = function () {
-            var c = this,
-                d = 0,
-                e = 0,
-                f = !1,
-                g = !1,
-                h = 0;c.$thumbOuter.addClass("lg-grab"), c.core.$outer.find(".lg-thumb").on("mousedown.lg.thumb", function (a) {
-                c.thumbTotalWidth > c.thumbOuterWidth && (a.preventDefault(), d = a.pageX, f = !0, c.core.$outer.scrollLeft += 1, c.core.$outer.scrollLeft -= 1, c.thumbClickable = !1, c.$thumbOuter.removeClass("lg-grab").addClass("lg-grabbing"));
-            }), a(b).on("mousemove.lg.thumb", function (a) {
-                f && (h = c.left, g = !0, e = a.pageX, c.$thumbOuter.addClass("lg-dragging"), h -= e - d, h > c.thumbTotalWidth - c.thumbOuterWidth && (h = c.thumbTotalWidth - c.thumbOuterWidth), h < 0 && (h = 0), c.setTranslate(h));
-            }), a(b).on("mouseup.lg.thumb", function () {
-                g ? (g = !1, c.$thumbOuter.removeClass("lg-dragging"), c.left = h, Math.abs(e - d) < c.core.s.swipeThreshold && (c.thumbClickable = !0)) : c.thumbClickable = !0, f && (f = !1, c.$thumbOuter.removeClass("lg-grabbing").addClass("lg-grab"));
+        };
+
+        // Enable thumbnail dragging and swiping
+        Thumbnail.prototype.enableThumbDrag = function () {
+
+            var _this = this;
+            var startCoords = 0;
+            var endCoords = 0;
+            var isDraging = false;
+            var isMoved = false;
+            var tempLeft = 0;
+
+            _this.$thumbOuter.addClass('lg-grab');
+
+            _this.core.$outer.find('.lg-thumb').on('mousedown.lg.thumb', function (e) {
+                if (_this.thumbTotalWidth > _this.thumbOuterWidth) {
+                    // execute only on .lg-object
+                    e.preventDefault();
+                    startCoords = e.pageX;
+                    isDraging = true;
+
+                    // ** Fix for webkit cursor issue https://code.google.com/p/chromium/issues/detail?id=26723
+                    _this.core.$outer.scrollLeft += 1;
+                    _this.core.$outer.scrollLeft -= 1;
+
+                    // *
+                    _this.thumbClickable = false;
+                    _this.$thumbOuter.removeClass('lg-grab').addClass('lg-grabbing');
+                }
             });
-        }, f.prototype.enableThumbSwipe = function () {
-            var a = this,
-                b = 0,
-                c = 0,
-                d = !1,
-                e = 0;a.core.$outer.find(".lg-thumb").on("touchstart.lg", function (c) {
-                a.thumbTotalWidth > a.thumbOuterWidth && (c.preventDefault(), b = c.originalEvent.targetTouches[0].pageX, a.thumbClickable = !1);
-            }), a.core.$outer.find(".lg-thumb").on("touchmove.lg", function (f) {
-                a.thumbTotalWidth > a.thumbOuterWidth && (f.preventDefault(), c = f.originalEvent.targetTouches[0].pageX, d = !0, a.$thumbOuter.addClass("lg-dragging"), e = a.left, e -= c - b, e > a.thumbTotalWidth - a.thumbOuterWidth && (e = a.thumbTotalWidth - a.thumbOuterWidth), e < 0 && (e = 0), a.setTranslate(e));
-            }), a.core.$outer.find(".lg-thumb").on("touchend.lg", function () {
-                a.thumbTotalWidth > a.thumbOuterWidth && d ? (d = !1, a.$thumbOuter.removeClass("lg-dragging"), Math.abs(c - b) < a.core.s.swipeThreshold && (a.thumbClickable = !0), a.left = e) : a.thumbClickable = !0;
+
+            $(window).on('mousemove.lg.thumb', function (e) {
+                if (isDraging) {
+                    tempLeft = _this.left;
+                    isMoved = true;
+                    endCoords = e.pageX;
+
+                    _this.$thumbOuter.addClass('lg-dragging');
+
+                    tempLeft = tempLeft - (endCoords - startCoords);
+
+                    if (tempLeft > _this.thumbTotalWidth - _this.thumbOuterWidth) {
+                        tempLeft = _this.thumbTotalWidth - _this.thumbOuterWidth;
+                    }
+
+                    if (tempLeft < 0) {
+                        tempLeft = 0;
+                    }
+
+                    // move current slide
+                    _this.setTranslate(tempLeft);
+                }
             });
-        }, f.prototype.toogle = function () {
-            var a = this;a.core.s.toogleThumb && (a.core.$outer.addClass("lg-can-toggle"), a.$thumbOuter.append('<span class="lg-toogle-thumb lg-icon"></span>'), a.core.$outer.find(".lg-toogle-thumb").on("click.lg", function () {
-                a.core.$outer.toggleClass("lg-thumb-open");
-            }));
-        }, f.prototype.thumbkeyPress = function () {
-            var c = this;a(b).on("keydown.lg.thumb", function (a) {
-                38 === a.keyCode ? (a.preventDefault(), c.core.$outer.addClass("lg-thumb-open")) : 40 === a.keyCode && (a.preventDefault(), c.core.$outer.removeClass("lg-thumb-open"));
+
+            $(window).on('mouseup.lg.thumb', function () {
+                if (isMoved) {
+                    isMoved = false;
+                    _this.$thumbOuter.removeClass('lg-dragging');
+
+                    _this.left = tempLeft;
+
+                    if (Math.abs(endCoords - startCoords) < _this.core.s.swipeThreshold) {
+                        _this.thumbClickable = true;
+                    }
+                } else {
+                    _this.thumbClickable = true;
+                }
+
+                if (isDraging) {
+                    isDraging = false;
+                    _this.$thumbOuter.removeClass('lg-grabbing').addClass('lg-grab');
+                }
             });
-        }, f.prototype.destroy = function () {
-            this.core.s.thumbnail && this.core.$items.length > 1 && (a(b).off("resize.lg.thumb orientationchange.lg.thumb keydown.lg.thumb"), this.$thumbOuter.remove(), this.core.$outer.removeClass("lg-has-thumb"));
-        }, a.fn.lightGallery.modules.Thumbnail = f;
-    }(jQuery, window, document);
+        };
+
+        Thumbnail.prototype.enableThumbSwipe = function () {
+            var _this = this;
+            var startCoords = 0;
+            var endCoords = 0;
+            var isMoved = false;
+            var tempLeft = 0;
+
+            _this.core.$outer.find('.lg-thumb').on('touchstart.lg', function (e) {
+                if (_this.thumbTotalWidth > _this.thumbOuterWidth) {
+                    e.preventDefault();
+                    startCoords = e.originalEvent.targetTouches[0].pageX;
+                    _this.thumbClickable = false;
+                }
+            });
+
+            _this.core.$outer.find('.lg-thumb').on('touchmove.lg', function (e) {
+                if (_this.thumbTotalWidth > _this.thumbOuterWidth) {
+                    e.preventDefault();
+                    endCoords = e.originalEvent.targetTouches[0].pageX;
+                    isMoved = true;
+
+                    _this.$thumbOuter.addClass('lg-dragging');
+
+                    tempLeft = _this.left;
+
+                    tempLeft = tempLeft - (endCoords - startCoords);
+
+                    if (tempLeft > _this.thumbTotalWidth - _this.thumbOuterWidth) {
+                        tempLeft = _this.thumbTotalWidth - _this.thumbOuterWidth;
+                    }
+
+                    if (tempLeft < 0) {
+                        tempLeft = 0;
+                    }
+
+                    // move current slide
+                    _this.setTranslate(tempLeft);
+                }
+            });
+
+            _this.core.$outer.find('.lg-thumb').on('touchend.lg', function () {
+                if (_this.thumbTotalWidth > _this.thumbOuterWidth) {
+
+                    if (isMoved) {
+                        isMoved = false;
+                        _this.$thumbOuter.removeClass('lg-dragging');
+                        if (Math.abs(endCoords - startCoords) < _this.core.s.swipeThreshold) {
+                            _this.thumbClickable = true;
+                        }
+
+                        _this.left = tempLeft;
+                    } else {
+                        _this.thumbClickable = true;
+                    }
+                } else {
+                    _this.thumbClickable = true;
+                }
+            });
+        };
+
+        Thumbnail.prototype.toogle = function () {
+            var _this = this;
+            if (_this.core.s.toogleThumb) {
+                _this.core.$outer.addClass('lg-can-toggle');
+                _this.$thumbOuter.append('<span class="lg-toogle-thumb lg-icon"></span>');
+                _this.core.$outer.find('.lg-toogle-thumb').on('click.lg', function () {
+                    _this.core.$outer.toggleClass('lg-thumb-open');
+                });
+            }
+        };
+
+        Thumbnail.prototype.thumbkeyPress = function () {
+            var _this = this;
+            $(window).on('keydown.lg.thumb', function (e) {
+                if (e.keyCode === 38) {
+                    e.preventDefault();
+                    _this.core.$outer.addClass('lg-thumb-open');
+                } else if (e.keyCode === 40) {
+                    e.preventDefault();
+                    _this.core.$outer.removeClass('lg-thumb-open');
+                }
+            });
+        };
+
+        Thumbnail.prototype.destroy = function () {
+            if (this.core.s.thumbnail && this.core.$items.length > 1) {
+                $(window).off('resize.lg.thumb orientationchange.lg.thumb keydown.lg.thumb');
+                this.$thumbOuter.remove();
+                this.core.$outer.removeClass('lg-has-thumb');
+            }
+        };
+
+        $.fn.lightGallery.modules.Thumbnail = Thumbnail;
+    })();
 });
+
+/*! lg-video - v1.0.2 - 2017-06-04
+* http://sachinchoolur.github.io/lightGallery
+* Copyright (c) 2017 Sachin N; Licensed GPLv3 */
+
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module unless amdModuleId is set
+        define(['jquery'], function (a0) {
+            return factory(a0);
+        });
+    } else if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === 'object') {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory(require('jquery'));
+    } else {
+        factory(jQuery);
+    }
+})(undefined, function ($) {
+
+    (function () {
+
+        'use strict';
+
+        var defaults = {
+            videoMaxWidth: '855px',
+            youtubePlayerParams: false,
+            vimeoPlayerParams: false,
+            dailymotionPlayerParams: false,
+            vkPlayerParams: false,
+            videojs: false,
+            videojsOptions: {}
+        };
+
+        var Video = function Video(element) {
+
+            this.core = $(element).data('lightGallery');
+
+            this.$el = $(element);
+            this.core.s = $.extend({}, defaults, this.core.s);
+            this.videoLoaded = false;
+
+            this.init();
+
+            return this;
+        };
+
+        Video.prototype.init = function () {
+            var _this = this;
+
+            // Event triggered when video url found without poster
+            _this.core.$el.on('hasVideo.lg.tm', function (event, index, src, html) {
+                _this.core.$slide.eq(index).find('.lg-video').append(_this.loadVideo(src, 'lg-object', true, index, html));
+                if (html) {
+                    if (_this.core.s.videojs) {
+                        try {
+                            videojs(_this.core.$slide.eq(index).find('.lg-html5').get(0), _this.core.s.videojsOptions, function () {
+                                if (!_this.videoLoaded) {
+                                    this.play();
+                                }
+                            });
+                        } catch (e) {
+                            console.error('Make sure you have included videojs');
+                        }
+                    } else {
+                        if (!_this.videoLoaded) {
+                            _this.core.$slide.eq(index).find('.lg-html5').get(0).play();
+                        }
+                    }
+                }
+            });
+
+            // Set max width for video
+            _this.core.$el.on('onAferAppendSlide.lg.tm', function (event, index) {
+                var $videoCont = _this.core.$slide.eq(index).find('.lg-video-cont');
+                if (!$videoCont.hasClass('lg-has-iframe')) {
+                    $videoCont.css('max-width', _this.core.s.videoMaxWidth);
+                    _this.videoLoaded = true;
+                }
+            });
+
+            var loadOnClick = function loadOnClick($el) {
+                // check slide has poster
+                if ($el.find('.lg-object').hasClass('lg-has-poster') && $el.find('.lg-object').is(':visible')) {
+
+                    // check already video element present
+                    if (!$el.hasClass('lg-has-video')) {
+
+                        $el.addClass('lg-video-playing lg-has-video');
+
+                        var _src;
+                        var _html;
+                        var _loadVideo = function _loadVideo(_src, _html) {
+
+                            $el.find('.lg-video').append(_this.loadVideo(_src, '', false, _this.core.index, _html));
+
+                            if (_html) {
+                                if (_this.core.s.videojs) {
+                                    try {
+                                        videojs(_this.core.$slide.eq(_this.core.index).find('.lg-html5').get(0), _this.core.s.videojsOptions, function () {
+                                            this.play();
+                                        });
+                                    } catch (e) {
+                                        console.error('Make sure you have included videojs');
+                                    }
+                                } else {
+                                    _this.core.$slide.eq(_this.core.index).find('.lg-html5').get(0).play();
+                                }
+                            }
+                        };
+
+                        if (_this.core.s.dynamic) {
+
+                            _src = _this.core.s.dynamicEl[_this.core.index].src;
+                            _html = _this.core.s.dynamicEl[_this.core.index].html;
+
+                            _loadVideo(_src, _html);
+                        } else {
+
+                            _src = _this.core.$items.eq(_this.core.index).attr('href') || _this.core.$items.eq(_this.core.index).attr('data-src');
+                            _html = _this.core.$items.eq(_this.core.index).attr('data-html');
+
+                            _loadVideo(_src, _html);
+                        }
+
+                        var $tempImg = $el.find('.lg-object');
+                        $el.find('.lg-video').append($tempImg);
+
+                        // @todo loading icon for html5 videos also
+                        // for showing the loading indicator while loading video
+                        if (!$el.find('.lg-video-object').hasClass('lg-html5')) {
+                            $el.removeClass('lg-complete');
+                            $el.find('.lg-video-object').on('load.lg error.lg', function () {
+                                $el.addClass('lg-complete');
+                            });
+                        }
+                    } else {
+
+                        var youtubePlayer = $el.find('.lg-youtube').get(0);
+                        var vimeoPlayer = $el.find('.lg-vimeo').get(0);
+                        var dailymotionPlayer = $el.find('.lg-dailymotion').get(0);
+                        var html5Player = $el.find('.lg-html5').get(0);
+                        if (youtubePlayer) {
+                            youtubePlayer.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                        } else if (vimeoPlayer) {
+                            try {
+                                $f(vimeoPlayer).api('play');
+                            } catch (e) {
+                                console.error('Make sure you have included froogaloop2 js');
+                            }
+                        } else if (dailymotionPlayer) {
+                            dailymotionPlayer.contentWindow.postMessage('play', '*');
+                        } else if (html5Player) {
+                            if (_this.core.s.videojs) {
+                                try {
+                                    videojs(html5Player).play();
+                                } catch (e) {
+                                    console.error('Make sure you have included videojs');
+                                }
+                            } else {
+                                html5Player.play();
+                            }
+                        }
+
+                        $el.addClass('lg-video-playing');
+                    }
+                }
+            };
+
+            if (_this.core.doCss() && _this.core.$items.length > 1 && (_this.core.s.enableSwipe && _this.core.isTouch || _this.core.s.enableDrag && !_this.core.isTouch)) {
+                _this.core.$el.on('onSlideClick.lg.tm', function () {
+                    var $el = _this.core.$slide.eq(_this.core.index);
+                    loadOnClick($el);
+                });
+            } else {
+
+                // For IE 9 and bellow
+                _this.core.$slide.on('click.lg', function () {
+                    loadOnClick($(this));
+                });
+            }
+
+            _this.core.$el.on('onBeforeSlide.lg.tm', function (event, prevIndex, index) {
+
+                var $videoSlide = _this.core.$slide.eq(prevIndex);
+                var youtubePlayer = $videoSlide.find('.lg-youtube').get(0);
+                var vimeoPlayer = $videoSlide.find('.lg-vimeo').get(0);
+                var dailymotionPlayer = $videoSlide.find('.lg-dailymotion').get(0);
+                var vkPlayer = $videoSlide.find('.lg-vk').get(0);
+                var html5Player = $videoSlide.find('.lg-html5').get(0);
+                if (youtubePlayer) {
+                    youtubePlayer.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                } else if (vimeoPlayer) {
+                    try {
+                        $f(vimeoPlayer).api('pause');
+                    } catch (e) {
+                        console.error('Make sure you have included froogaloop2 js');
+                    }
+                } else if (dailymotionPlayer) {
+                    dailymotionPlayer.contentWindow.postMessage('pause', '*');
+                } else if (html5Player) {
+                    if (_this.core.s.videojs) {
+                        try {
+                            videojs(html5Player).pause();
+                        } catch (e) {
+                            console.error('Make sure you have included videojs');
+                        }
+                    } else {
+                        html5Player.pause();
+                    }
+                }if (vkPlayer) {
+                    $(vkPlayer).attr('src', $(vkPlayer).attr('src').replace('&autoplay', '&noplay'));
+                }
+
+                var _src;
+                if (_this.core.s.dynamic) {
+                    _src = _this.core.s.dynamicEl[index].src;
+                } else {
+                    _src = _this.core.$items.eq(index).attr('href') || _this.core.$items.eq(index).attr('data-src');
+                }
+
+                var _isVideo = _this.core.isVideo(_src, index) || {};
+                if (_isVideo.youtube || _isVideo.vimeo || _isVideo.dailymotion || _isVideo.vk) {
+                    _this.core.$outer.addClass('lg-hide-download');
+                }
+
+                //$videoSlide.addClass('lg-complete');
+            });
+
+            _this.core.$el.on('onAfterSlide.lg.tm', function (event, prevIndex) {
+                _this.core.$slide.eq(prevIndex).removeClass('lg-video-playing');
+            });
+        };
+
+        Video.prototype.loadVideo = function (src, addClass, noposter, index, html) {
+            var video = '';
+            var autoplay = 1;
+            var a = '';
+            var isVideo = this.core.isVideo(src, index) || {};
+
+            // Enable autoplay for first video if poster doesn't exist
+            if (noposter) {
+                if (this.videoLoaded) {
+                    autoplay = 0;
+                } else {
+                    autoplay = 1;
+                }
+            }
+
+            if (isVideo.youtube) {
+
+                a = '?wmode=opaque&autoplay=' + autoplay + '&enablejsapi=1';
+                if (this.core.s.youtubePlayerParams) {
+                    a = a + '&' + $.param(this.core.s.youtubePlayerParams);
+                }
+
+                video = '<iframe class="lg-video-object lg-youtube ' + addClass + '" width="560" height="315" src="//www.youtube.com/embed/' + isVideo.youtube[1] + a + '" frameborder="0" allowfullscreen></iframe>';
+            } else if (isVideo.vimeo) {
+
+                a = '?autoplay=' + autoplay + '&api=1';
+                if (this.core.s.vimeoPlayerParams) {
+                    a = a + '&' + $.param(this.core.s.vimeoPlayerParams);
+                }
+
+                video = '<iframe class="lg-video-object lg-vimeo ' + addClass + '" width="560" height="315"  src="//player.vimeo.com/video/' + isVideo.vimeo[1] + a + '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+            } else if (isVideo.dailymotion) {
+
+                a = '?wmode=opaque&autoplay=' + autoplay + '&api=postMessage';
+                if (this.core.s.dailymotionPlayerParams) {
+                    a = a + '&' + $.param(this.core.s.dailymotionPlayerParams);
+                }
+
+                video = '<iframe class="lg-video-object lg-dailymotion ' + addClass + '" width="560" height="315" src="//www.dailymotion.com/embed/video/' + isVideo.dailymotion[1] + a + '" frameborder="0" allowfullscreen></iframe>';
+            } else if (isVideo.html5) {
+                var fL = html.substring(0, 1);
+                if (fL === '.' || fL === '#') {
+                    html = $(html).html();
+                }
+
+                video = html;
+            } else if (isVideo.vk) {
+
+                a = '&autoplay=' + autoplay;
+                if (this.core.s.vkPlayerParams) {
+                    a = a + '&' + $.param(this.core.s.vkPlayerParams);
+                }
+
+                video = '<iframe class="lg-video-object lg-vk ' + addClass + '" width="560" height="315" src="http://vk.com/video_ext.php?' + isVideo.vk[1] + a + '" frameborder="0" allowfullscreen></iframe>';
+            }
+
+            return video;
+        };
+
+        Video.prototype.destroy = function () {
+            this.videoLoaded = false;
+        };
+
+        $.fn.lightGallery.modules.video = Video;
+    })();
+});
+
+/*! lg-zoom - v1.0.4 - 2016-12-20
+* http://sachinchoolur.github.io/lightGallery
+* Copyright (c) 2016 Sachin N; Licensed GPLv3 */
+
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module unless amdModuleId is set
+        define(['jquery'], function (a0) {
+            return factory(a0);
+        });
+    } else if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === 'object') {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory(require('jquery'));
+    } else {
+        factory(jQuery);
+    }
+})(undefined, function ($) {
+
+    (function () {
+
+        'use strict';
+
+        var getUseLeft = function getUseLeft() {
+            var useLeft = false;
+            var isChrome = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
+            if (isChrome && parseInt(isChrome[2], 10) < 54) {
+                useLeft = true;
+            }
+
+            return useLeft;
+        };
+
+        var defaults = {
+            scale: 1,
+            zoom: true,
+            actualSize: true,
+            enableZoomAfter: 300,
+            useLeftForZoom: getUseLeft()
+        };
+
+        var Zoom = function Zoom(element) {
+
+            this.core = $(element).data('lightGallery');
+
+            this.core.s = $.extend({}, defaults, this.core.s);
+
+            if (this.core.s.zoom && this.core.doCss()) {
+                this.init();
+
+                // Store the zoomable timeout value just to clear it while closing
+                this.zoomabletimeout = false;
+
+                // Set the initial value center
+                this.pageX = $(window).width() / 2;
+                this.pageY = $(window).height() / 2 + $(window).scrollTop();
+            }
+
+            return this;
+        };
+
+        Zoom.prototype.init = function () {
+
+            var _this = this;
+            var zoomIcons = '<span id="lg-zoom-in" class="lg-icon"></span><span id="lg-zoom-out" class="lg-icon"></span>';
+
+            if (_this.core.s.actualSize) {
+                zoomIcons += '<span id="lg-actual-size" class="lg-icon"></span>';
+            }
+
+            if (_this.core.s.useLeftForZoom) {
+                _this.core.$outer.addClass('lg-use-left-for-zoom');
+            } else {
+                _this.core.$outer.addClass('lg-use-transition-for-zoom');
+            }
+
+            this.core.$outer.find('.lg-toolbar').append(zoomIcons);
+
+            // Add zoomable class
+            _this.core.$el.on('onSlideItemLoad.lg.tm.zoom', function (event, index, delay) {
+
+                // delay will be 0 except first time
+                var _speed = _this.core.s.enableZoomAfter + delay;
+
+                // set _speed value 0 if gallery opened from direct url and if it is first slide
+                if ($('body').hasClass('lg-from-hash') && delay) {
+
+                    // will execute only once
+                    _speed = 0;
+                } else {
+
+                    // Remove lg-from-hash to enable starting animation.
+                    $('body').removeClass('lg-from-hash');
+                }
+
+                _this.zoomabletimeout = setTimeout(function () {
+                    _this.core.$slide.eq(index).addClass('lg-zoomable');
+                }, _speed + 30);
+            });
+
+            var scale = 1;
+            /**
+             * @desc Image zoom
+             * Translate the wrap and scale the image to get better user experience
+             *
+             * @param {String} scaleVal - Zoom decrement/increment value
+             */
+            var zoom = function zoom(scaleVal) {
+
+                var $image = _this.core.$outer.find('.lg-current .lg-image');
+                var _x;
+                var _y;
+
+                // Find offset manually to avoid issue after zoom
+                var offsetX = ($(window).width() - $image.prop('offsetWidth')) / 2;
+                var offsetY = ($(window).height() - $image.prop('offsetHeight')) / 2 + $(window).scrollTop();
+
+                _x = _this.pageX - offsetX;
+                _y = _this.pageY - offsetY;
+
+                var x = (scaleVal - 1) * _x;
+                var y = (scaleVal - 1) * _y;
+
+                $image.css('transform', 'scale3d(' + scaleVal + ', ' + scaleVal + ', 1)').attr('data-scale', scaleVal);
+
+                if (_this.core.s.useLeftForZoom) {
+                    $image.parent().css({
+                        left: -x + 'px',
+                        top: -y + 'px'
+                    }).attr('data-x', x).attr('data-y', y);
+                } else {
+                    $image.parent().css('transform', 'translate3d(-' + x + 'px, -' + y + 'px, 0)').attr('data-x', x).attr('data-y', y);
+                }
+            };
+
+            var callScale = function callScale() {
+                if (scale > 1) {
+                    _this.core.$outer.addClass('lg-zoomed');
+                } else {
+                    _this.resetZoom();
+                }
+
+                if (scale < 1) {
+                    scale = 1;
+                }
+
+                zoom(scale);
+            };
+
+            var actualSize = function actualSize(event, $image, index, fromIcon) {
+                var w = $image.prop('offsetWidth');
+                var nw;
+                if (_this.core.s.dynamic) {
+                    nw = _this.core.s.dynamicEl[index].width || $image[0].naturalWidth || w;
+                } else {
+                    nw = _this.core.$items.eq(index).attr('data-width') || $image[0].naturalWidth || w;
+                }
+
+                var _scale;
+
+                if (_this.core.$outer.hasClass('lg-zoomed')) {
+                    scale = 1;
+                } else {
+                    if (nw > w) {
+                        _scale = nw / w;
+                        scale = _scale || 2;
+                    }
+                }
+
+                if (fromIcon) {
+                    _this.pageX = $(window).width() / 2;
+                    _this.pageY = $(window).height() / 2 + $(window).scrollTop();
+                } else {
+                    _this.pageX = event.pageX || event.originalEvent.targetTouches[0].pageX;
+                    _this.pageY = event.pageY || event.originalEvent.targetTouches[0].pageY;
+                }
+
+                callScale();
+                setTimeout(function () {
+                    _this.core.$outer.removeClass('lg-grabbing').addClass('lg-grab');
+                }, 10);
+            };
+
+            var tapped = false;
+
+            // event triggered after appending slide content
+            _this.core.$el.on('onAferAppendSlide.lg.tm.zoom', function (event, index) {
+
+                // Get the current element
+                var $image = _this.core.$slide.eq(index).find('.lg-image');
+
+                $image.on('dblclick', function (event) {
+                    actualSize(event, $image, index);
+                });
+
+                $image.on('touchstart', function (event) {
+                    if (!tapped) {
+                        tapped = setTimeout(function () {
+                            tapped = null;
+                        }, 300);
+                    } else {
+                        clearTimeout(tapped);
+                        tapped = null;
+                        actualSize(event, $image, index);
+                    }
+
+                    event.preventDefault();
+                });
+            });
+
+            // Update zoom on resize and orientationchange
+            $(window).on('resize.lg.zoom scroll.lg.zoom orientationchange.lg.zoom', function () {
+                _this.pageX = $(window).width() / 2;
+                _this.pageY = $(window).height() / 2 + $(window).scrollTop();
+                zoom(scale);
+            });
+
+            $('#lg-zoom-out').on('click.lg', function () {
+                if (_this.core.$outer.find('.lg-current .lg-image').length) {
+                    scale -= _this.core.s.scale;
+                    callScale();
+                }
+            });
+
+            $('#lg-zoom-in').on('click.lg', function () {
+                if (_this.core.$outer.find('.lg-current .lg-image').length) {
+                    scale += _this.core.s.scale;
+                    callScale();
+                }
+            });
+
+            $('#lg-actual-size').on('click.lg', function (event) {
+                actualSize(event, _this.core.$slide.eq(_this.core.index).find('.lg-image'), _this.core.index, true);
+            });
+
+            // Reset zoom on slide change
+            _this.core.$el.on('onBeforeSlide.lg.tm', function () {
+                scale = 1;
+                _this.resetZoom();
+            });
+
+            // Drag option after zoom
+            if (!_this.core.isTouch) {
+                _this.zoomDrag();
+            }
+
+            if (_this.core.isTouch) {
+                _this.zoomSwipe();
+            }
+        };
+
+        // Reset zoom effect
+        Zoom.prototype.resetZoom = function () {
+            this.core.$outer.removeClass('lg-zoomed');
+            this.core.$slide.find('.lg-img-wrap').removeAttr('style data-x data-y');
+            this.core.$slide.find('.lg-image').removeAttr('style data-scale');
+
+            // Reset pagx pagy values to center
+            this.pageX = $(window).width() / 2;
+            this.pageY = $(window).height() / 2 + $(window).scrollTop();
+        };
+
+        Zoom.prototype.zoomSwipe = function () {
+            var _this = this;
+            var startCoords = {};
+            var endCoords = {};
+            var isMoved = false;
+
+            // Allow x direction drag
+            var allowX = false;
+
+            // Allow Y direction drag
+            var allowY = false;
+
+            _this.core.$slide.on('touchstart.lg', function (e) {
+
+                if (_this.core.$outer.hasClass('lg-zoomed')) {
+                    var $image = _this.core.$slide.eq(_this.core.index).find('.lg-object');
+
+                    allowY = $image.prop('offsetHeight') * $image.attr('data-scale') > _this.core.$outer.find('.lg').height();
+                    allowX = $image.prop('offsetWidth') * $image.attr('data-scale') > _this.core.$outer.find('.lg').width();
+                    if (allowX || allowY) {
+                        e.preventDefault();
+                        startCoords = {
+                            x: e.originalEvent.targetTouches[0].pageX,
+                            y: e.originalEvent.targetTouches[0].pageY
+                        };
+                    }
+                }
+            });
+
+            _this.core.$slide.on('touchmove.lg', function (e) {
+
+                if (_this.core.$outer.hasClass('lg-zoomed')) {
+
+                    var _$el = _this.core.$slide.eq(_this.core.index).find('.lg-img-wrap');
+                    var distanceX;
+                    var distanceY;
+
+                    e.preventDefault();
+                    isMoved = true;
+
+                    endCoords = {
+                        x: e.originalEvent.targetTouches[0].pageX,
+                        y: e.originalEvent.targetTouches[0].pageY
+                    };
+
+                    // reset opacity and transition duration
+                    _this.core.$outer.addClass('lg-zoom-dragging');
+
+                    if (allowY) {
+                        distanceY = -Math.abs(_$el.attr('data-y')) + (endCoords.y - startCoords.y);
+                    } else {
+                        distanceY = -Math.abs(_$el.attr('data-y'));
+                    }
+
+                    if (allowX) {
+                        distanceX = -Math.abs(_$el.attr('data-x')) + (endCoords.x - startCoords.x);
+                    } else {
+                        distanceX = -Math.abs(_$el.attr('data-x'));
+                    }
+
+                    if (Math.abs(endCoords.x - startCoords.x) > 15 || Math.abs(endCoords.y - startCoords.y) > 15) {
+
+                        if (_this.core.s.useLeftForZoom) {
+                            _$el.css({
+                                left: distanceX + 'px',
+                                top: distanceY + 'px'
+                            });
+                        } else {
+                            _$el.css('transform', 'translate3d(' + distanceX + 'px, ' + distanceY + 'px, 0)');
+                        }
+                    }
+                }
+            });
+
+            _this.core.$slide.on('touchend.lg', function () {
+                if (_this.core.$outer.hasClass('lg-zoomed')) {
+                    if (isMoved) {
+                        isMoved = false;
+                        _this.core.$outer.removeClass('lg-zoom-dragging');
+                        _this.touchendZoom(startCoords, endCoords, allowX, allowY);
+                    }
+                }
+            });
+        };
+
+        Zoom.prototype.zoomDrag = function () {
+
+            var _this = this;
+            var startCoords = {};
+            var endCoords = {};
+            var isDraging = false;
+            var isMoved = false;
+
+            // Allow x direction drag
+            var allowX = false;
+
+            // Allow Y direction drag
+            var allowY = false;
+
+            _this.core.$slide.on('mousedown.lg.zoom', function (e) {
+
+                // execute only on .lg-object
+                var $image = _this.core.$slide.eq(_this.core.index).find('.lg-object');
+
+                allowY = $image.prop('offsetHeight') * $image.attr('data-scale') > _this.core.$outer.find('.lg').height();
+                allowX = $image.prop('offsetWidth') * $image.attr('data-scale') > _this.core.$outer.find('.lg').width();
+
+                if (_this.core.$outer.hasClass('lg-zoomed')) {
+                    if ($(e.target).hasClass('lg-object') && (allowX || allowY)) {
+                        e.preventDefault();
+                        startCoords = {
+                            x: e.pageX,
+                            y: e.pageY
+                        };
+
+                        isDraging = true;
+
+                        // ** Fix for webkit cursor issue https://code.google.com/p/chromium/issues/detail?id=26723
+                        _this.core.$outer.scrollLeft += 1;
+                        _this.core.$outer.scrollLeft -= 1;
+
+                        _this.core.$outer.removeClass('lg-grab').addClass('lg-grabbing');
+                    }
+                }
+            });
+
+            $(window).on('mousemove.lg.zoom', function (e) {
+                if (isDraging) {
+                    var _$el = _this.core.$slide.eq(_this.core.index).find('.lg-img-wrap');
+                    var distanceX;
+                    var distanceY;
+
+                    isMoved = true;
+                    endCoords = {
+                        x: e.pageX,
+                        y: e.pageY
+                    };
+
+                    // reset opacity and transition duration
+                    _this.core.$outer.addClass('lg-zoom-dragging');
+
+                    if (allowY) {
+                        distanceY = -Math.abs(_$el.attr('data-y')) + (endCoords.y - startCoords.y);
+                    } else {
+                        distanceY = -Math.abs(_$el.attr('data-y'));
+                    }
+
+                    if (allowX) {
+                        distanceX = -Math.abs(_$el.attr('data-x')) + (endCoords.x - startCoords.x);
+                    } else {
+                        distanceX = -Math.abs(_$el.attr('data-x'));
+                    }
+
+                    if (_this.core.s.useLeftForZoom) {
+                        _$el.css({
+                            left: distanceX + 'px',
+                            top: distanceY + 'px'
+                        });
+                    } else {
+                        _$el.css('transform', 'translate3d(' + distanceX + 'px, ' + distanceY + 'px, 0)');
+                    }
+                }
+            });
+
+            $(window).on('mouseup.lg.zoom', function (e) {
+
+                if (isDraging) {
+                    isDraging = false;
+                    _this.core.$outer.removeClass('lg-zoom-dragging');
+
+                    // Fix for chrome mouse move on click
+                    if (isMoved && (startCoords.x !== endCoords.x || startCoords.y !== endCoords.y)) {
+                        endCoords = {
+                            x: e.pageX,
+                            y: e.pageY
+                        };
+                        _this.touchendZoom(startCoords, endCoords, allowX, allowY);
+                    }
+
+                    isMoved = false;
+                }
+
+                _this.core.$outer.removeClass('lg-grabbing').addClass('lg-grab');
+            });
+        };
+
+        Zoom.prototype.touchendZoom = function (startCoords, endCoords, allowX, allowY) {
+
+            var _this = this;
+            var _$el = _this.core.$slide.eq(_this.core.index).find('.lg-img-wrap');
+            var $image = _this.core.$slide.eq(_this.core.index).find('.lg-object');
+            var distanceX = -Math.abs(_$el.attr('data-x')) + (endCoords.x - startCoords.x);
+            var distanceY = -Math.abs(_$el.attr('data-y')) + (endCoords.y - startCoords.y);
+            var minY = (_this.core.$outer.find('.lg').height() - $image.prop('offsetHeight')) / 2;
+            var maxY = Math.abs($image.prop('offsetHeight') * Math.abs($image.attr('data-scale')) - _this.core.$outer.find('.lg').height() + minY);
+            var minX = (_this.core.$outer.find('.lg').width() - $image.prop('offsetWidth')) / 2;
+            var maxX = Math.abs($image.prop('offsetWidth') * Math.abs($image.attr('data-scale')) - _this.core.$outer.find('.lg').width() + minX);
+
+            if (Math.abs(endCoords.x - startCoords.x) > 15 || Math.abs(endCoords.y - startCoords.y) > 15) {
+                if (allowY) {
+                    if (distanceY <= -maxY) {
+                        distanceY = -maxY;
+                    } else if (distanceY >= -minY) {
+                        distanceY = -minY;
+                    }
+                }
+
+                if (allowX) {
+                    if (distanceX <= -maxX) {
+                        distanceX = -maxX;
+                    } else if (distanceX >= -minX) {
+                        distanceX = -minX;
+                    }
+                }
+
+                if (allowY) {
+                    _$el.attr('data-y', Math.abs(distanceY));
+                } else {
+                    distanceY = -Math.abs(_$el.attr('data-y'));
+                }
+
+                if (allowX) {
+                    _$el.attr('data-x', Math.abs(distanceX));
+                } else {
+                    distanceX = -Math.abs(_$el.attr('data-x'));
+                }
+
+                if (_this.core.s.useLeftForZoom) {
+                    _$el.css({
+                        left: distanceX + 'px',
+                        top: distanceY + 'px'
+                    });
+                } else {
+                    _$el.css('transform', 'translate3d(' + distanceX + 'px, ' + distanceY + 'px, 0)');
+                }
+            }
+        };
+
+        Zoom.prototype.destroy = function () {
+
+            var _this = this;
+
+            // Unbind all events added by lightGallery zoom plugin
+            _this.core.$el.off('.lg.zoom');
+            $(window).off('.lg.zoom');
+            _this.core.$slide.off('.lg.zoom');
+            _this.core.$el.off('.lg.tm.zoom');
+            _this.resetZoom();
+            clearTimeout(_this.zoomabletimeout);
+            _this.zoomabletimeout = false;
+        };
+
+        $.fn.lightGallery.modules.zoom = Zoom;
+    })();
+});
+
+/*! lg-hash - v1.0.2 - 2017-06-03
+* http://sachinchoolur.github.io/lightGallery
+* Copyright (c) 2017 Sachin N; Licensed GPLv3 */
+
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module unless amdModuleId is set
+        define(['jquery'], function (a0) {
+            return factory(a0);
+        });
+    } else if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === 'object') {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory(require('jquery'));
+    } else {
+        factory(jQuery);
+    }
+})(undefined, function ($) {
+
+    (function () {
+
+        'use strict';
+
+        var defaults = {
+            hash: true
+        };
+
+        var Hash = function Hash(element) {
+
+            this.core = $(element).data('lightGallery');
+
+            this.core.s = $.extend({}, defaults, this.core.s);
+
+            if (this.core.s.hash) {
+                this.oldHash = window.location.hash;
+                this.init();
+            }
+
+            return this;
+        };
+
+        Hash.prototype.init = function () {
+            var _this = this;
+            var _hash;
+
+            // Change hash value on after each slide transition
+            _this.core.$el.on('onAfterSlide.lg.tm', function (event, prevIndex, index) {
+                if (history.replaceState) {
+                    history.replaceState(null, null, '#lg=' + _this.core.s.galleryId + '&slide=' + index);
+                } else {
+                    window.location.hash = 'lg=' + _this.core.s.galleryId + '&slide=' + index;
+                }
+            });
+
+            // Listen hash change and change the slide according to slide value
+            $(window).on('hashchange.lg.hash', function () {
+                _hash = window.location.hash;
+                var _idx = parseInt(_hash.split('&slide=')[1], 10);
+
+                // it galleryId doesn't exist in the url close the gallery
+                if (_hash.indexOf('lg=' + _this.core.s.galleryId) > -1) {
+                    _this.core.slide(_idx, false, false);
+                } else if (_this.core.lGalleryOn) {
+                    _this.core.destroy();
+                }
+            });
+        };
+
+        Hash.prototype.destroy = function () {
+
+            if (!this.core.s.hash) {
+                return;
+            }
+
+            // Reset to old hash value
+            if (this.oldHash && this.oldHash.indexOf('lg=' + this.core.s.galleryId) < 0) {
+                if (history.replaceState) {
+                    history.replaceState(null, null, this.oldHash);
+                } else {
+                    window.location.hash = this.oldHash;
+                }
+            } else {
+                if (history.replaceState) {
+                    history.replaceState(null, document.title, window.location.pathname + window.location.search);
+                } else {
+                    window.location.hash = '';
+                }
+            }
+
+            this.core.$el.off('.lg.hash');
+        };
+
+        $.fn.lightGallery.modules.hash = Hash;
+    })();
+});
+
+/*! lg-share - v1.0.2 - 2016-11-26
+* http://sachinchoolur.github.io/lightGallery
+* Copyright (c) 2016 Sachin N; Licensed GPLv3 */
+
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module unless amdModuleId is set
+        define(['jquery'], function (a0) {
+            return factory(a0);
+        });
+    } else if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === 'object') {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory(require('jquery'));
+    } else {
+        factory(jQuery);
+    }
+})(undefined, function ($) {
+
+    (function () {
+
+        'use strict';
+
+        var defaults = {
+            share: true,
+            facebook: true,
+            facebookDropdownText: 'Facebook',
+            twitter: true,
+            twitterDropdownText: 'Twitter',
+            googlePlus: true,
+            googlePlusDropdownText: 'GooglePlus',
+            pinterest: true,
+            pinterestDropdownText: 'Pinterest'
+        };
+
+        var Share = function Share(element) {
+
+            this.core = $(element).data('lightGallery');
+
+            this.core.s = $.extend({}, defaults, this.core.s);
+            if (this.core.s.share) {
+                this.init();
+            }
+
+            return this;
+        };
+
+        Share.prototype.init = function () {
+            var _this = this;
+            var shareHtml = '<span id="lg-share" class="lg-icon">' + '<ul class="lg-dropdown" style="position: absolute;">';
+            shareHtml += _this.core.s.facebook ? '<li><a id="lg-share-facebook" target="_blank"><span class="lg-icon"></span><span class="lg-dropdown-text">' + this.core.s.facebookDropdownText + '</span></a></li>' : '';
+            shareHtml += _this.core.s.twitter ? '<li><a id="lg-share-twitter" target="_blank"><span class="lg-icon"></span><span class="lg-dropdown-text">' + this.core.s.twitterDropdownText + '</span></a></li>' : '';
+            shareHtml += _this.core.s.googlePlus ? '<li><a id="lg-share-googleplus" target="_blank"><span class="lg-icon"></span><span class="lg-dropdown-text">' + this.core.s.googlePlusDropdownText + '</span></a></li>' : '';
+            shareHtml += _this.core.s.pinterest ? '<li><a id="lg-share-pinterest" target="_blank"><span class="lg-icon"></span><span class="lg-dropdown-text">' + this.core.s.pinterestDropdownText + '</span></a></li>' : '';
+            shareHtml += '</ul></span>';
+
+            this.core.$outer.find('.lg-toolbar').append(shareHtml);
+            this.core.$outer.find('.lg').append('<div id="lg-dropdown-overlay"></div>');
+            $('#lg-share').on('click.lg', function () {
+                _this.core.$outer.toggleClass('lg-dropdown-active');
+            });
+
+            $('#lg-dropdown-overlay').on('click.lg', function () {
+                _this.core.$outer.removeClass('lg-dropdown-active');
+            });
+
+            _this.core.$el.on('onAfterSlide.lg.tm', function (event, prevIndex, index) {
+
+                setTimeout(function () {
+                    $('#lg-share-facebook').attr('href', 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(_this.core.$items.eq(index).attr('data-facebook-share-url') || window.location.href));
+
+                    $('#lg-share-twitter').attr('href', 'https://twitter.com/intent/tweet?text=' + _this.core.$items.eq(index).attr('data-tweet-text') + '&url=' + encodeURIComponent(_this.core.$items.eq(index).attr('data-twitter-share-url') || window.location.href));
+
+                    $('#lg-share-googleplus').attr('href', 'https://plus.google.com/share?url=' + encodeURIComponent(_this.core.$items.eq(index).attr('data-googleplus-share-url') || window.location.href));
+
+                    $('#lg-share-pinterest').attr('href', 'http://www.pinterest.com/pin/create/button/?url=' + encodeURIComponent(_this.core.$items.eq(index).attr('data-pinterest-share-url') || window.location.href) + '&media=' + encodeURIComponent(_this.core.$items.eq(index).attr('href') || _this.core.$items.eq(index).attr('data-src')) + '&description=' + _this.core.$items.eq(index).attr('data-pinterest-text'));
+                }, 100);
+            });
+        };
+
+        Share.prototype.destroy = function () {};
+
+        $.fn.lightGallery.modules.share = Share;
+    })();
+});
+
 $.fn.extend({
     switchClass: function switchClass(before, after) {
         $(this).removeClass(before);
@@ -4810,6 +7457,7 @@ $$$.resizeend = function () {
             setTimeout(_judge, _delta);
         } else {
             _timeout = false;
+            $$$.viewport.init();
             if (_ww !== $(window).width()) {
                 $(window).trigger('resizeend');
             }
@@ -4862,13 +7510,42 @@ $$$.pcsp = function () {
 }();
 
 /*************************************************************************************
+* タブレットにフィットさせる
+*************************************************************************************/
+$$$.viewport = function () {
+    var _tag = $('meta[name=viewport]');
+    var _ww = $(window).innerWidth() < window.screen.width ? $(window).innerWidth() : window.screen.width; //get proper width
+    var _mw = 1220;
+    var _ratio = _ww / _mw;
+
+    var _init = function _init(args) {
+        _tag.attr('content', 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0');
+        _ww = $(window).innerWidth() < window.screen.width ? $(window).innerWidth() : window.screen.width;
+        _ratio = _ww / _mw;
+        if (_ww < _mw && _ww > 767) {
+            _tag.attr('content', 'width=' + _ww + ', initial-scale=' + _ratio + ', minimum-scale=' + _ratio + ', maximum-scale=' + _ratio);
+        }
+    };
+    return {
+        init: _init
+    };
+}();
+
+/*************************************************************************************
 * anchorJump
 *************************************************************************************/
 $$$.anchorJump = function () {
     var _hash = location.hash;
+    var _adjust = 0;
+
     var _jump = function _jump(args) {
         if (_hash) {
-            $(window).scrollTop($(_hash).offset().top);
+            if ($$$.pcsp.getMode() === 'sp') {
+                _adjust = 63 + 10;
+            } else {
+                _adjust = 0;
+            }
+            $(window).scrollTop($(_hash).offset().top - _adjust);
         }
     };
     return {
@@ -4887,6 +7564,7 @@ $$$.smoothScroll = function () {
     var _speed;
     var _hash;
     var _top = 0;
+    var _adjust = 0;
 
     var _getOffset = function _getOffset() {
         _hash = $(this).attr('href');
@@ -4895,7 +7573,12 @@ $$$.smoothScroll = function () {
         } else {
             _top = $(_hash).offset().top;
         }
-        return _top;
+        if ($$$.pcsp.getMode() === 'sp') {
+            _adjust = 63 + 10;
+        } else {
+            _adjust = 0;
+        }
+        return _top - _adjust;
     };
     var _scroll = function _scroll() {
         var $self = this;
@@ -5128,6 +7811,191 @@ $$$.confirm = function () {
 }();
 
 /*************************************************************************************
+* loading
+*************************************************************************************/
+$$$.loading = function () {
+    var _init = function _init() {
+        $('body').append('<div class="customDialog">\
+				<div class="customDialog_overlay"></div>\
+				<div class="customDialog_inner">\
+				</div>\
+			</div>');
+    };
+    var _open = function _open(options) {
+        if (!$('.customDialog')[0]) {
+            _init();
+        }
+
+        $('.customDialog_inner').html('');
+        var _contents = '<p class="customDialog_txt">' + options.text + '</p>';
+        $('.customDialog_inner').append(_contents);
+
+        $('.customDialog').switchClass('customDialog-isClose', 'customDialog-isOpen');
+    };
+
+    var _close = function _close() {
+        $('.customDialog').switchClass('customDialog-isOpen', 'customDialog-isClose');
+    };
+
+    return {
+        open: _open,
+        close: _close
+    };
+}();
+
+/*************************************************************************************
+* tab
+*************************************************************************************/
+$$$.tab = function () {
+    var _init = function _init(args) {
+        $('[data-tab]').each(function (index, el) {
+            $(this).find('[data-tab-content-active]').removeAttr('data-tab-content-active');
+            var _index = 0;
+            if ($(this).find('[data-tab-item][data-tab-item-active]').length > 0) {
+                _index = $(this).find('[data-tab-item][data-tab-item-active]').eq(0).data('tab-item');
+                $(this).find('[data-tab-item-active]').removeAttr('data-tab-item-active');
+            }
+            $(this).find('[data-tab-item]').eq(_index).attr('data-tab-item-active', '');
+            $(this).find('[data-tab-content]').eq(_index).attr('data-tab-content-active', '');
+        });
+    };
+    var _show = function _show() {
+        var _$root = $(this).closest('[data-tab]');
+        var _index = $(this).data('tab-item');
+        _hide.call($(this));
+        _$root.find('[data-tab-item=' + _index + ']').attr('data-tab-item-active', '');
+        _$root.find('[data-tab-content=' + _index + ']').attr('data-tab-content-active', '');
+    };
+    var _hide = function _hide() {
+        $(this).closest('[data-tab]').find('[data-tab-content-active]').removeAttr('data-tab-content-active');
+        $(this).closest('[data-tab]').find('[data-tab-item-active]').removeAttr('data-tab-item-active');
+    };
+
+    return {
+        init: _init,
+        show: _show,
+        hide: _hide
+    };
+}();
+
+/*************************************************************************************
+* tree
+*************************************************************************************/
+$$$.tree = function () {
+    var _init = function _init(args) {
+        $('.tree_name-isActive').each(function (index, el) {
+            var _$parent = $(this).parents('.tree_list');
+            _$parent.addClass('tree_list-isOpen');
+            _$parent.prev('.tree_head').find('.tree_toggle').addClass('tree_toggle-isOpen');
+        });
+    };
+    var _open = function _open(args) {
+        $(this).children('.tree_head').children('.tree_toggle').addClass('tree_toggle-isOpen');
+        $(this).children('.tree_list').addClass('tree_list-isOpen');
+    };
+    var _close = function _close(args) {
+        $(this).find('.tree_toggle').removeClass('tree_toggle-isOpen');
+        $(this).find('.tree_list').removeClass('tree_list-isOpen');
+    };
+    var _toggle = function _toggle(args) {
+        var _$root = $(this).closest('.tree_item');
+        var _$btn = $(this).closest('.tree_toggle');
+        if (_$btn.hasClass('tree_toggle-isOpen')) {
+            _close.call(_$root);
+        } else {
+            _open.call(_$root);
+        }
+    };
+
+    return {
+        init: _init,
+        toggle: _toggle
+    };
+}();
+
+/*************************************************************************************
+* agree 同意しますか？のやつ
+*************************************************************************************/
+$$$.agree = function () {
+    var _change = function _change(args) {
+        var _$target = $(this).data('agree-target');
+        if ($(this).data('agree-condition') === 'yes') {
+            $('[data-agree="' + _$target + '"]').removeAttr('disabled');
+        } else {
+            $('[data-agree="' + _$target + '"]').attr('disabled', 'disabled');
+        }
+    };
+
+    return {
+        change: _change
+    };
+}();
+
+/*************************************************************************************
+* contentsModal
+*************************************************************************************/
+$$$.contentsModal = function () {
+    var _onImgLoad = function _onImgLoad(callback) {
+        if ($('.contentsModal img')[0]) {
+            $('.contentsModal img').each(function () {
+                if (this.complete || /*for IE 10-*/$(this).height() > 0) {
+                    callback.apply(this);
+                } else {
+                    $(this).on('load', function () {
+                        callback.apply(this);
+                    });
+                }
+            });
+        } else {
+            callback();
+        }
+    };
+    var _init = function _init(args) {
+        $('body').append('<div class="contentsModal"><a href="javascript: void(0);" class="contentsModal_overlay"></a><div class="contentsModal_toolBar"><a href="javascript: void(0);" class="contentsModal_close"></a></div><div class="contentsModal_contents"></div></div>');
+    };
+    var _destroy = function _destroy(args) {
+        $('.contentsModal_contents').html('');
+    };
+    var _ajax = function _ajax(url) {
+        $.ajax({
+            url: url
+        }).done(function (data) {
+            $('.contentsModal_contents').append(data);
+        }).fail(function () {
+            $('.contentsModal_contents').append('<p>読み込みエラー</p>');
+        }).always(function () {
+            _onImgLoad(function () {
+                $('.contentsModal').switchClass('contentsModal-isClose', 'contentsModal-isOpen');
+            });
+        });
+    };
+    var _html = function _html(url) {
+        $('.contentsModal_contents').append($(url).clone());
+        $('.contentsModal').switchClass('contentsModal-isClose', 'contentsModal-isOpen');
+    };
+    var _open = function _open() {
+        if (!$('.contentsModal')[0]) {
+            _init();
+        }
+        _destroy();
+        var _url = $(this).attr('href');
+        if (_url.match(/^#.+/)) {
+            _html(_url);
+        } else {
+            _ajax(_url);
+        }
+    };
+    var _close = function _close() {
+        $('.contentsModal').switchClass('contentsModal-isOpen', 'contentsModal-isClose');
+    };
+
+    return {
+        open: _open,
+        close: _close
+    };
+}();
+
+/*************************************************************************************
 * コメント
 *************************************************************************************/
 $$$.moduleName = function () {
@@ -5141,7 +8009,14 @@ $$$.moduleName = function () {
 var $$$ = $$$ || {};
 
 $(function () {
+    $$$.pcsp.init();
+    $$$.viewport.init();
     $$$.resizeend.init();
+    $$$.tab.init();
+    $('[data-agree-target]:checked').each(function (index, el) {
+        $$$.agree.change.call($(this));
+    });
+
     /*************************************************************************************
     * window load
     *************************************************************************************/
@@ -5156,6 +8031,7 @@ $(function () {
         $$$.pcsp.judge();
         $.fn.matchHeight._update();
         $$$.accordion.init();
+        $$$.tree.init();
     });
 
     /*************************************************************************************
@@ -5176,20 +8052,36 @@ $(function () {
         event.preventDefault();
         $$$.accordion.toggle.call($(this));
     });
+    $(document).on('click', '[data-tab-item]', function (event) {
+        event.preventDefault();
+        $$$.tab.show.call($(this));
+    });
+    $(document).on('click', '.tree_toggle', function (event) {
+        event.preventDefault();
+        $$$.tree.toggle.call($(this));
+    });
 
     /*************************************************************************************
     * その他イベント
     *************************************************************************************/
+    // 同意しますかのやつ
+    $(document).on('change', '[data-agree-target]', function (event) {
+        event.preventDefault();
+        $$$.agree.change.call($(this));
+    });
 
     /*************************************************************************************
-    * プラグイン
+    * モーダル
     *************************************************************************************/
     //modal
     $('[data-modal]').lightGallery({
         selector: 'this',
         download: false,
         counter: false,
-        zoom: true
+        zoom: true,
+        hash: false,
+        share: false,
+        fullScreen: false
     });
 
     //modal-gallery
@@ -5197,6 +8089,34 @@ $(function () {
         selector: $(this).find('[data-modal-gallery]'),
         download: false,
         counter: true,
-        zoom: true
+        zoom: true,
+        hash: false,
+        share: false,
+        fullScreen: false
     });
+
+    //modal-iframe
+    $('[data-modal-iframe]').attr('data-iframe', 'true').lightGallery({
+        selector: 'this',
+        download: false,
+        counter: false,
+        zoom: false,
+        hash: false,
+        share: false,
+        fullScreen: false
+    });
+
+    //modal-contents
+    $(document).on('click', '[data-modal-contents]', function (event) {
+        event.preventDefault();
+        $$$.contentsModal.open.call($(this));
+    });
+    $(document).on('click', '.contentsModal_close, .contentsModal_overlay', function (event) {
+        event.preventDefault();
+        $$$.contentsModal.close($(this));
+    });
+
+    /*************************************************************************************
+    * プラグイン
+    *************************************************************************************/
 });

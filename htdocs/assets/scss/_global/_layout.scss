@@ -1,0 +1,24 @@
+// @import '../_config';
+// @import '../_sprite';
+// @import '../_sprite_mixin';
+// @import '../_iconsMixin';
+// @import '../_plugins/_magic';
+
+/*
+大枠
+
+.wrapper
+.contents
+.main
+.side
+.sectionとか
+
+Styleguide #{$guideNum}
+============================================================*/
+.wrapper {
+	min-height: 100%;
+	background: #fff;
+}
+@media screen and (max-width: $breakpoint-sp){
+
+}

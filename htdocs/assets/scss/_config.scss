@@ -9,10 +9,10 @@ $page-width: 1200px;
 // $side-width: 210px;
 
 $font-size: (
-	'pc': 14px,
-	'sp': 13px,
+	'pc': 16px,
+	'sp': 14px,
 ) !default;
-$lineHeight: 24/14;
+$lineHeight: 30/16;
 
 //  colors
 //----------------------------------------------------------------------
@@ -21,13 +21,17 @@ $txtColor: #333;
 
 $overlayBg: rgba(#000, .8);
 
-$gray-border: #ccc;
-$gray-dot: #ccc;
-$gray-bg: #f0f0f0;
+$red: #f00;
+$red-light: lighten($red, 10%);
 
-$red: #c11227;
-$blue: #071985;
-$orange: #df6d00;
+$blue: #00f;
+$blue-light: lighten($blue, 10%);
+
+$gray: #888;
+$gray-light: lighten($gray, 10%);
+$gray-border: lighten($gray, 10%);
+
+$black: #222;
 
 
 //  font

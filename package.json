@@ -33,8 +33,11 @@
     "gulp-run-sequence": "~0.3.2",
     "gulp-sass": "^2.3.1",
     "gulp-sourcemaps": "^1.6.0",
+    "gulp-svg2png": "^2.0.2",
     "gulp-svg2ttf": "^2.0.0",
     "gulp-svgicons2svgfont": "^3.0.1",
+    "gulp-svgmin": "^1.2.4",
+    "gulp-svgstore": "^6.1.0",
     "gulp-ttf2eot": "^1.1.1",
     "gulp-ttf2woff": "^1.1.0",
     "gulp-uglify": "^2.0.1",
@@ -44,5 +47,6 @@
     "lodash": "^4.16.6",
     "require-dir": "~0.3.0",
     "ttf2eot": "^2.0.0"
-  }
+  },
+  "dependencies": {}
 }

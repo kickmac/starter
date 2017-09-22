@@ -1,0 +1,34 @@
+// @import '../_config';
+// @import '../_sprite';
+// @import '../_sprite_mixin';
+// @import '../_iconsMixin';
+// @import '../_plugins/_magic';
+
+/*
+/*レスポンシブ用　表示/非表示
+
+.(sp/tab/pc)-onlyで.(sp/tab/pc)でのみ表示
+
+.(sp/tab/pc)-hiddenで.(sp/tab/pc)でのみ非表示
+
+つまり.sp-onlyでtab/pcは非表示に、.pc-onlyでtab/spは非表示に、
+
+Markup:
+
+Styleguide #{$guideNum}
+============================================================*/
+@media screen and (max-width: $breakpoint-sp) {
+	.sp-hidden,
+	.pc-only,
+	.tab-only {
+		display: none !important;
+	}
+}
+
+@media screen and (min-width: $breakpoint-sp + 1) {
+	.pc-hidden,
+	.tab-only,
+	.sp-only {
+		display: none !important;
+	}
+}

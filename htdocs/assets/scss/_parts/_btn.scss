@@ -1,0 +1,49 @@
+// @import '../_config';
+// @import '../_sprite';
+// @import '../_sprite_mixin';
+// @import '../_iconsMixin';
+// @import '../_plugins/_magic';
+
+/*
+ボタン
+
+btn
+
+Markup:
+<ul class="btns btns-hr">
+	<li class="btns_btn"><a href="" class="btn {$modifiers}">ボタン</a></li>
+	<li class="btns_btn"><button class="btn {$modifiers}">ボタン</button></li>
+</ul><!-- /.btns -->
+
+.btn-red - $red
+.btn-redLight - $redLight
+.btn-blue - $blue
+.btn-blueLight - $blueLight
+.btn-gray - $gray
+.btn-grayLight - $grayLight
+.btn-gray-border - $gray-border
+
+Styleguide #{$guideNum}
+============================================================*/
+.btn {
+	$this: &;
+	display: block;
+	width: 100%;
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
+	color: inherit;
+
+}
+@media screen and (min-width: $breakpoint-sp +1){
+	.btn {
+		&:hover {
+		}
+	}
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.btn {
+		$this: &;
+	}
+}

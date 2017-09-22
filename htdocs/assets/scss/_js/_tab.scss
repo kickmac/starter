@@ -1,0 +1,51 @@
+// @import '../_config';
+// @import '../_sprite';
+// @import '../_sprite_mixin';
+// @import '../_iconsMixin';
+// @import '../_plugins/_magic';
+
+/*
+タブ
+
+tab
+$$$.tab
+$$$.tab.show.call($(this))
+
+Markup:
+<div data-tab>
+	<a href="javascript: void(0);" data-tab-item="0">tab1</a>
+	<a href="javascript: void(0);" data-tab-item="1">tab2</a>
+	<div data-tab-content="0">
+		<p>111111111</p>
+	</div>
+	<div data-tab-content="1">
+		<p>22222222222</p>
+	</div>
+</div>
+
+data-tab
+data-tab-item
+data-tab-item-active
+data-tab-content
+data-tab-content-active
+
+Styleguide #{$guideNum}
+============================================================*/
+[data-tab] {}
+[data-tab-item] {}
+[data-tab-item-active] {}
+[data-tab-content] {
+	height: 0;
+	opacity: 0;
+	overflow: hidden;
+	transition: opacity .4s;
+}
+[data-tab-content-active] {
+	height: auto;
+	opacity: 1;
+}
+
+
+@media screen and (max-width: $breakpoint-sp){
+
+}

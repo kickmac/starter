@@ -1,0 +1,86 @@
+// @import '../_config';
+// @import '../_sprite';
+// @import '../_sprite_mixin';
+// @import '../_iconsMixin';
+// @import '../_plugins/_magic';
+
+/*
+レスポンシブでスクロールになるテーブル
+
+scrollTable
+
+Markup:
+<div class="scrollTable">
+	<table>
+		<thead>
+			<tr>
+				<th>見出し</th>
+				<th>見出し</th>
+				<th>見出し</th>
+				<th>見出し</th>
+				<th>見出し</th>
+				<th>見出し</th>
+				<th>見出し</th>
+				<th>見出し</th>
+				<th>見出し</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>見出し</th>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+			</tr>
+			<tr>
+				<th>見出し</th>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+			</tr>
+			<tr>
+				<th>見出し</th>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+			</tr>
+		</tbody>
+	</table>
+</div><!-- /.scrollTable -->
+
+Styleguide #{$guideNum}
+============================================================*/
+.scrollTable {
+	$this: &;
+	margin: 20px 0 0;
+	& > :first-child {
+		margin-top: 0;
+	}
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.scrollTable {
+		$this: &;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		& > table {
+			width: auto;
+			white-space: nowrap;
+		}
+	}
+}

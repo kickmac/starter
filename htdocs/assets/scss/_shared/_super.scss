@@ -1,19 +1,18 @@
-// @import '_config';
-// @import '_sprite';
-// @import '_sprite_mixin';
-// @import '_iconsMixin';
-// @import './_plugins/_magic';
+// @import '../_config';
+// @import '../_sprite';
+// @import '../_sprite_mixin';
+// @import '../_iconsMixin';
+// @import '../_plugins/_magic';
 
 /*
 便利クラス
 
 マージン強制とかの便利クラス
 
-Styleguide 1.
-*/
+Markup:
 
-/* 汎用
--------------------------------------------------------------*/
+Styleguide #{$guideNum}
+============================================================*/
 @for $i from 0 through 100 {
 	.mt#{$i} {
 		margin-top: #{$i}px !important;
@@ -285,142 +284,4 @@ Styleguide 1.
 }
 .clear, .clb { clear: both; }
 
-/*
-レスポンシブ用　表示/非表示
 
-.(sp/tab/pc)-onlyで.(sp/tab/pc)でのみ表示
-
-.(sp/tab/pc)-hiddenで.(sp/tab/pc)でのみ非表示
-
-つまり.sp-onlyでtab/pcは非表示に、.pc-onlyでtab/spは非表示に、
-
-Markup:
-
-Styleguide 1.1
-============================================================*/
-@media screen and (max-width: $breakpoint-sp) {
-	.sp-hidden,
-	.pc-only,
-	.tab-only {
-		display: none !important;
-	}
-}
-
-@media screen and (min-width: $breakpoint-sp + 1) {
-	.pc-hidden,
-	.tab-only,
-	.sp-only {
-		display: none !important;
-	}
-}
-
-/*
-ページアンカーターゲット
-
-pageAnc
-
-Markup:
-<a class="pageAnc" name="anc04" id="anc04"></a>
-
-Styleguide 1.2
-============================================================*/
-.pageAnc {
-	position: relative;
-	width: 0;
-	height: 0;
-}
-
-@media screen and (max-width: $breakpoint-sp){
-	.pageAnc {
-
-	}
-}
-
-/*
-フォントサイズ
-
-.font
-
-Markup:
-<p class="{$modifiers}">フォントサイズ</p>
-
-.font-lll - lll
-.font-ll - ll
-.font-l - l
-.font-s - s
-.font-ss - ss
-.font-sss - sss
-
-Styleguide 1.3
-============================================================*/
-.font {
-	&-lll {
-		font-size: rem(map-get($font-size, 'pc') + 6, pc);
-	}
-	&-ll {
-		font-size: rem(map-get($font-size, 'pc') + 4, pc);
-	}
-	&-l {
-		font-size: rem(map-get($font-size, 'pc') + 2, pc);
-	}
-	&-s {
-		font-size: rem(map-get($font-size, 'pc') - 2, pc);
-	}
-	&-ss {
-		font-size: rem(map-get($font-size, 'pc') - 3, pc);
-	}
-	&-sss {
-		font-size: rem(map-get($font-size, 'pc') - 4, pc);
-	}
-}
-@media screen and (max-width: $breakpoint-sp){
-	.font {
-		&-lll {
-			font-size: rem(map-get($font-size, 'sp') + 6, sp);
-		}
-		&-ll {
-			font-size: rem(map-get($font-size, 'sp') + 4, sp);
-		}
-		&-l {
-			font-size: rem(map-get($font-size, 'sp') + 2, sp);
-		}
-		&-s {
-			font-size: rem(map-get($font-size, 'sp') - 2, sp);
-		}
-		&-ss {
-			font-size: rem(map-get($font-size, 'sp') - 3, sp);
-		}
-		&-sss {
-			font-size: rem(map-get($font-size, 'sp') - 4, sp);
-		}
-	}
-}
-
-/*
-フォントカラー
-
-.color
-
-Markup:
-<p class="{$modifiers}">フォントカラー</p>
-
-.color-red - red
-
-Styleguide 1.4
-============================================================*/
-.color {
-}
-
-
-/*
-アイコン付き文字
-
-.iconTxt
-
-Markup:
-<p class="{$modifiers}">アイコン付き文字</p>
-
-Styleguide 1.5
-============================================================*/
-.iconTxt {
-}
