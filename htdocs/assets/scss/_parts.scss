@@ -2,6 +2,7 @@
 @import '_sprite';
 @import '_sprite_mixin';
 @import '_iconsMixin';
+@import './_plugins/_magic';
 
 /*
 パーツ
@@ -10,3 +11,367 @@
 
 Styleguide 4.
 */
+
+/*
+見出し1
+
+headLine1
+
+Markup:
+<h1 class="headLine1">見出し1</h1>
+
+Styleguide 4.1.1
+============================================================*/
+.headLine1 {
+	$this: &;
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.headLine1 {
+		$this: &;
+	}
+}
+
+/*
+ボタン
+
+btn
+
+Markup:
+<ul class="btns btns-hr">
+	<li class="btns_btn"><a href="" class="btn {$modifiers}">ボタン</a></li>
+	<li class="btns_btn"><button class="btn {$modifiers}">ボタン</button></li>
+</ul><!-- /.btns -->
+
+.btn-red - red
+
+Styleguide 4.2.1
+============================================================*/
+.btn {
+	$this: &;
+	display: block;
+	width: 100%;
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
+	color: inherit;
+}
+@media screen and (min-width: $breakpoint-sp +1){
+	.btn {
+		&:hover {
+		}
+	}
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.btn {
+		$this: &;
+	}
+}
+
+/*
+ボタンレイアウト
+
+btns
+
+Markup:
+<ul class="btns {$modifiers}">
+	<li class="btns_btn btns_btn-s"><a href="" class="btn">ボタン小</a></li>
+	<li class="btns_btn btns_btn-m"><a href="" class="btn">ボタン中</a></li>
+	<li class="btns_btn btns_btn-l"><a href="" class="btn">ボタン大</a></li>
+</ul><!-- /.btns -->
+
+.btns-hr - 横並び
+
+Styleguide 4.2.2
+============================================================*/
+.btns {
+	$this: &;
+	margin: 20px 0 0;
+	& > :first-child {
+	}
+	&_btn {
+		&-s {
+		}
+		&-m {
+		}
+		&-l {
+		}
+	}
+
+	&-hr {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		& > :first-child {
+		}
+		#{$this}_btn {
+		}
+	}
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.btns {
+		$this: &;
+		&_btn {
+			&-s {
+				width: auto;
+			}
+			&-m {
+				width: auto;
+			}
+			&-l {
+				width: auto;
+			}
+		}
+
+		&-hr {
+			display: block;
+			& > :first-child {
+				margin-top: 0;
+			}
+			#{$this}_btn {
+				width: 100%;
+			}
+		}
+	}
+}
+
+/*
+youtubeのレスポンシブ化
+
+youtube
+
+Markup:
+<div class="youtube"><iframe src="https://www.youtube.com/embed/SV95pdw3pDw?rel=0?ecver=2" width="640" height="360" frameborder="0" allowfullscreen></iframe></div>
+
+Styleguide 4.3
+============================================================*/
+@media screen and (max-width: $breakpoint-sp){
+	.youtube {
+		position: relative;
+		padding-top: calc(100% * 360 / 640);
+		margin-top: 20px;
+		& > iframe {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+	}
+}
+
+/*
+ブロックになるテーブル
+
+responsiveTable
+
+Markup:
+<table class="responsiveTable">
+	<tbody>
+		<tr>
+			<th>あああああああああ</th>
+			<td>いいいいいいいいいいいいいいいいいいいいいいいいいいい</td>
+		</tr>
+		<tr>
+			<th>あああああああああ</th>
+			<td>いいいいいいいいいいいいいいいいいいいいいいいいいいい</td>
+		</tr>
+		<tr>
+			<th>あああああああああ</th>
+			<td>いいいいいいいいいいいいいいいいいいいいいいいいいいい</td>
+		</tr>
+		<tr>
+			<th>あああああああああ</th>
+			<td>いいいいいいいいいいいいいいいいいいいいいいいいいいい</td>
+		</tr>
+	</tbody>
+</table>
+
+Styleguide 4.4
+============================================================*/
+@media screen and (max-width: $breakpoint-sp){
+	.responsiveTable {
+		display: block;
+		& > tbody {
+			display: block;
+			border: none;
+			padding: 0;
+			& > :first-child {
+				margin-top: 0;
+			}
+			& > tr {
+				display: block;
+				border: none;
+				padding: 0;
+				& > th,
+				& > td {
+					display: block;
+					border: none;
+					padding: 0;
+				}
+			}
+			& > tr {
+				& > th {
+				}
+				& > td {
+				}
+			}
+		}
+	}
+}
+
+
+/*
+レスポンシブでdata-thが出るテーブル
+
+dataThTable
+
+Markup:
+<table class="dataThTable">
+	<thead>
+		<tr>
+			<th>見出し1</th>
+			<th>見出し2</th>
+			<th>見出し3</th>
+			<th>見出し4</th>
+			<th>見出し5</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-th="見出し1">内容1</td>
+			<td data-th="見出し2">内容2</td>
+			<td data-th="見出し3">内容3</td>
+			<td data-th="見出し4">内容4</td>
+			<td data-th="見出し5">内容5</td>
+		</tr>
+	</tbody>
+</table>
+
+Styleguide 4.5
+============================================================*/
+
+@media screen and (max-width: $breakpoint-sp){
+	.dataThTable {
+		display: block;
+		border: 1px solid $gray-border;
+		padding: 10px;
+		& > thead {
+			display: none;
+		}
+		& > tbody {
+			display: block;
+			border: none;
+			padding: 0;
+			& > :first-child {
+				padding-top: 0;
+				border-top: none;
+			}
+			& > tr {
+				display: block;
+				border: none;
+				border-top: 1px solid $gray-border;
+				padding: 10px 0;
+				& > th,
+				& > td {
+					display: block;
+					border: none;
+					padding: 0;
+				}
+				& > [data-th] {
+					display: flex;
+					flex-wrap: wrap;
+					align-items: flex-start;
+					justify-content: flex-start;
+					&:before {
+						content: attr(data-th)'：';
+						font-weight: bold;
+					}
+				}
+			}
+		}
+	}
+}
+
+/*
+レスポンシブでスクロールになるテーブル
+
+scrollTable
+
+Markup:
+<div class="scrollTable">
+	<table>
+		<thead>
+			<tr>
+				<th>見出し</th>
+				<th>見出し</th>
+				<th>見出し</th>
+				<th>見出し</th>
+				<th>見出し</th>
+				<th>見出し</th>
+				<th>見出し</th>
+				<th>見出し</th>
+				<th>見出し</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>見出し</th>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+			</tr>
+			<tr>
+				<th>見出し</th>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+			</tr>
+			<tr>
+				<th>見出し</th>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+				<td>内容内容</td>
+			</tr>
+		</tbody>
+	</table>
+</div><!-- /.scrollTable -->
+
+Styleguide 4.6
+============================================================*/
+.scrollTable {
+	$this: &;
+	margin: 20px 0 0;
+	& > :first-child {
+		margin-top: 0;
+	}
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.scrollTable {
+		$this: &;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		& > table {
+			width: auto;
+			white-space: nowrap;
+		}
+	}
+}

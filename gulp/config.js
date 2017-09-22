@@ -1,12 +1,10 @@
-var webpack = require('webpack');
-
 module.exports = {
 	src: ['./htdocs/**/*', '!./htdocs/**/_*', '!./htdocs/**/copy_*'],
-	dest: './htdocs',
+	dest: './htdocs/',
 
 	html: {
 		src: ['./htdocs/ejs/**/*.ejs', '!./htdocs/ejs/**/_*.ejs', '!./htdocs/ejs/**/copy_*.ejs'],
-		dest: './htdocs'
+		dest: './htdocs/'
 	},
 	css: {
 		src: ['./htdocs/assets/scss/**/*.scss', '!./htdocs/assets/scss/**/copy_*.scss'],
@@ -31,31 +29,25 @@ module.exports = {
 		dest: './htdocs/assets/images'
 	},
 	js: {
-		src: ['./htdocs/assets/js_src/**/*.js', '!./htdocs/assets/js_src/**/_*.js', '!./htdocs/assets/js_src/**/copy_*.js'],
-		// entry: './htdocs/assets/js_src/common.js',
+		src: [
+			'./htdocs/assets/js_src/plugins/jquery-1.11.1.min.js',
+			'./htdocs/assets/js_src/plugins/jquery.easing.1.3.js',
+
+			'./htdocs/assets/js_src/plugins/jquery.matchHeight-min.js',
+			'./htdocs/assets/js_src/plugins/jquery.resizeend.min.js',
+			'./htdocs/assets/js_src/plugins/slick.min.js',
+
+			//lightgallery
+			'./htdocs/assets/js_src/plugins/lightgallery/lightgallery.min.js',
+			'./htdocs/assets/js_src/plugins/lightgallery/lg-video.min.js',
+			'./htdocs/assets/js_src/plugins/lightgallery/lg-zoom.min.js',
+			'./htdocs/assets/js_src/plugins/lightgallery/lg-thumbnail.min.js',
+
+			//以下はpluginより後に読み込むこと
+			'./htdocs/assets/js_src/modules.js',
+			'./htdocs/assets/js_src/common.js'
+		],
 		dest: './htdocs/assets/js'
-	},
-	webpack: {
-		module: {
-			loaders: [
-				{
-					test: /\.js$/,
-					exclude: /node_modules/,
-					loader: 'babel-loader'
-				},
-			]
-		},
-		externals: {
-			jquery: 'jQuery',
-			$: 'jQuery',
-		},
-		plugins: [
-			// new webpack.optimize.UglifyJsPlugin(),
-			// new webpack.ProvidePlugin({
-			// 	jQuery: "jquery",
-			// 	$: "jquery"
-			// })
-		]
 	},
 	styleGuide: {
 		tempDir: './gulp/styleguide_template',
