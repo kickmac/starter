@@ -1,14 +1,21 @@
 @import '_config';
 @import '_sprite';
 
-@import "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css";
-@import "_plugins/_lightgallery";
-@import "_plugins/_lg-transitions";
-
 @import "_default";
+
+@import "_icons";
+@import "_font-awesome/_font-awesome";
+
 @import "_shared";
 @import "_global";
 @import "_parts";
 @import "_module";
 @import "_side";
 @import "_page";
+
+@import '_js';
+
+@import "_plugins/_lightgallery";
+@import "_plugins/_lg-transitions";
+@import "_plugins/_slick";
+

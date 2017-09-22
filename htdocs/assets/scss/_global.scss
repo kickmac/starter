@@ -1,5 +1,6 @@
 @import '_config';
 @import '_sprite';
+@import '_sprite_mixin';
 @import '_iconsMixin';
 
 /*
@@ -10,6 +11,3 @@ gNavとかgHeaderとか
 
 Styleguide 3.
 */
-.test {
-	display: flex
-}

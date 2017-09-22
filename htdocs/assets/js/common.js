@@ -7,6 +7,8 @@ $(function(){
 	* window load
 	*************************************************************************************/
 	$(window).on('load', function(event) {
+		$$$.anchorJump.init();
+		$$$.accordion.init();
 	});
 
 	/*************************************************************************************
@@ -14,7 +16,8 @@ $(function(){
 	*************************************************************************************/
 	$(window).on('resizeend', function(event) {
 		$$$.pcsp.judge();
-		$.fn.matchHeight._update()
+		$.fn.matchHeight._update();
+		$$$.accordion.reinit();
 	});
 
 	/*************************************************************************************
@@ -27,10 +30,36 @@ $(function(){
 	/*************************************************************************************
 	* クリックイベント
 	*************************************************************************************/
+	$(document).on('click', '[href^=#]', function(event) {
+		event.preventDefault();
+		$$$.smoothScroll.scroll.call($(this))
+	});
+	$(document).on('click', '[data-acc-btn], [data-acc-close]', function(event) {
+		event.preventDefault();
+		$$$.accordion.toggle.call($(this))
+	});
 
 	/*************************************************************************************
 	* その他イベント
 	*************************************************************************************/
 
+	/*************************************************************************************
+	* プラグイン
+	*************************************************************************************/
+	//modal
+	$('[data-modal]').lightGallery({
+		selector: 'this',
+		download: false,
+		counter: false,
+		zoom: true,
+	});
+
+	//modal-gallery
+	$('[data-modal-gallerys]').lightGallery({
+		selector: $(this).find('[data-modal-gallery]'),
+		download: false,
+		counter: true,
+		zoom: true,
+	});
 
 })

@@ -1,0 +1,19 @@
+
+
+//  icon 変数
+//----------------------------------------------------------------------
+$icons-circleArrow-down: "\EA01";
+$icons-circleArrow-left: "\EA02";
+$icons-circleArrow-right: "\EA03";
+$icons-circleArrow-up: "\EA04";
+
+//  font
+//----------------------------------------------------------------------
+@mixin icons($code) {
+	content: $code;
+	font-family: "icons";
+	font-size: inherit;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}

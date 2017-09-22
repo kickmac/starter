@@ -1,5 +1,6 @@
 @import '_config';
 @import '_sprite';
+@import '_sprite_mixin';
 @import '_iconsMixin';
 
 /*!
@@ -223,7 +224,7 @@ video {
 -------------------------------------------------------------*/
 html {
 	font-family: 'メイリオ',Meiryo, 'ヒラギノ角ゴ Pro','Hiragino Kaku Gothic Pro', Verdana,Arial,sans-serif,'ＭＳ Ｐゴシック';
-	font-size: 14px;
+	font-size: map-get($font-size, 'pc');
 	line-height: 1.6;
 	color: $txtColor;
 	white-space: normal;
@@ -292,6 +293,9 @@ button {
 }
 
 @media screen and (max-width: $breakpoint-sp){
+	html {
+		font-size: map-get($font-size, 'sp');
+	}
 	a,
 	button {
 		transition: none;

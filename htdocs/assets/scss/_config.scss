@@ -2,6 +2,16 @@
 //----------------------------------------------------------------------
 $breakpoint-sp: 736px;
 
+//  size
+//----------------------------------------------------------------------
+$page-width: 1200px;
+// $main-width: 960px;
+// $side-width: 210px;
+
+$font-size: (
+	'pc': 14px,
+	'sp': 13px,
+) !default;
 
 //  colors
 //----------------------------------------------------------------------
@@ -19,9 +29,14 @@ $orange: #df6d00;
 //----------------------------------------------------------------------
 @mixin fa($code) {
 	content: $code;
-	font: normal normal normal 14px/1 FontAwesome;
-	font-size: inherit;
+	font-family: FontAwesome;
 	text-rendering: auto;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+//px to rem
+@function rem($px, $key: 'pc') {
+	$value: map-get($font-size, $key);
+	@return ($px / $value) * 1rem;
 }
