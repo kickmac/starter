@@ -15,7 +15,7 @@ module.exports = function(gulp, $, config) {
 				mqpacker: true,
 				minifier: true,
 			}))
-			.pipe($.header('@charset "utf-8";'))
+			// .pipe($.header('@charset "utf-8";'))
 			.pipe($.sourcemaps.write('.'))
 			.pipe( gulp.dest(config.css.dest))
 			.pipe($.browserSync.reload({ stream:true }))

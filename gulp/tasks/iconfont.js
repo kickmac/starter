@@ -18,8 +18,19 @@ module.exports = function(gulp, $, config) {
 								fontPath: '../fonts/icons/',
 								className: 'icons'
 							}))
+							.pipe(gulp.dest(config.icons.scssDir));
+							// .on('finish', cb);
+
+						gulp.src(config.icons.tempDir + '_icons.scss')
+							.pipe($.consolidate('lodash', {
+								glyphs: glyphs,
+								fontName: fontName,
+								fontPath: '../fonts/icons/',
+								className: 'icons'
+							}))
 							.pipe(gulp.dest(config.icons.scssDir))
 							.on('finish', cb);
+
 					},
 					function(cb){
 						gulp.src(config.icons.tempDir + 'icons.scss')

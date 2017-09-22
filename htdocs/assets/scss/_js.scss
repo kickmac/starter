@@ -1,0 +1,19 @@
+@import '_config';
+@import '_sprite';
+@import '_sprite_mixin';
+@import '_iconsMixin';
+
+/*
+js関連の最低限のスタイル　基本いじらない
+============================================================*/
+
+/*============================================================
+$$$.accordion
+============================================================*/
+[data-acc] {}
+[data-acc-btn] {}
+[data-acc-body] {
+	overflow: hidden;
+	visibility: hidden;
+	transition: max-height .4s;
+}

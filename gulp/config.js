@@ -7,7 +7,7 @@ module.exports = {
 		dest: './htdocs'
 	},
 	css: {
-		src: ['./htdocs/assets/scss/**/*.scss', '!./htdocs/assets/scss/**/_*.scss', '!./htdocs/assets/scss/**/copy_*.scss'],
+		src: ['./htdocs/assets/scss/**/*.scss', '!./htdocs/assets/scss/**/copy_*.scss'],
 		dest: './htdocs/assets/styles'
 	},
 	sprite: {
