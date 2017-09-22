@@ -1,0 +1,25 @@
+// @import '../_config';
+// @import '../_sprite';
+// @import '../_sprite_mixin';
+// @import '../_iconsMixin';
+// @import '../_plugins/_magic';
+
+/*
+見出し1
+
+headLine1
+
+Markup:
+<h1 class="headLine1">見出し1</h1>
+
+Styleguide #{$guideNum}
+============================================================*/
+.headLine1 {
+	$this: &;
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.headLine1 {
+		$this: &;
+	}
+}

@@ -1,0 +1,158 @@
+// @import '../_config';
+// @import '../_sprite';
+// @import '../_sprite_mixin';
+// @import '../_iconsMixin';
+// @import '../_plugins/_magic';
+
+/*
+モーダル　ajaxでhtml
+
+contentsModal
+lightGalleryのスタイルに合わせてある
+$$$.contentsModal.open.call($(this));
+<a href="パス" data-modal-contents>オープン</a>
+
+Markup:
+<div class="contentsModal contentsModal-isOpen">
+	<a href="javascript: void(0);" class="contentsModal_overlay"></a>
+	<div class="contentsModal_toolBar"><a href="javascript: void(0);" class="contentsModal_close"></a></div>
+	<div class="contentsModal_contents">
+		<p>中身中身中身中身中身中身中身中身中身中身中身中身中身中身</p>
+		<p>中身中身中身中身中身中身中身中身中身中身中身中身中身中身</p>
+		<p>中身中身中身中身中身中身中身中身中身中身中身中身中身中身</p>
+	</div>
+</div>
+
+Styleguide #{$guideNum}
+============================================================*/
+.contentsModal {
+	$this: &;
+	z-index: -9999;
+	opacity: 0;
+	animation-duration: .4s;
+	animation-fill-mode: both;
+	cursor: default;
+	position: relative;
+	&_overlay {
+		display: block;
+		text-decoration: none;
+		color: inherit;
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: $overlayBg;
+	}
+	&_toolBar {
+		background: rgba(#000, .45);
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		width: 100%;
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-end;
+		align-items: center;
+		z-index: 100;
+	}
+	&_close {
+		display: block;
+		text-decoration: none;
+		color: #999;
+		font-size: 24px;
+		line-height: 1;
+		padding: 10px;
+		&:before {
+			font-family: lg;
+			content: '\e070';
+		}
+	}
+	&_contents {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, calc(-50% + 23px));
+		-ms-transform: translate(-50%, -50%);
+		background: #fff;
+		transition: all .4s;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+		max-height: 80%;
+		width: 80%;
+		max-width: $page-width;
+		padding: 20px;
+		& > :first-child {
+			margin-top: 0;
+		}
+	}
+
+	&-isOpen {
+		animation-name: contentsModal-isOpen;
+	}
+	&-isClose {
+		animation-name: contentsModal-isClose;
+	}
+
+}
+@keyframes contentsModal-isOpen {
+	0% {
+		opacity: 0;
+		z-index: 2000;
+	}
+	100% {
+		opacity: 1;
+		z-index: 2000;
+	}
+}
+@keyframes contentsModal-isClose {
+	0% {
+		opacity: 1;
+		z-index: 2000;
+	}
+	99% {
+		z-index: 2000;
+	}
+	100% {
+		opacity: 0;
+		z-index: -9999;
+	}
+}
+
+@media screen and (min-width: $breakpoint-sp + 1){
+	.contentsModal {
+		$this: &;
+		&_overlay {
+			&:hover {
+				opacity: 1;
+			}
+		}
+		&_contents {
+			a {
+				transition: none;
+			}
+		}
+	}
+}
+@media screen and (max-width: $breakpoint-sp){
+	.contentsModal {
+		$this: &;
+		&_overlay {
+		}
+		&_toolBar {
+		}
+		&_close {
+		}
+		&_contents {
+			width: 90%;
+			max-width: 90%;
+			padding: 10px;
+			max-height: calc(100% - 67px);
+			transform: translateX(-50%);
+			top: 57px;
+		}
+	}
+}

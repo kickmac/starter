@@ -1,0 +1,89 @@
+/*
+ボタンレイアウト
+
+btns
+
+Markup:
+<ul class="btns {$modifiers}">
+	<li class="btns_btn btns_btn-s"><a href="" class="btn">ボタン小</a></li>
+	<li class="btns_btn btns_btn-m"><a href="" class="btn">ボタン中</a></li>
+	<li class="btns_btn btns_btn-l"><a href="" class="btn">ボタン大</a></li>
+</ul><!-- /.btns -->
+
+.btns-left - 左寄せ
+.btns-right - 右寄せ
+.btns-hr - 横並び
+.btns-hr.btns-left - 横並び&左寄せ
+.btns-hr.btns-right - 横並び&右寄せ
+
+Styleguide #{$guideNum}
+============================================================*/
+.btns {
+	$this: &;
+	margin: 20px 0 0;
+	& > :first-child {
+	}
+	&_btn {
+		&-s {
+		}
+		&-m {
+		}
+		&-l {
+		}
+	}
+	&-left {
+		#{$this}_btn {
+			margin-right: auto;
+		}
+	}
+	&-right {
+		#{$this}_btn {
+			margin-left: auto;
+		}
+	}
+
+	&-hr {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		margin: 20px -10px 0;
+		& > :first-child {
+		}
+		#{$this}_btn {
+			margin: 0 10px;
+		}
+	}
+	&-hr.btns-left {
+		justify-content: flex-start;
+	}
+	&-hr.btns-right {
+		justify-content: flex-end;
+	}
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.btns {
+		$this: &;
+		&_btn {
+			&-s {
+				width: auto;
+			}
+			&-m {
+				width: auto;
+			}
+			&-l {
+				width: auto;
+			}
+		}
+
+		&-hr {
+			display: block;
+			& > :first-child {
+				margin-top: 0;
+			}
+			#{$this}_btn {
+				width: 100%;
+			}
+		}
+	}
+}

@@ -54,6 +54,22 @@ var copyIconName = (function(){
 	}
 })()
 
+var copyColorVar = (function(){
+	return function(){
+		var _copyArea = $("<textarea/>")
+			,_txt =  window.getComputedStyle($(this)[0], '::after').getPropertyValue('content');
+
+		_txt = _txt.replace(/"/g, '');
+		_txt = _txt.replace(/&-/, '');
+
+		_copyArea.text(_txt);
+		$("body").append(_copyArea);
+		_copyArea.select();
+		document.execCommand("copy");
+		_copyArea.remove();
+	}
+})()
+
 $(function() {
 	sgGNav.init();
 	$(document).on('click', '.sgGHeader_btn a', function(event) {
@@ -74,5 +90,10 @@ $(function() {
 	$(document).on('click', '.styleguideIconList_item a', function(event) {
 		event.preventDefault();
 		copyIconName.apply(this);
+	});
+
+	$(document).on('click', '.styleguideColorList_item a', function(event) {
+		event.preventDefault();
+		copyColorVar.apply(this);
 	});
 });
