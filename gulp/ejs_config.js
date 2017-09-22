@@ -1,3 +1,4 @@
 module.exports = {
-	siteName: 'サイト名'
+	delimiter: '?'
+	,siteName: 'サイト名'
 };

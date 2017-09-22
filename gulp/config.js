@@ -1,25 +1,33 @@
 module.exports = {
-	src: ['./src/**/*', '!./src/**/_*', '!./src/**/copy_*'],
-	dest: './dest',
+	src: ['./htdocs/**/*', '!./htdocs/**/_*', '!./htdocs/**/copy_*'],
+	dest: './htdocs',
 
 	html: {
-		src: ['./src/**/*.ejs', '!./src/**/_*.ejs', '!./src/**/copy_*.ejs'],
-		dest: './dest'
+		src: ['./htdocs/ejs/**/*.ejs', '!./htdocs/ejs/**/_*.ejs', '!./htdocs/ejs/**/copy_*.ejs'],
+		dest: './htdocs'
 	},
 	css: {
-		src: ['./src/assets/scss/**/*.scss', '!./src/assets/scss/**/_*.scss', '!./src/assets/scss/**/copy_*.scss'],
-		dest: './dest/assets/styles'
+		src: ['./htdocs/assets/scss/**/*.scss', '!./htdocs/assets/scss/**/_*.scss', '!./htdocs/assets/scss/**/copy_*.scss'],
+		dest: './htdocs/assets/styles'
+	},
+	sprite: {
+		src: ['./htdocs/assets/images/_sprite/*', '!./htdocs/assets/images/_sprite/_*', '!./htdocs/assets/images/_sprite/copy_*'],
+		dest: './htdocs/assets/images'
+	},
+	spriteCss: {
+		src: ['./htdocs/assets/images/_sprite/*', '!./htdocs/assets/images/_sprite/_*', '!./htdocs/assets/images/_sprite/copy_*'],
+		dest: './htdocs/assets/scss'
 	},
 	images: {
-		src: ['./src/assets/images/**/*', '!./src/assets/images/**/_*', '!./src/assets/images/**/copy_*'],
-		dest: './dest/assets/images'
+		src: ['./htdocs/assets/images/**/*', '!./htdocs/assets/images/**/_*', '!./htdocs/assets/images/**/copy_*'],
+		dest: './htdocs/assets/images'
 	},
 	js: {
-		src: ['./src/assets/js/**/*.js', '!./src/assets/js/**/_*.js', '!./src/assets/js/**/copy_*.js'],
-		dest: './dest/assets/js'
+		src: ['./htdocs/assets/js/**/*.js', '!./htdocs/assets/js/**/_*.js', '!./htdocs/assets/js/**/copy_*.js'],
+		dest: './htdocs/assets/js'
 	},
 	styleGuide: {
 		tempDir: './gulp/styleguide_template',
-		dest: './dest/_style_guide'
+		dest: './htdocs/_style_guide'
 	}
 };

@@ -5,13 +5,14 @@ var config = require('./gulp/config.js');
 
 require('./gulp/tasks/html.js')(gulp, $, config);
 require('./gulp/tasks/css.js')(gulp, $, config);
+require('./gulp/tasks/sprite.js')(gulp, $, config);
 require('./gulp/tasks/js.js')(gulp, $, config);
 require('./gulp/tasks/images.js')(gulp, $, config);
 require('./gulp/tasks/suite.js')(gulp, $, config);
 
 gulp.task('default', ['suite'], function(){
 	$.browserSync.init({
-		server: './dest/'
+		server: './htdocs/'
 	});
 	$.watch(config.html.src, function () {
 		gulp.start('html');

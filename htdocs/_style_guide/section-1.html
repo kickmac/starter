@@ -23,57 +23,49 @@
       </div>
       <nav class="sgGNav">
         <ul class="sgGNav_list">
-          {{#eachRoot}}
-          <li class="sgGNav_item"><a href="section-{{reference}}.html">{{reference}}. {{header}}</a></li>
-          {{/eachRoot}}
+          <li class="sgGNav_item"><a href="section-1.html">1. 便利クラス</a></li>
+          <li class="sgGNav_item"><a href="section-2.html">2. グローバル</a></li>
+          <li class="sgGNav_item"><a href="section-3.html">3. パーツ</a></li>
+          <li class="sgGNav_item"><a href="section-4.html">4. モジュール</a></li>
         </ul>
       </nav><!-- /.sgGNav -->
     </header><!-- /.sgGHeader -->
 
     <div class="sgContent">
-      {{#eachSection rootNumber}}
 
-      {{#if markup}}
+      <div class="sgPageHead">
+        <h2 class="sgPageHead_title">便利クラス</h2>
+        <p class="sgPageHead_txt"><p>マージン強制とかの便利クラス</p>
+</p>
+      </div><!-- /.sgPageHead -->
+
+
       <section class="sgSection">
-        <h3 class="sgSection_title"><span>{{reference}}</span> {{header}}</h3>
+        <h3 class="sgSection_title"><span>1.1</span> レスポンシブ用　表示/非表示</h3>
         <div class="sgSection_info">
-          {{#if description}}
-          <div class="sgSection_txt"> {{{description}}}</div>
+          <div class="sgSection_txt"> <p>.(sp/tab/pc)-onlyで.(sp/tab/pc)でのみ表示
+
+</p>
+<p>.(sp/tab/pc)-hiddenで.(sp/tab/pc)でのみ非表示
+
+</p>
+<p>つまり.sp-onlyでtab/pcは非表示に、.pc-onlyでtab/spは非表示に、</p>
+</div>
           <ul class="sgSection_mods">
-             {{#eachModifier}}
-            <li class="sgSection_mod">{{name}} - {{{description}}}</li>
-            {{/eachModifier}}
           </ul>
-          {{/if}}
         </div>
         <div class="sgSection_view">
           <p class="sgSection_modLabel">default</p>
-          {{modifierMarkup}}
+          Markup:
         </div>
 
-        {{#eachModifier}}
-        <div class="sgSection_view sgSection_view-mod">
-          <p class="sgSection_modLabel">{{name}}</p>
-          {{modifierMarkup}}
-        </div>
-        {{/eachModifier}}
         <p class="sgSection_codeBtn"><a href="javascript: void(0);">View Source<span></span></a></p>
         <div class="sgSection_code">
-          <pre>{{markup}}</pre>
+          <pre>Markup:</pre>
           <p class="sgSection_copyBtn"><a href="javascript: void(0);">Copy Source</a></p>
         </div>
       </section><!-- /.sgSection -->
 
-      {{else}}
-      <div class="sgPageHead">
-        <h2 class="sgPageHead_title">{{header}}</h2>
-         {{#if description}}
-        <p class="sgPageHead_txt">{{{description}}}</p>
-        {{/if}}
-      </div><!-- /.sgPageHead -->
-
-      {{/if}}
-      {{/eachSection}}
 
     </div><!-- /.sgContent -->
   </div><!-- /.sgWrapper -->
