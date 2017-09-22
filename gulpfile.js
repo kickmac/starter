@@ -12,7 +12,8 @@ require('./gulp/tasks/suite.js')(gulp, $, config);
 
 gulp.task('default', ['suite'], function(){
 	$.browserSync.init({
-		server: './htdocs/'
+		server: './htdocs/',
+		// proxy: './htdocs/'
 	});
 	$.watch(config.html.src, {
 		//usePolling: true

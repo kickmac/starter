@@ -1,17 +1,24 @@
 //  breakpoints
 //----------------------------------------------------------------------
-$breakpoint-sp: 580px;
+$breakpoint-sp: 736px;
 
 
 //  colors
 //----------------------------------------------------------------------
+$txtColor: #333;
+
+$gray-border: #ccc;
+$gray-dot: #ccc;
+$gray-bg: #f0f0f0;
+
+$red: #c11227;
 $blue: #071985;
 $orange: #df6d00;
-$red: #c11227;
 
 //  font
 //----------------------------------------------------------------------
-@mixin fa {
+@mixin fa($code) {
+	content: $code;
 	font: normal normal normal 14px/1 FontAwesome;
 	font-size: inherit;
 	text-rendering: auto;
