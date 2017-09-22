@@ -3,11 +3,6 @@ var $ = require('gulp-load-plugins')();
 $.browserSync = require('browser-sync');
 $.async = require('async');
 $.del = require('del');
-$.browserify = require('browserify');
-$.browserifyShim = require('browserify-shim');
-$.babelify = require('babelify');
-$.vinyl = require('vinyl-source-stream');
-$.buffer = require('vinyl-buffer');
 var config = require('./gulp/config.js');
 
 require('./gulp/tasks/html.js')(gulp, $, config);
@@ -26,37 +21,34 @@ gulp.task('default', ['suite'], function(){
 		// proxy: './htdocs/'
 	});
 	$.watch(config.html.src, {
-		// usePolling: true
+		usePolling: true
 	}, function () {
 		gulp.start('html');
 	});
 
 	$.watch(config.css.src, {
-		// usePolling: true
+		usePolling: true
 	}, function () {
-		$.runSequence(['css', 'kss'], 'iconsCssMove');
+		$.runSequence(['css', 'kss']/*, 'iconsCssMove'*/);
 	});
 
 	$.watch(config.icons.src, {
-		// usePolling: true
+		usePolling: true
 	}, function () {
 		gulp.start('iconfont');
 	});
 
 	$.watch(config.sprite.src, {
-		// usePolling: true
+		usePolling: true
 	}, function () {
 		gulp.start('sprite');
 	});
 	$.watch(config.js.src, {
-		// usePolling: true
+		usePolling: true
 	}, function () {
 		gulp.start('js');
 	});
-
-	$.watch(config.images.src, {
-		// usePolling: true
-	}, function () {
-		gulp.start('images');
-	});
+	// $.watch(config.images.src, function () {
+	// 	gulp.start('images');
+	// });
 });
