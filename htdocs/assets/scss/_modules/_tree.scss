@@ -1,0 +1,189 @@
+// @import '../_config';
+// @import '../_sprite';
+// @import '../_sprite_mixin';
+// @import '../_iconsMixin';
+// @import '../_plugins/_magic';
+
+/*
+カテゴリツリー
+
+tree
+
+Markup:
+<div class="tree">
+	<ul class="tree_list">
+		<li class="tree_item">
+			<div class="tree_head">
+				<a href="" class="tree_name">第一階層</a>
+				<button class="tree_toggle"></button>
+			</div>
+			<ul class="tree_list">
+				<li class="tree_item">
+					<div class="tree_head">
+						<a href="" class="tree_name">第二階層第二階層第二階層第二階層第二階層第二階層第二階層第二階層</a>
+						<button class="tree_toggle"></button>
+					</div>
+					<ul class="tree_list">
+						<li class="tree_item">
+							<div class="tree_head">
+								<a href="" class="tree_name">第三階層</a>
+							</div>
+						</li>
+						<li class="tree_item">
+							<div class="tree_head">
+								<a href="" class="tree_name">第三階層</a>
+								<button class="tree_toggle"></button>
+							</div>
+							<ul class="tree_list">
+								<li class="tree_item">
+									<div class="tree_head">
+										<a href="" class="tree_name tree_name-isActive">第四階層</a>
+									</div>
+								</li>
+								<li class="tree_item">
+									<div class="tree_head">
+										<a href="" class="tree_name">第四階層</a>
+									</div>
+								</li>
+							</ul><!-- /.tree_list -->
+						</li>
+					</ul><!-- /.tree_list -->
+				</li>
+			</ul><!-- /.tree_list -->
+		</li>
+		<li class="tree_item">
+			<div class="tree_head">
+				<a href="" class="tree_name">第一階層</a>
+				<button class="tree_toggle"></button>
+			</div>
+			<ul class="tree_list">
+				<li class="tree_item">
+					<div class="tree_head">
+						<a href="" class="tree_name">第二階層第二階層第二階層第二階層第二階層第二階層第二階層第二階層</a>
+						<button class="tree_toggle"></button>
+					</div>
+					<ul class="tree_list">
+						<li class="tree_item">
+							<div class="tree_head">
+								<a href="" class="tree_name">第三階層</a>
+							</div>
+						</li>
+						<li class="tree_item">
+							<div class="tree_head">
+								<a href="" class="tree_name">第三階層</a>
+								<button class="tree_toggle"></button>
+							</div>
+							<ul class="tree_list">
+								<li class="tree_item">
+									<div class="tree_head">
+										<a href="" class="tree_name">第四階層</a>
+									</div>
+								</li>
+								<li class="tree_item">
+									<div class="tree_head">
+										<a href="" class="tree_name">第四階層</a>
+									</div>
+								</li>
+							</ul><!-- /.tree_list -->
+						</li>
+					</ul><!-- /.tree_list -->
+				</li>
+			</ul><!-- /.tree_list -->
+		</li>
+	</ul><!-- /.tree_list -->
+</div><!-- /.tree -->
+
+Styleguide #{$guideNum}
+============================================================*/
+.tree {
+	$this: &;
+	margin: 20px 0 0;
+	&_list {
+		margin: 0 0 0 1em;
+	}
+	&_item {
+		overflow: hidden;
+		opacity: 0;
+		transition: opacity .4s;
+	}
+	&_head {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: space-between;
+	}
+	&_name {
+		text-decoration: none;
+		color: inherit;
+		flex-grow: 1;
+		flex-shrink: 1;
+		line-height: 0;
+		padding: 0 10px;
+		transition: all .4s;
+		&-isActive {
+			color: $red;
+			font-weight: bold;
+		}
+	}
+	&_toggle {
+		flex-grow: 0;
+		flex-shrink: 0;
+		// margin: 5px 0 0 10px;
+		margin: 0 0 0 10px;
+		background: #000;
+		width: 20px;
+		height: 0;
+		// height: 20px;
+		text-align: center;
+		// line-height: 20px;
+		line-height: 0;
+		transition: all .4s;
+		&:before {
+			@include fa('\f107');
+			color: #fff;
+		}
+		&-isOpen {
+			&:before {
+				content: '\f106';
+			}
+		}
+	}
+
+	/*  tree_list-isOpen
+	----------------------------------------------------------------------*/
+	& > &_list {
+		margin-left: 0;
+	}
+	& > &_list,
+	&_list-isOpen {
+		& > #{$this}_item {
+			opacity: 1;
+			& > #{$this}_head {
+				& > #{$this}_name {
+					padding: 5px 10px;
+					line-height: $lineHeight;
+				}
+				& > #{$this}_toggle {
+					margin: 5px 0 0 10px;
+					height: 20px;
+					line-height: 20px;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.tree {
+		$this: &;
+		&_list {
+		}
+		&_item {
+		}
+		&_head {
+		}
+		&_name {
+		}
+		&_toggle {
+		}
+	}
+}

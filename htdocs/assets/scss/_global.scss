@@ -1,8 +1,8 @@
-@import '_config';
-@import '_sprite';
-@import '_sprite_mixin';
-@import '_iconsMixin';
-@import './_plugins/_magic';
+// @import '_config';
+// @import '_sprite';
+// @import '_sprite_mixin';
+// @import '_iconsMixin';
+// @import './_plugins/_magic';
 
 /*
 グローバル
@@ -48,7 +48,7 @@ Styleguide 3.2
 .overlay {
 	$this: &;
 	display: block;
-	background: rgba(#000, .5);
+	background: $overlayBg;
 	position: fixed;
 	top: 0;
 	right: 0;

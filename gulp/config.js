@@ -10,6 +10,11 @@ module.exports = {
 		src: [dir + 'ejs/**/*.ejs', '!' + dir +  '/ejs/**/_*.ejs', '!' + dir +  '/ejs/**/copy_*.ejs'],
 		dest: dir
 	},
+	list: {
+		csv: dir + 'ejs/list.csv',
+		temp: './gulp/list_template/index.ejs',
+		dest: dir + '_html_list'
+	},
 	css: {
 		src: [dir + 'assets/scss/**/*.scss', '!' + dir +  '/assets/scss/**/copy_*.scss'],
 		dest: dir + 'assets/styles'
@@ -38,14 +43,9 @@ module.exports = {
 			dir + 'assets/js_src/plugins/jquery.easing.1.3.js',
 
 			dir + 'assets/js_src/plugins/jquery.matchHeight-min.js',
-			dir + 'assets/js_src/plugins/jquery.resizeend.min.js',
 			dir + 'assets/js_src/plugins/slick.min.js',
-
-			//lightgallery
-			dir + 'assets/js_src/plugins/lightgallery/lightgallery.js',
-			dir + 'assets/js_src/plugins/lightgallery/lg-video.min.js',
-			dir + 'assets/js_src/plugins/lightgallery/lg-zoom.min.js',
-			dir + 'assets/js_src/plugins/lightgallery/lg-thumbnail.min.js',
+			dir + 'assets/js_src/plugins/es6-promise.auto.js',
+			dir + 'assets/js_src/plugins/lightgallery-all.js',
 
 			//以下はpluginより後に読み込むこと
 			dir + 'assets/js_src/modules.js',

@@ -6,6 +6,7 @@ $.del = require('del');
 var config = require('./gulp/config.js');
 
 require('./gulp/tasks/html.js')(gulp, $, config);
+require('./gulp/tasks/list.js')(gulp, $, config);
 require('./gulp/tasks/css.js')(gulp, $, config);
 require('./gulp/tasks/kss.js')(gulp, $, config);
 require('./gulp/tasks/icons_css_move.js')(gulp, $, config);
@@ -21,30 +22,30 @@ gulp.task('default', ['suite'], function(){
 		// proxy: './htdocs/'
 	});
 	$.watch(config.html.src, {
-		usePolling: true
+		// usePolling: true
 	}, function () {
 		gulp.start('html');
 	});
 
 	$.watch(config.css.src, {
-		usePolling: true
+		// usePolling: true
 	}, function () {
 		$.runSequence(['css', 'kss']/*, 'iconsCssMove'*/);
 	});
 
 	$.watch(config.icons.src, {
-		usePolling: true
+		// usePolling: true
 	}, function () {
 		gulp.start('iconfont');
 	});
 
 	$.watch(config.sprite.src, {
-		usePolling: true
+		// usePolling: true
 	}, function () {
 		gulp.start('sprite');
 	});
 	$.watch(config.js.src, {
-		usePolling: true
+		// usePolling: true
 	}, function () {
 		gulp.start('js');
 	});

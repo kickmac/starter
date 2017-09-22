@@ -4,7 +4,7 @@ module.exports = function(gulp, $, config) {
 
 	gulp.task(taskName, function () {
 		return gulp.src( config.html.src)
-			.pipe($.changed(config.html.dest))
+			.pipe($.changed(config.html.dest, {extension: '.html'}))
 			.pipe($.plumber({
 				errorHandler: $.notify.onError("Error: <%= error.message %>")
 			}))
