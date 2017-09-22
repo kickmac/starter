@@ -1,3 +1,5 @@
+var webpack = require('webpack');
+
 module.exports = {
 	src: ['./htdocs/**/*', '!./htdocs/**/_*', '!./htdocs/**/copy_*'],
 	dest: './htdocs',
@@ -29,8 +31,31 @@ module.exports = {
 		dest: './htdocs/assets/images'
 	},
 	js: {
-		src: ['./htdocs/assets/js/**/*.js', '!./htdocs/assets/js/**/_*.js', '!./htdocs/assets/js/**/copy_*.js'],
+		src: ['./htdocs/assets/js_src/**/*.js', '!./htdocs/assets/js_src/**/_*.js', '!./htdocs/assets/js_src/**/copy_*.js'],
+		// entry: './htdocs/assets/js_src/common.js',
 		dest: './htdocs/assets/js'
+	},
+	webpack: {
+		module: {
+			loaders: [
+				{
+					test: /\.js$/,
+					exclude: /node_modules/,
+					loader: 'babel-loader'
+				},
+			]
+		},
+		externals: {
+			jquery: 'jQuery',
+			$: 'jQuery',
+		},
+		plugins: [
+			// new webpack.optimize.UglifyJsPlugin(),
+			// new webpack.ProvidePlugin({
+			// 	jQuery: "jquery",
+			// 	$: "jquery"
+			// })
+		]
 	},
 	styleGuide: {
 		tempDir: './gulp/styleguide_template',
