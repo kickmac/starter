@@ -6,15 +6,12 @@
 	<title><?= siteName ?></title>
 	<meta name="keywords" content="">
 	<meta name="description" content="">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="/assets/styles/styles.css">
-
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<script type="text/javascript" src="/assets/js/common.js"></script>
+<?- include('./_include/_html_header') ?>
 </head>
-<body>
+<body class="pageID-">
 	<div class="wrapper">
 <?- include('./_include/_header', {gNav: 0, gNavChild: 0}) ?>
 	</div><!-- /.wrapper -->
+	<a href="javascript: void(0);" class="overlay"></a>
 </body>
 </html>

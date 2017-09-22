@@ -2,6 +2,7 @@
 @import '_sprite';
 @import '_sprite_mixin';
 @import '_iconsMixin';
+@import './_plugins/_magic';
 
 /*!
  * ress.css • v1.1.1
@@ -229,6 +230,10 @@ html {
 	color: $txtColor;
 	white-space: normal;
 	text-align: left;
+	height: 100%;
+}
+body {
+	min-height: 100%;
 }
 h1,
 h2,
@@ -277,6 +282,11 @@ td {
 		margin-top: 0;
 	}
 }
+ul {
+	li {
+		display: block;
+	}
+}
 ul:not([class]),
 ol {
 	margin-left: 2em;
@@ -284,11 +294,13 @@ ol {
 		display: list-item;
 	}
 }
-a,
-button {
-	transition: opacity .4s;
-	&:hover {
-		opacity: .6;
+@media screen and (min-width: $breakpoint-sp + 1){
+	a,
+	button {
+		transition: opacity .4s;
+		&:hover {
+			opacity: .6;
+		}
 	}
 }
 
