@@ -3,13 +3,7 @@ module.exports = function(gulp, $, config) {
 
 	gulp.task(taskName, function () {
 		var fontName = 'icons';
-		var src = gulp.src(config.icons.svg_src);
-
-		//既存の（プラグインとかの）fontファイルコピー
-		gulp.src(config.icons.src)
-			.pipe(gulp.dest(config.icons.dest));
-
-
+		var src = gulp.src(config.icons.src);
 		//svg to svgfont
 		var svgFont = src.pipe($.svgicons2svgfont({
 				fontName: fontName
@@ -53,19 +47,19 @@ module.exports = function(gulp, $, config) {
 					$.browserSync.reload({ stream:true })
 				})
 			})
-			.pipe(gulp.dest(config.icons.svg_dest))
+			.pipe(gulp.dest(config.icons.dest))
 
 		//svgfont to ttf
 		var ttf = svgFont.pipe($.svg2ttf())
-			.pipe(gulp.dest(config.icons.svg_dest))
+			.pipe(gulp.dest(config.icons.dest))
 			.on('end', function(event) {
 				//ttf  to woff
-				gulp.src(config.icons.svg_dest + '/' + fontName + '.ttf').pipe($.ttf2woff())
-					.pipe(gulp.dest(config.icons.svg_dest))
+				gulp.src(config.icons.dest + '/' + fontName + '.ttf').pipe($.ttf2woff())
+					.pipe(gulp.dest(config.icons.dest))
 
 				//ttf  to eot
-				gulp.src(config.icons.svg_dest + '/' + fontName + '.ttf').pipe($.ttf2eot())
-					.pipe(gulp.dest(config.icons.svg_dest))
+				gulp.src(config.icons.dest + '/' + fontName + '.ttf').pipe($.ttf2eot())
+					.pipe(gulp.dest(config.icons.dest))
 			});
 
 
@@ -118,7 +112,7 @@ module.exports = function(gulp, $, config) {
 // 			},
 // 			function handleFonts (cb) {
 // 				iconStream
-// 					.pipe(gulp.dest(config.icons.svg_dest))
+// 					.pipe(gulp.dest(config.icons.dest))
 // 					.on('finish', cb);
 // 			}
 // 		], function(){

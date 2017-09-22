@@ -1,47 +1,60 @@
-var dir = process.cwd() + '/app/'
-// var dir = 'Z:/www/mock/test/'
-var srcDir = dir + 'src/';
-var destDir = dir + 'dist/';
+var dir = process.cwd() + '/htdocs/';
+// var dir = 'Z:/www/mock/aaaaaaaaaaa/';
+
 
 module.exports = {
-	src: [srcDir + '**/*', '!' + srcDir + '**/_*', '!' + srcDir + '**/copy_*'],
-	dest: destDir,
+	src: [dir + '**/*', '!' + dir +  '/**/_*', '!' + dir +  '/**/copy_*'],
+	dest: dir,
 
 	html: {
-		src: [srcDir + 'ejs/**/*.ejs', '!' + srcDir + '**/_*.ejs', '!' + srcDir + '**/copy_*.ejs'],
-		dest: destDir
+		src: [dir + 'ejs/**/*.ejs', '!' + dir +  '/ejs/**/_*.ejs', '!' + dir +  '/ejs/**/copy_*.ejs'],
+		dest: dir
 	},
 	css: {
-		src: [srcDir + 'assets/scss/**/*.scss', '!' + srcDir + 'scss/**/copy_*.scss'],
-		dest: destDir + 'assets/styles'
+		src: [dir + 'assets/scss/**/*.scss', '!' + dir +  '/assets/scss/**/copy_*.scss'],
+		dest: dir + 'assets/styles'
 	},
 	sprite: {
-		src: [srcDir + 'assets/images/_sprite/*', '!' + srcDir + 'assets/images/_sprite/_*', '!' + srcDir + 'assets/images/_sprite/copy_*'],
-		dest: destDir + 'assets/images'
+		src: [dir + 'assets/images/_sprite/*', '!' + dir +  '/assets/images/_sprite/_*', '!' + dir +  '/assets/images/_sprite/copy_*'],
+		dest: dir + 'assets/images'
 	},
 	spriteCss: {
-		src: [srcDir + 'assets/images/_sprite/*', '!' + srcDir + 'assets/images/_sprite/_*', '!' + srcDir + 'assets/images/_sprite/copy_*'],
-		dest: destDir + 'assets/scss'
+		src: [dir + 'assets/images/_sprite/*', '!' + dir +  '/assets/images/_sprite/_*', '!' + dir +  '/assets/images/_sprite/copy_*'],
+		dest: dir + 'assets/scss'
 	},
 	icons: {
 		tempDir: './gulp/iconfont_template/',
-		scssDir: srcDir + 'assets/scss/',
-		src: [srcDir + 'assets/fonts/**/*', '!' + srcDir + 'assets/fonts/**/_*', '!' + srcDir + 'assets/fonts/**/copy_*'],
-		dest: destDir + 'assets/fonts/',
-		svg_src: [srcDir + 'assets/svg/icons/**/*.svg', '!' + srcDir + 'assets/svg/icons/**/_*.svg', '!' + srcDir + 'assets/svg/icons/**/copy_*.svg'],
-		svg_dest: destDir + 'assets/fonts/icons',
+		scssDir: dir + 'assets/scss/',
+		src: [dir + 'assets/svg/icons/**/*.svg', '!' + dir +  '/assets/svg/icons/**/_*.svg', '!' + dir +  '/assets/svg/icons/**/copy_*.svg'],
+		dest: dir + 'assets/fonts/icons'
 	},
 	images: {
-		src: [srcDir + 'assets/images/**/*', '!' + srcDir + 'assets/images/**/_*', '!' + srcDir + 'assets/images/**/copy_*'],
-		dest: destDir + 'assets/images'
+		src: [dir + 'assets/images/**/*', '!' + dir +  '/assets/images/**/_*', '!' + dir +  '/assets/images/**/copy_*'],
+		dest: dir + 'assets/images'
 	},
 	js: {
-		entries: [srcDir + 'assets/js/common.js'],
-		src: srcDir + 'assets/js/',
-		dest: destDir + 'assets/js'
+		src: [
+			dir + 'assets/js_src/plugins/jquery-1.11.1.min.js',
+			dir + 'assets/js_src/plugins/jquery.easing.1.3.js',
+
+			dir + 'assets/js_src/plugins/jquery.matchHeight-min.js',
+			dir + 'assets/js_src/plugins/jquery.resizeend.min.js',
+			dir + 'assets/js_src/plugins/slick.min.js',
+
+			//lightgallery
+			dir + 'assets/js_src/plugins/lightgallery/lightgallery.js',
+			dir + 'assets/js_src/plugins/lightgallery/lg-video.min.js',
+			dir + 'assets/js_src/plugins/lightgallery/lg-zoom.min.js',
+			dir + 'assets/js_src/plugins/lightgallery/lg-thumbnail.min.js',
+
+			//以下はpluginより後に読み込むこと
+			dir + 'assets/js_src/modules.js',
+			dir + 'assets/js_src/common.js'
+		],
+		dest: dir + 'assets/js'
 	},
 	styleGuide: {
 		tempDir: './gulp/styleguide_template',
-		dest: destDir + '_style_guide'
+		dest: dir + '_style_guide'
 	}
 };
