@@ -1,5 +1,5 @@
-// var dir = process.cwd() + '/htdocs/';
-var dir = 'Z:/www/mock/gcdental.co.jp/implant/';
+var dir = process.cwd() + '/htdocs/';
+// var dir = 'Z:/www/mock/gcdental.co.jp/implant/';
 
 
 module.exports = {
@@ -28,14 +28,16 @@ module.exports = {
 		dest: dir + 'assets/scss'
 	},
 	svgSprite: {
-		src: [dir + 'assets/svg/_sprite/*', '!' + dir +  '/assets/images/_sprite/_*', '!' + dir +  '/assets/images/_sprite/copy_*'],
+		tempDir: './gulp/svgsprite_template/',
+		scssDir: dir + 'assets/scss/',
+		src: [dir + 'assets/svg_src/sprite/*', '!' + dir +  '/assets/images/svg_src/sprite/_*', '!' + dir +  '/assets/images/svg_src/sprite/copy_*'],
 		dest: dir + 'assets/svg'
 	},
 	iconFont: {
 		tempDir: './gulp/iconfont_template/',
 		scssDir: dir + 'assets/scss/',
-		src: [dir + 'assets/svg/icon-font/**/*.svg', '!' + dir +  '/assets/svg/icon-font/**/_*.svg', '!' + dir +  '/assets/svg/icon-font/**/copy_*.svg'],
-		dest: dir + 'assets/fonts/icons'
+		src: [dir + 'assets/fonts_src/icons/**/*.svg', '!' + dir +  '/assets/fonts_src/icons/**/_*.svg', '!' + dir +  '/assets/fonts_src/icons/**/copy_*.svg'],
+		dest: dir + 'assets/fonts/iconfont'
 	},
 	images: {
 		src: [dir + 'assets/images/**/*', '!' + dir +  '/assets/images/**/_*', '!' + dir +  '/assets/images/**/copy_*'],

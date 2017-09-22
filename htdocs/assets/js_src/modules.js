@@ -157,7 +157,7 @@ $$$.smoothScroll = (function() {
 	}
 	var _scroll = function(){
 		var $self = this;
-
+		_stopScroll();
 		$(window).on('wheel', function(event) {
 			_stopScroll();
 		});
@@ -253,10 +253,14 @@ $$$.overlay = (function() {
 	var _init = function(args) {}
 	var _open = function(){
 		$('.overlay').switchClass('overlay-isClose', 'overlay-isOpen');
+		$('.overlay').on('touchmove', function(event) {
+			event.preventDefault();
+		});
 	}
 	var _close = function(){
 		if ($('.overlay').hasClass('overlay-isOpen')) {
 			$('.overlay').switchClass('overlay-isOpen', 'overlay-isClose');
+			$('.overlay').off('touchmove');
 		}
 	}
 	var _toggle = function(){

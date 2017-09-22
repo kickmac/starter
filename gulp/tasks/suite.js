@@ -1,7 +1,8 @@
 module.exports = function(gulp, $, config) {
 	var taskName = 'suite';
+	var ejsConfig = require('../ejs_config.js');
 
-	gulp.task(taskName, function(){
-		return $.runSequence(['svgSprite', 'sprite', 'iconfont'], ['html', 'css', 'kss', 'js', /*'images'*/], 'iconsCssMove', 'list');
+	gulp.task(taskName, function () {
+		return $.runSequence(['html', 'svgSprite', 'iconFont', 'pageList', 'js'] , 'css')
 	});
 };

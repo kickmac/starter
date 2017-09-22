@@ -3,20 +3,22 @@
 @import '_iconsMixin';
 
 /*
-アイコンフォント
+アイコン
 
-自作アイコンフォントのリスト
+アイコンフォントとsvgスプライト
 
 Styleguide 2.
 */
 
 /*
-icons
+icon font
 
 Markup:
 <ul class="styleguideIconList"><% _.each(glyphs, function(glyph) { %>
 	<li class="styleguideIconList_item styleguideIconList_item-<%= glyph.name %>"><a href="javascript: void(0);"><span>$icons-<%= glyph.name %></span></a></li><% }); %>
 </ul>
+
+@include icons(アイコン名変数);
 
 Styleguide 2.1
 ============================================================*/
@@ -24,7 +26,6 @@ Styleguide 2.1
 	font-family: <%= fontName %>;
 	src: url(<%= fontPath %>/<%= fontName %>.eot);
 	src: url(<%= fontPath %>/<%= fontName %>.eot?#iefix) format("eot"),
-	// url(<%= fontPath %>/<%= fontName %>.woff2) format("woff2"),
 	url(<%= fontPath %>/<%= fontName %>.woff) format("woff"),
 	url(<%= fontPath %>/<%= fontName %>.ttf) format("truetype"),
 	url(<%= fontPath %>/<%= fontName %>.svg#<%= fontName %>) format("svg")
