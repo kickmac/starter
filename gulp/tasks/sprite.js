@@ -8,7 +8,7 @@ module.exports = function(gulp, $, config) {
 				imgName: 'sprite.png',
 				cssName: '_sprite.scss',
 				imgPath : '../images/sprite.png',
-				algorithm: 'diagonal', //'top-down | left-right | diagonal | alt-diagonal | binary-tree',
+				algorithm: 'binary-tree', //'top-down | left-right | diagonal | alt-diagonal | binary-tree',
 				// cssOpts: {// スプライト用SCSS内のmixinの記述をなくす
 				// 	functions: false
 				// },
@@ -19,6 +19,7 @@ module.exports = function(gulp, $, config) {
 
 		spriteData.css
 			.pipe(gulp.dest(config.spriteCss.dest));
-
+		$.browserSync.reload({ stream:true });
+		return spriteData;
 	});
 };

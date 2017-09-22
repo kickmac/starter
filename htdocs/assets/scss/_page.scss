@@ -1,2 +1,111 @@
 @import '_config';
 @import '_sprite';
+@import '_iconsMixin';
+
+.wrapper {
+	background: #a50;
+}
+.circleArrow {
+	&-up {
+		&:before {
+			@include icons($circleArrow-up);
+			display: inline-block;
+			vertical-align: middle;
+			letter-spacing: normal;
+			margin: 0 5px 0 0;
+			color: #0f0;
+		}
+	}
+	&-right {
+		&:before {
+			@include icons($circleArrow-right);
+			display: inline-block;
+			vertical-align: middle;
+			letter-spacing: normal;
+			margin: 0 5px 0 0;
+		}
+	}
+	&-down {
+		&:before {
+			@include icons($circleArrow-down);
+			display: inline-block;
+			vertical-align: middle;
+			letter-spacing: normal;
+			margin: 0 5px 0 0;
+		}
+	}
+	&-left {
+		&:before {
+			@include icons($circleArrow-left);
+			display: inline-block;
+			vertical-align: middle;
+			letter-spacing: normal;
+			margin: 0 5px 0 0;
+		}
+	}
+}
+.mail {
+	&:before {
+		@include icons($mail);
+		margin: 0 5px 0 0;
+		display: inline-block;
+		vertical-align: middle;
+		letter-spacing: normal;
+	}
+}
+.man {
+	position: relative;
+	&:before {
+		content: '';
+		position: absolute;
+		width: 1em;
+		height: 1em;
+		top: 0;
+		left: 0;
+		border-radius: 5px;
+		background: #fff;
+	}
+	&:after {
+		@include icons($man);
+		margin: 0 5px 0 0;
+		display: inline-block;
+		vertical-align: middle;
+		letter-spacing: normal;
+		position: absolute;
+		top: 0;
+		left: 0;
+		line-height: 1;
+		z-index: 1;
+	}
+}
+
+.man-rev {
+	display: inline-block;
+	vertical-align: middle;
+	background: #fff;
+	margin: 0 5px 0 0;
+	font-style: normal;
+	line-height: 1;
+	&:before {
+		@include icons($man-rev);
+		display: inline-block;
+		vertical-align: middle;
+		letter-spacing: normal;
+	}
+}
+
+.man-hr {
+	display: inline-block;
+	vertical-align: middle;
+	background: #fff;
+	margin: 0 5px 0 0;
+	font-style: normal;
+	line-height: 1;
+	&:before {
+		@include icons($man-hr);
+		display: inline-block;
+		vertical-align: middle;
+		letter-spacing: normal;
+		color: #f50;
+	}
+}

@@ -1,0 +1,66 @@
+@import '_config';
+@import '_sprite';
+@import '_iconsMixin';
+
+/*
+アイコンフォント
+
+自作アイコンフォントのリスト
+
+Styleguide 2.
+*/
+
+/*
+icons
+
+Markup:
+<ul class="styleguideIconList"><% _.each(glyphs, function(glyph) { %>
+	<li class="styleguideIconList_item styleguideIconList_item-<%= glyph.name %>"><a href="javascript: void(0);"><span>$icons-<%= glyph.name %></span></a></li><% }); %>
+</ul>
+
+Styleguide 2.1
+============================================================*/
+@font-face {
+	font-family: <%= fontName %>;
+	src: url(<%= fontPath %>/<%= fontName %>.eot);
+	src: url(<%= fontPath %>/<%= fontName %>.eot?#iefix) format("eot"),
+	url(<%= fontPath %>/<%= fontName %>.woff2) format("woff2"),
+	url(<%= fontPath %>/<%= fontName %>.woff) format("woff"),
+	url(<%= fontPath %>/<%= fontName %>.ttf) format("truetype"),
+	url(<%= fontPath %>/<%= fontName %>.svg#<%= fontName %>) format("svg")
+}
+.styleguideIconList {
+	margin: -10px 0 0 -10px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	&_item {
+		flex-basis: calc(10% - 10px);
+		margin: 10px 0 0 10px;
+		border: 1px solid #ddd;
+		border-radius: 6px;
+		display: block;
+		& > a {
+			display: block;
+			width: 100%;
+			height: 100%;
+			padding: 10px;
+			text-align: center;
+			text-decoration: none;
+			color: inherit;
+		}
+		span {
+			display: block;
+			margin: 5px 0 0;
+		}
+		<% _.each(glyphs, function(glyph) { %>
+		&-<%= glyph.name %> > a{
+			&:before {
+				@include icons($icons-<%= glyph.name %>);
+					display: inline-block;
+					vertical-align: middle;
+					letter-spacing: normal;
+			}
+		}<% }); %>
+	}
+}

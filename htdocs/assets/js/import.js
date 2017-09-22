@@ -6,6 +6,7 @@
 		'plugins/smoothScroll.js',
 		'plugins/jquery.matchHeight-min.js',
 		'plugins/jquery.resizeend.min.js',
+		'plugins/lightgallery.min.js',
 
 		//以下はpluginより後に読み込むこと
 		'modules.js',
