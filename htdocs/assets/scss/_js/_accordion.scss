@@ -1,0 +1,36 @@
+// @import '../_config';
+// @import '../_sprite';
+// @import '../_sprite_mixin';
+// @import '../_iconsMixin';
+// @import '../_plugins/_magic';
+
+/*
+アコーディオン
+
+$$$.accordion
+
+Markup:
+<dl data-acc>
+	<dt><a href="javascript: void(0);" data-acc-btn>aaaaaaaaa</a></dt>
+	<dd>
+		<div class="inner" data-acc-body>
+			<p>あああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+			<p>あああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+			<p>あああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+			<p>あああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+			<p>あああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+			<p>あああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		</div>
+		<p><a href="javascript: void(0);" data-acc-btn data-acc-btn-txt="閉じる">開く</a></p>
+	</dd>
+</dl>
+
+Styleguide #{$guideNum}
+============================================================*/
+[data-acc] {}
+[data-acc-btn] {}
+[data-acc-body] {
+	overflow: hidden;
+	visibility: hidden;
+	transition: max-height .4s;
+}

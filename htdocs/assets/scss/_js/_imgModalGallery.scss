@@ -1,0 +1,29 @@
+// @import '../_config';
+// @import '../_sprite';
+// @import '../_sprite_mixin';
+// @import '../_iconsMixin';
+// @import '../_plugins/_magic';
+
+/*
+モーダルギャラリー
+
+lightGallery
+data-modal-gallerys
+data-modal-gallery
+
+Markup:
+<ul data-modal-gallerys>
+	<li><a href="http://satyr.io/300x300/1?text=This+is+Dummy+Image!!!&texture=cross" data-modal-gallery><img src="http://satyr.io/300x300/1?text=This+is+Dummy+Image!!!&texture=cross" alt="ダミーイメージ"></a></li>
+	<li><a href="http://satyr.io/300x300/1?text=This+is+Dummy+Image!!!&texture=cross" data-modal-gallery><img src="http://satyr.io/300x300/1?text=This+is+Dummy+Image!!!&texture=cross" alt="ダミーイメージ"></a></li>
+	<li><a href="http://satyr.io/300x300/1?text=This+is+Dummy+Image!!!&texture=cross" data-modal-gallery><img src="http://satyr.io/300x300/1?text=This+is+Dummy+Image!!!&texture=cross" alt="ダミーイメージ"></a></li>
+	<li><a href="http://satyr.io/300x300/1?text=This+is+Dummy+Image!!!&texture=cross" data-modal-gallery><img src="http://satyr.io/300x300/1?text=This+is+Dummy+Image!!!&texture=cross" alt="ダミーイメージ"></a></li>
+	<li><a href="http://satyr.io/300x300/1?text=This+is+Dummy+Image!!!&texture=cross" data-modal-gallery><img src="http://satyr.io/300x300/1?text=This+is+Dummy+Image!!!&texture=cross" alt="ダミーイメージ"></a></li>
+	<li><a href="http://satyr.io/300x300/1?text=This+is+Dummy+Image!!!&texture=cross" data-modal-gallery><img src="http://satyr.io/300x300/1?text=This+is+Dummy+Image!!!&texture=cross" alt="ダミーイメージ"></a></li>
+</ul>
+
+Styleguide #{$guideNum}
+============================================================*/
+
+@media screen and (max-width: $breakpoint-sp){
+
+}

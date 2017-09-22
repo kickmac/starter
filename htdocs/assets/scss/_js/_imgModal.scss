@@ -1,0 +1,22 @@
+// @import '../_config';
+// @import '../_sprite';
+// @import '../_sprite_mixin';
+// @import '../_iconsMixin';
+// @import '../_plugins/_magic';
+
+/*
+画像モーダル
+
+lightGallery
+data-modal-gallerys
+data-modal-gallery
+
+Markup:
+<a href="http://satyr.io/300x300/1?text=This+is+Dummy+Image!!!&texture=cross" data-modal><img src="http://satyr.io/300x300/1?text=This+is+Dummy+Image!!!&texture=cross" alt="ダミーイメージ"></a>
+
+Styleguide #{$guideNum}
+============================================================*/
+
+@media screen and (max-width: $breakpoint-sp){
+
+}
