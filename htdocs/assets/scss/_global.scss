@@ -1,0 +1,96 @@
+@import '_config';
+@import '_sprite';
+@import '_sprite_mixin';
+@import '_iconsMixin';
+@import './_plugins/_magic';
+
+/*
+グローバル
+
+gNavとかgHeaderとか
+大まかなレイアウトもここに
+
+Styleguide 3.
+*/
+
+/*
+大枠
+
+.wrapper
+.contents
+.main
+.side
+.sectionとか
+
+Styleguide 3.1
+============================================================*/
+.wrapper {
+	min-height: 100%;
+	background: #fff;
+}
+@media screen and (max-width: $breakpoint-sp){
+
+}
+
+/*
+オーバーレイ
+
+overlay
+
+Markup:
+<a href="javascript: void(0);" class="overlay"></a>
+
+overlay-isOpen - open
+overlay-isClose - close
+
+Styleguide 3.2
+============================================================*/
+.overlay {
+	$this: &;
+	display: block;
+	background: rgba(#000, .5);
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -9999;
+	opacity: 0;
+	animation-duration: .4s;
+	animation-fill-mode: both;
+	cursor: default;
+	&:hover {
+		opacity: inherit;
+	}
+	&-isOpen {
+		animation-name: overlay-isOpen;
+	}
+	&-isClose {
+		animation-name: overlay-isClose;
+	}
+}
+@keyframes overlay-isOpen {
+	0% {
+		opacity: 0;
+		z-index: 1000;
+	}
+	100% {
+		opacity: 1;
+		z-index: 1000;
+	}
+}
+@keyframes overlay-isClose {
+	0% {
+		opacity: 1;
+		z-index: 1000;
+	}
+	99% {
+		z-index: 1000;
+	}
+	100% {
+		opacity: 0;
+		z-index: -9999;
+	}
+}

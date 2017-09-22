@@ -9,13 +9,6 @@ module.exports = function(gulp, $, config) {
 				errorHandler: $.notify.onError("Error: <%= error.message %>")
 			}))
 			.pipe($.ejs(ejsConfig))
-			// .pipe($.useref({
-			// 	// searchPath: config.js.src
-			// 	transformPath: function(filePath) {
-			// 		filePath = filePath.replace(/.+\{jsPath\}\//, config.js.src)
-			// 		return filePath
-			// 	}
-			// }))
 			// .pipe($.rename({
 				// extname: ".php"
 			// }))
