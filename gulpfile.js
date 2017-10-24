@@ -6,6 +6,7 @@ $.async = require('async');
 $.del = require('del');
 
 require('./gulp/tasks/html.js')(gulp, $, config);
+require('./gulp/tasks/html-all.js')(gulp, $, config);
 require('./gulp/tasks/css.js')(gulp, $, config);
 require('./gulp/tasks/js.js')(gulp, $, config);
 require('./gulp/tasks/pageList.js')(gulp, $, config);
