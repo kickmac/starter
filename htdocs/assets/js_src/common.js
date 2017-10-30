@@ -1,3 +1,15 @@
+/*
+* @requires plugins/jquery-1.11.1.min.js
+* @requires plugins/jquery.easing.1.3.js
+* @requires plugins/jquery.matchHeight-min.js
+* @requires plugins/slick.min.js
+* @requires plugins/es6-promise.auto.js
+* @requires plugins/lightgallery-all.js
+*
+* @requires modules.js
+*/
+
+
 var $$$ = $$$ || {};
 
 $(function(){

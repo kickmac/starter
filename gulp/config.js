@@ -44,19 +44,7 @@ module.exports = {
 		dest: dir + 'assets/images'
 	},
 	js: {
-		src: [
-			dir + 'assets/js_src/plugins/jquery-1.11.1.min.js',
-			dir + 'assets/js_src/plugins/jquery.easing.1.3.js',
-
-			dir + 'assets/js_src/plugins/jquery.matchHeight-min.js',
-			dir + 'assets/js_src/plugins/slick.min.js',
-			dir + 'assets/js_src/plugins/es6-promise.auto.js',
-			dir + 'assets/js_src/plugins/lightgallery-all.js',
-
-			//以下はpluginより後に読み込むこと
-			dir + 'assets/js_src/modules.js',
-			dir + 'assets/js_src/common.js'
-		],
+		src: dir + 'assets/js_src',
 		dest: dir + 'assets/js'
 	},
 	styleGuide: {
