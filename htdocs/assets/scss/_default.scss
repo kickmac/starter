@@ -265,6 +265,7 @@ button {
 select,
 textarea {
 	width: 100%;
+	min-width: 1px;
 	font-family: inherit;
 	border: 1px solid $gray-border;
 }

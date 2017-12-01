@@ -36,6 +36,7 @@ $(function(){
 		$.fn.matchHeight._update();
 		$$$.accordion.init();
 		$$$.tree.init();
+		$$$.windowInfo.init();
 	});
 
 	/*************************************************************************************
@@ -63,6 +64,19 @@ $(function(){
 	$(document).on('click', '.tree_toggle', function(event) {
 		event.preventDefault();
 		$$$.tree.toggle.call($(this))
+	});
+
+	//overlay
+	$(document).on('click', '.overlay', function(event) {
+		event.preventDefault();
+		$$$.overlay.close();
+	});
+
+	/*************************************************************************************
+	* スクロールイベント
+	*************************************************************************************/
+	$(window).on('scroll', function(event) {
+		$$$.windowInfo.init();
 	});
 
 	/*************************************************************************************
