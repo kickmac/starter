@@ -6,6 +6,62 @@ $.fn.extend({
 })
 
 var $$$ = $$$ || {};
+
+/*************************************************************************************
+* windowInfo
+*************************************************************************************/
+$$$.windowInfo = (function(){
+	var _init = function(){
+		_sc.top = $(window).scrollTop();
+		_sc.left = $(window).scrollLeft();
+	}
+	var _sc = {
+		top: 0,
+		left: 0
+	}
+
+	return {
+		init: _init,
+		sc: _sc,
+	}
+
+}())
+
+/*************************************************************************************
+* 画像preload
+*************************************************************************************/
+$$$.imagesLoadListener = (function() {
+	var _imageCollector = function(expectedCount, completeFn) {
+		var receivedCount = 0;
+		return function() {
+			receivedCount++;
+			if (receivedCount === expectedCount) {
+				completeFn();
+			}
+		};
+	};
+	var _imagesLoadListener = function(element, callback) {
+		var _images = element.find('img');
+		if (_images === null) {
+			callback();
+			return;
+		}
+		//画像の数だけloadListenerが呼ばれたらcallbackが呼ばれる;
+		var _loadListener = _imageCollector(_images.length, callback);
+		Array.prototype.forEach.call(_images, function(img) {
+			if (img.complete) {
+				_loadListener();
+			} else {
+				img.onload = _loadListener;
+			}
+		});
+	};
+
+	return {
+		listen: _imagesLoadListener,
+	}
+})();
+
 /*************************************************************************************
 * resizeend(幅のみ)
 *************************************************************************************/
