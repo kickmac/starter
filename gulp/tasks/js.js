@@ -12,7 +12,7 @@ module.exports = function(gulp, $, config) {
 			}))
 			// .pipe($.uglify())
 			.pipe( gulp.dest(config.js.dest))
-			.pipe($.browserSync.reload({ stream:true }));
+			.pipe($.browserSync.stream())
 	});
 
 };

@@ -13,6 +13,6 @@ module.exports = function(gulp, $, config) {
 				// extname: ".php"
 			// }))
 			.pipe( gulp.dest(config.html.dest))
-			.pipe($.browserSync.reload({ stream:true }));
+			.pipe($.browserSync.stream())
 	});
 };
