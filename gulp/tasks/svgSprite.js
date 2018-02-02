@@ -33,7 +33,7 @@ module.exports = function(gulp, $, config) {
 			.pipe(gulp.dest(config.svgSprite.dest))
 			.pipe($.svg2png())
 			.pipe(gulp.dest(config.svgSprite.dest))
-			.pipe($.browserSync.reload({ stream:true }));
+			.pipe($.browserSync.stream());
 	});
 
 };

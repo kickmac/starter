@@ -34,7 +34,7 @@ module.exports = function(gulp, $, config) {
 			}))
 			.pipe($.sourcemaps.write('.'))
 			.pipe( gulp.dest(config.css.dest))
-			.pipe($.browserSync.reload({ stream:true }))
+			.pipe($.browserSync.stream())
 	})
 
 	gulp.task(taskName + '-iconCssMove', function(){

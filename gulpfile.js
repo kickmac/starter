@@ -14,10 +14,54 @@ require('./gulp/tasks/iconFont.js')(gulp, $, config);
 require('./gulp/tasks/svgSprite.js')(gulp, $, config);
 require('./gulp/tasks/suite.js')(gulp, $, config);
 
-gulp.task('default', ['suite'], function(){
+gulp.task('default', [], function(){
 	$.browserSync.init({
-		server: config.dest,
+		server: {
+			baseDir: config.dest
+		},
 		// proxy: './htdocs/'
+		middleware: [
+			{
+				route: '/_api/html-all',
+				handle: function (req, res, next) {
+					gulp.start('html-all');
+					res.writeHead(301, {Location: '/_api'});
+					return next();
+				}
+			},
+			{
+				route: '/_api/css',
+				handle: function (req, res, next) {
+					gulp.start('css');
+					res.writeHead(301, {Location: '/_api'});
+					return next();
+				}
+			},
+			{
+				route: '/_api/iconfont',
+				handle: function (req, res, next) {
+					gulp.start('iconFont');
+					res.writeHead(301, {Location: '/_api'});
+					return next();
+				}
+			},
+			{
+				route: '/_api/svgsprite',
+				handle: function (req, res, next) {
+					gulp.start('svgSprite');
+					res.writeHead(301, {Location: '/_api'});
+					return next();
+				}
+			},
+			{
+				route: '/_api/js',
+				handle: function (req, res, next) {
+					gulp.start('js');
+					res.writeHead(301, {Location: '/_api'});
+					return next();
+				}
+			},
+		],
 	});
 	$.watch(config.html.src, {
 		// usePolling: true

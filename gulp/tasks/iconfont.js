@@ -30,7 +30,7 @@ module.exports = function(gulp, $, config) {
 
 					}
 				], function(){
-					$.browserSync.reload({ stream:true })
+					$.browserSync.stream()
 				})
 			})
 			.pipe(gulp.dest(config.iconFont.dest))

@@ -9,11 +9,13 @@
 btns
 
 Markup:
-<ul class="btns {$modifiers}">
-	<li class="btns_btn btns_btn-s"><a href="" class="btn">ボタン小</a></li>
-	<li class="btns_btn btns_btn-m"><a href="" class="btn">ボタン中</a></li>
-	<li class="btns_btn btns_btn-l"><a href="" class="btn">ボタン大</a></li>
-</ul><!-- /.btns -->
+<div class="btns {$modifiers}">
+	<ul class="btns_list">
+		<li class="btns_btn btns_btn-s"><a href="" class="btn">ボタン小</a></li>
+		<li class="btns_btn btns_btn-m"><a href="" class="btn">ボタン中</a></li>
+		<li class="btns_btn btns_btn-l"><a href="" class="btn">ボタン大</a></li>
+	</ul>
+</div><!-- /.btns -->
 
 .btns-left - 左寄せ
 .btns-right - 右寄せ
@@ -26,7 +28,10 @@ Styleguide #{$guideNum}
 .btns {
 	$this: &;
 	margin: 20px 0 0;
-	& > :first-child {
+	&_list {
+		& > :first-child {
+			margin-top: 0;
+		}
 	}
 	&_btn {
 		&-s {
@@ -48,14 +53,16 @@ Styleguide #{$guideNum}
 	}
 
 	&-hr {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		margin: 20px -10px 0;
 		& > :first-child {
 		}
+		#{$this}_list {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			margin: -20px 0 0 -20px;
+		}
 		#{$this}_btn {
-			margin: 0 10px;
+			margin: 20px 0 0 20px;
 		}
 	}
 	&-hr.btns-left {
@@ -69,6 +76,7 @@ Styleguide #{$guideNum}
 @media screen and (max-width: $breakpoint-sp){
 	.btns {
 		$this: &;
+		&_list {}
 		&_btn {
 			&-s {
 				width: auto;
@@ -83,11 +91,15 @@ Styleguide #{$guideNum}
 
 		&-hr {
 			display: block;
-			& > :first-child {
-				margin-top: 0;
+			#{$this}_list {
+				margin: 0;
+				& > :first-child {
+					margin-top: 0;
+				}
 			}
 			#{$this}_btn {
 				width: 100%;
+				margin: 20px 0 0;
 			}
 		}
 	}
