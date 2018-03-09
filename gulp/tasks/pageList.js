@@ -1,90 +1,38 @@
 module.exports = function(gulp, $, config) {
 	var taskName = 'pageList';
 	var ejsConfig = require('../ejs_config.js');
-
+	// var async = require('async')
 	var fs = require('fs');
-	var iconv = require('iconv-lite');
+	var path = require("path");
+	// var iconv = require('iconv-lite');
+	var cheerio  = require('cheerio');
 
-
-	//csv to json
-	var Converter = require("csvtojson").Converter;
-	var converter = new Converter({});
-	converter.on("end_parsed", function (jsonArray) {
-		createTree(jsonArray)
-	});
-
-	var tree = {};
-	var createTree = function(list){
-		$.async.each(list, function(data){
-			dirCmd = makeDir(data);
-			makeFile(data, dirCmd);
-		});
-		list = JSON.stringify(tree, null, '');
-		ejs(list)
+	_transformTree = function(data){
+		data.children.map(function(d, i, arr){
+			if (d.isFile) {
+				if (d.name === 'index.html') {
+					var _iii = arr.splice(i, 1);
+					arr.unshift(_iii[0])
+				}
+				var _dom = cheerio.load(fs.readFileSync(d.path, 'utf-8'))
+				d.name = _dom('title').text()
+			} else {
+				_transformTree(d)
+			}
+		})
+		fs.writeFile(config.dest + 'aaaaa.json', JSON.stringify(data))
+		// console.log(data);
+		_createTree(data)
 	}
 
-	var makeDir = function(data){
-		if (!data.path || data.path === '') {
-			data.path = data.url;
-		}
-		data.path = data.path.replace(/^\//, '');
-		data.path = data.path.replace(/\.html/, '');
-		data.path = data.path.replace(/\/$/, '');
-		if (data.path === 'index' || data.path === '' ) {
-			data.path = 'root'
-		}
-		data.path += '/'
-		data.path = data.path.replace(/\//g, 'Dir/');
-		data.path = data.path.replace(/\/$/, '');
-		data.path = data.path.split('/')
-		data.path = data.path.join('.children.')
-		if (data.path === 'rootDir') {
-			eval('tree.' + data.path + '= tree.' + data.path + '|| {"type": "dir", "children": {}}');
-		} else {
-			eval('tree.rootDir.children.' + data.path + '= tree.rootDir.children.' + data.path + '|| {"type": "dir", "children": {}}');
-		}
-		return data.path;
-	}
-
-	var makeFile = function(data, dirCmd){
-		var _dataUrl = data.url
-		if (!_dataUrl.match(/\.html/)) {
-			_dataUrl += 'index.html'
-		}
-		_dataUrl = _dataUrl.split('/');
-		var _fileName = _dataUrl.pop();
-		_fileName = _fileName.replace(/\.html/, 'Html');
-
-		if (data.finish === "1") {
-			data.finish = true;
-		} else {
-			data.finish = false;
-		}
-
-		var _file = "{\
-			type: 'file',\
-			url: '" + data.url + "',\
-			name:'" +  data.name + "',\
-			id:'" + data.id + "',\
-			finish:" + data.finish + ",\
-		}";
-		if (data.path === 'rootDir') {
-			eval('tree.' + data.path + '.children.' + _fileName + '=' + _file);
-		} else {
-			eval('tree.rootDir.children.' + data.path + '.children.' + _fileName + '=' + _file)
-		}
-
-	}
-
-
-	var ejs = function(json){
+	var _createTree = function(data){
 		gulp.src( config.list.temp )
 			.pipe( $.plumber({
 				errorHandler: $.notify.onError("Error: <%= error.message %>")
 			}) )
 			.pipe($.ejs(
 				{
-					jsonData: json,
+					jsonData: data,
 				},
 				{
 					delimiter: '?',
@@ -97,10 +45,28 @@ module.exports = function(gulp, $, config) {
 			.pipe($.browserSync.reload({ stream:true }));
 	}
 
-	gulp.task(taskName, function () {
-		fs.createReadStream(config.list.csv)
-			.pipe(iconv.decodeStream('SJIS'))
-			.pipe(iconv.encodeStream('UTF-8'))
-			.pipe(converter);
+	gulp.task(taskName + '-first', function () {
+		gulp.src([config.html.dest + '**/*.html', '!' + config.dest +  '/assets/**/*', '!' + config.dest +  '/_style_guide/**/*', '!' + config.dest +  '/ejs/**/*', '!' + config.dest +  '/_html_list/**/*', '!' + config.dest +  '/_api/**/*'])
+				.pipe($.fileTree({}))
+				.pipe(gulp.dest(config.dest))
+
+		var data = fs.readFileSync(config.dest + 'tree.json', 'utf-8')
+		data = data.replace(/\\\\/g, '/');
+		data = JSON.parse(data);
+		_transformTree(data)
+		_createTree(data)
 	});
+
+	gulp.task(taskName, function () {
+		var data = fs.readFileSync(config.dest + 'tree.json', 'utf-8')
+		data = data.replace(/\\\\/g, '/');
+		data = JSON.parse(data);
+		_transformTree(data)
+		_createTree(data)
+		// fs.createReadStream(config.list.csv)
+		// 	.pipe(iconv.decodeStream('SJIS'))
+		// 	.pipe(iconv.encodeStream('UTF-8'))
+		// 	.pipe(converter);
+	});
+
 };
