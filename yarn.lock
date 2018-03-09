@@ -952,6 +952,10 @@ clone-buffer@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/clone-buffer/-/clone-buffer-1.0.0.tgz#e3e25b207ac4e701af721e2cb5a16792cac3dc58"
 
+clone-function@>=1.0.1:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/clone-function/-/clone-function-1.0.6.tgz#428471937750bca9c48ecbfbc16f6e232f74a03d"
+
 clone-stats@^0.0.1, clone-stats@~0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/clone-stats/-/clone-stats-0.0.1.tgz#b88f94a82cf38b8791d58046ea4029ad88ca99d1"
@@ -1203,6 +1207,10 @@ d@1:
   resolved "https://registry.yarnpkg.com/d/-/d-1.0.0.tgz#754bb5bfe55451da69a58b94d45f4c5b0462d58f"
   dependencies:
     es5-ext "^0.10.9"
+
+dag@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/dag/-/dag-0.0.1.tgz#4368eddd9f43b19a6f36ce3cd5aed3314b777432"
 
 dashdash@^1.12.0:
   version "1.14.1"
@@ -1707,6 +1715,10 @@ for-own@^1.0.0:
   dependencies:
     for-in "^1.0.1"
 
+forestry@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/forestry/-/forestry-0.4.1.tgz#590b7fc96f63328d4a0b2823b4582fdf9580a9f0"
+
 forever-agent@~0.5.0:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/forever-agent/-/forever-agent-0.5.2.tgz#6d0e09c4921f94a27f63d3b49c5feff1ea4c5130"
@@ -2078,6 +2090,15 @@ gulp-ejs@^3.0.1:
     safe-buffer "^5.0.1"
     through2 "2.0.3"
 
+gulp-file-tree@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/gulp-file-tree/-/gulp-file-tree-0.4.1.tgz#7de4532f3969b3373e01308c4eb30afdbddd4e32"
+  dependencies:
+    forestry "^0.4.1"
+    object-merge "^2.5.1"
+    readable-stream "^1.0.27-1"
+    vinyl "^0.2.3"
+
 gulp-kss@^0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/gulp-kss/-/gulp-kss-0.0.2.tgz#55fbf2eac64d230fe240bef3b31965ade44a5487"
@@ -2136,6 +2157,14 @@ gulp-plumber@^1.1.0:
   dependencies:
     gulp-util "^3"
     through2 "^2"
+
+gulp-resolve-dependencies@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/gulp-resolve-dependencies/-/gulp-resolve-dependencies-2.2.0.tgz#ba31716fc06926613367d16b1f6b0d76237f3a52"
+  dependencies:
+    dag "0.0.1"
+    gulp-util "^3.0.3"
+    lodash "^3.1.0"
 
 gulp-run-sequence@^0.3.2:
   version "0.3.2"
@@ -2250,7 +2279,7 @@ gulp-util@3.0.7:
     through2 "^2.0.0"
     vinyl "^0.5.0"
 
-gulp-util@3.0.8, gulp-util@^3, gulp-util@^3.0, gulp-util@^3.0.0, gulp-util@^3.0.1, gulp-util@^3.0.6, gulp-util@^3.0.7, gulp-util@^3.0.8, gulp-util@~3.0.6:
+gulp-util@3.0.8, gulp-util@^3, gulp-util@^3.0, gulp-util@^3.0.0, gulp-util@^3.0.1, gulp-util@^3.0.3, gulp-util@^3.0.6, gulp-util@^3.0.7, gulp-util@^3.0.8, gulp-util@~3.0.6:
   version "3.0.8"
   resolved "https://registry.yarnpkg.com/gulp-util/-/gulp-util-3.0.8.tgz#0054e1e744502e27c04c187c3ecc505dd54bbb4f"
   dependencies:
@@ -3177,7 +3206,7 @@ lodash@4.14.1:
   version "4.14.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.14.1.tgz#5b5d0a516ad3d46e12012d7f59ad66a5659bf408"
 
-lodash@^3.10.1:
+lodash@^3.1.0, lodash@^3.10.1:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
@@ -3604,6 +3633,17 @@ object-assign@^3.0.0:
 object-component@0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/object-component/-/object-component-0.0.3.tgz#f0c69aa50efc95b866c186f400a33769cb2f1291"
+
+object-foreach@>=0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/object-foreach/-/object-foreach-0.1.2.tgz#d7421c5b40e3b6a3ef57ac624368d21d8f8d2dec"
+
+object-merge@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/object-merge/-/object-merge-2.5.1.tgz#077e8915ce38ea7294788448c5dd339e34df4227"
+  dependencies:
+    clone-function ">=1.0.1"
+    object-foreach ">=0.1.2"
 
 object-path@^0.9.0:
   version "0.9.2"
@@ -4062,7 +4102,7 @@ read-pkg@^1.0.0:
     isarray "0.0.1"
     string_decoder "~0.10.x"
 
-readable-stream@^1.0.33, readable-stream@~1.1.9:
+readable-stream@^1.0.27-1, readable-stream@^1.0.33, readable-stream@~1.1.9:
   version "1.1.14"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.1.14.tgz#7cf4c54ef648e3813084c636dd2079e166c081d9"
   dependencies:
@@ -5052,7 +5092,7 @@ vinyl@1.2.0, vinyl@1.X, vinyl@^1.1.0, vinyl@^1.2.0:
     clone-stats "^0.0.1"
     replace-ext "0.0.1"
 
-vinyl@^0.2.0, vinyl@^0.2.1:
+vinyl@^0.2.0, vinyl@^0.2.1, vinyl@^0.2.3:
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/vinyl/-/vinyl-0.2.3.tgz#bca938209582ec5a49ad538a00fa1f125e513252"
   dependencies:
