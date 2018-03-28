@@ -12,35 +12,36 @@
 		</style>
 </head>
 <body>
+<body>
 <? function write(data, childLen){ ?>
 	<? data.children.forEach(function(data, i){ ?>
 		<? if(data.isFile){ ?>
 
-			<? if(i !== 0 ){ ?>
-				</li>
-			<? } ?>
-				<li class="pageTree_item">
-					<a href="/<?- data.relative ?>">
-						<div class="pageTree_itemInner">
-							<p class="pageTree_name"><?- data.name ?></p>
-							<p class="pageTree_num"><?- data.relative ?></p>
-						</div>
-					</a>
-			<? if(i + 1 == childLen ){ ?>
-				</li>
-			<? } ?>
+			<? if(i !== 0 ){ ?></li><? } ?>
+
+			<li class="pageTree_item">
+				<a href="/<?- data.relative ?>">
+					<div class="pageTree_itemInner">
+						<p class="pageTree_name"><?- data.name ?></p>
+						<p class="pageTree_num"><?- data.relative ?></p>
+					</div>
+				</a>
+
 
 		<? } else { ?>
 			<ul class="pageTree_cate">
 				<? write(data, data.children.length) ?>
+				</li>
 			</ul>
 		<? } ?>
+
 	<? }) ?>
 <? } ?>
 
 <div class="pageTree">
 	<ul class="pageTree_cate">
 	<? write(data) ?>
+	</li>
 	</ul>
 </div>
 </body>
