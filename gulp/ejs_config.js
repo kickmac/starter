@@ -4,6 +4,7 @@ module.exports = {
 	},
 	options: {
 		delimiter: '?',
+		root: process.cwd() + '/htdocs/ejs/',
 	},
 	settings: {
 		ext: '.html',
