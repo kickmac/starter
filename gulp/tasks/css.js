@@ -3,7 +3,8 @@ module.exports = function(gulp, $, config) {
 	var css;
 	gulp.task(taskName + '-scss2css', function(){
 		var _css = gulp.src(config.css.src)
-			.pipe($.changed(config.css.dest))
+			.pipe($.cached('css'))
+			.pipe($.progeny())
 			.pipe($.plumber({
 				errorHandler: $.notify.onError("Error: <%= error.message %>")
 			}))
