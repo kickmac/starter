@@ -14,7 +14,7 @@ require('./gulp/tasks/iconFont.js')(gulp, $, config);
 require('./gulp/tasks/svgSprite.js')(gulp, $, config);
 require('./gulp/tasks/suite.js')(gulp, $, config);
 
-gulp.task('default', [], function(){
+gulp.task('default', ['html', 'css'], function(){
 	$.browserSync.init({
 		server: {
 			baseDir: config.dest
