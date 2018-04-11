@@ -21,6 +21,15 @@ Markup:
 	<div class="grid_col grid_col-5-3pc grid_col-1-1sp">PC:3/5  SP:1/1</div><!-- /.grid_col -->
 	<div class="grid_col grid_col-5-2pc grid_col-1-1sp">PC:2/5  SP:100%</div><!-- /.grid_col -->
 </div><!-- /.grid -->
+<div class="grid {$modifiers}">
+	<div class="grid_col grid_col-5-1pc grid_col-5-1sp">PC:1/5  SP:1/5</div><!-- /.grid_col -->
+	<div class="grid_col grid_col-5-1pc grid_col-5-1sp">PC:1/5  SP:1/5</div><!-- /.grid_col -->
+	<div class="grid_col grid_col-5-1pc grid_col-5-1sp">PC:1/5  SP:1/5</div><!-- /.grid_col -->
+</div><!-- /.grid -->
+
+grid-left - left
+grid-center - center
+grid-right - right
 
 Styleguide #{$guideNum}
 ============================================================*/
@@ -36,6 +45,15 @@ Styleguide #{$guideNum}
 	justify-content: flex-start;
 	align-items: stretch;
 	margin: 0 0 0 $gutter-h*-1;
+	&-left {
+		justify-content: flex-start;
+	}
+	&-center {
+		justify-content: center;
+	}
+	&-right {
+		justify-content: flex-end;
+	}
 	&_col {
 		margin: 0 0 0 $gutter-h;
 		flex-basis: auto;
