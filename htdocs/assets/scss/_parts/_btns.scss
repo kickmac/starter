@@ -34,21 +34,25 @@ Styleguide #{$guideNum}
 		}
 	}
 	&_btn {
+		margin: 20px auto 0;
 		&-s {
+			width: calc(100%/4 - 20px);
 		}
 		&-m {
+			width: calc(99%/3 - 20px);
 		}
 		&-l {
+			width: calc(100%/2 - 20px);
 		}
 	}
 	&-left {
 		#{$this}_btn {
-			margin-right: auto;
+			margin-left: 0;
 		}
 	}
 	&-right {
 		#{$this}_btn {
-			margin-left: auto;
+			margin-right: 0;
 		}
 	}
 

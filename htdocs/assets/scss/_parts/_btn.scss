@@ -9,10 +9,12 @@
 btn
 
 Markup:
-<ul class="btns btns-hr">
-	<li class="btns_btn"><a href="" class="btn {$modifiers}">ボタン</a></li>
-	<li class="btns_btn"><button class="btn {$modifiers}">ボタン</button></li>
-</ul><!-- /.btns -->
+<div class="btns btns-hr">
+	<ul class="btns_list">
+		<li class="btns_btn btns_btn-m"><a href="" class="btn {$modifiers}">ボタン</a></li>
+		<li class="btns_btn btns_btn-m"><button class="btn {$modifiers}">ボタン</button></li>
+	</ul>
+</div><!-- /.btns -->
 
 .btn-red - $red
 .btn-redLight - $redLight
