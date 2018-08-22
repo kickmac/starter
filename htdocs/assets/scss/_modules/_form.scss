@@ -7,20 +7,6 @@
 フォーム
 
 form
-<div class="form_grid">
-	<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
-</div>
-<div class="form_grid">
-	<div class="form_col form_col-4-12pc form_col-6-12sp">
-		<span>姓</span>
-		<input type="text" name="" id="">
-	</div>
-	<div class="form_col form_col-4-12pc form_col-6-12sp">
-		<span>名</span>
-		<input type="text" name="" id="">
-	</div>
-</div>
-あたりが基本形
 
 Markup:
 <form action="" class="form">
@@ -85,12 +71,12 @@ Markup:
 				<th class="form_must">リスト（縦）</th>
 				<td>
 					<ul class="form_list">
-						<li class="form_listItem"><input type="checkbox" name="" id="a01"><label for="a01">チェックボックス</label></li>
-						<li class="form_listItem"><input type="checkbox" name="" id="a02"><label for="a02">チェックボックス</label></li>
-						<li class="form_listItem"><input type="checkbox" name="" id="a03"><label for="a03">チェックボックス</label></li>
-						<li class="form_listItem"><input type="checkbox" name="" id="a04"><label for="a04">チェックボックス</label></li>
-						<li class="form_listItem"><input type="checkbox" name="" id="a05"><label for="a05">チェックボックス</label></li>
-						<li class="form_listItem"><input type="checkbox" name="" id="a06"><label for="a06">チェックボックス</label></li>
+						<li class="form_listItem"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">チェックボックス</span></label></li>
+						<li class="form_listItem"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">チェックボックス</span></label></li>
+						<li class="form_listItem"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">チェックボックス</span></label></li>
+						<li class="form_listItem"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">チェックボックス</span></label></li>
+						<li class="form_listItem"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">チェックボックス</span></label></li>
+						<li class="form_listItem"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">チェックボックス</span></label></li>
 					</ul>
 					<p class="form_txt">あいうえおあいうえお</p>
 					<p class="form_error">エラーエラーエラーエラー</p>
@@ -100,12 +86,12 @@ Markup:
 				<th class="form_must">リスト（横）</th>
 				<td>
 					<ul class="form_list form_list-hr">
-						<li class="form_listItem"><input type="radio" name="radio" id="b01"><label for="b01">ラジオボタン</label></li>
-						<li class="form_listItem"><input type="radio" name="radio" id="b02"><label for="b02">ラジオボタン</label></li>
-						<li class="form_listItem"><input type="radio" name="radio" id="b03"><label for="b03">ラジオボタン</label></li>
-						<li class="form_listItem"><input type="radio" name="radio" id="b04"><label for="b04">ラジオボタン</label></li>
-						<li class="form_listItem"><input type="radio" name="radio" id="b05"><label for="b05">ラジオボタン</label></li>
-						<li class="form_listItem"><input type="radio" name="radio" id="b06"><label for="b06">ラジオボタン</label></li>
+						<li class="form_listItem"><label class="customInput"><input type="radio" name="" id=""><span class="customInput_inner">ラジオボタン</span></label></li>
+						<li class="form_listItem"><label class="customInput"><input type="radio" name="" id=""><span class="customInput_inner">ラジオボタン</span></label></li>
+						<li class="form_listItem"><label class="customInput"><input type="radio" name="" id=""><span class="customInput_inner">ラジオボタン</span></label></li>
+						<li class="form_listItem"><label class="customInput"><input type="radio" name="" id=""><span class="customInput_inner">ラジオボタン</span></label></li>
+						<li class="form_listItem"><label class="customInput"><input type="radio" name="" id=""><span class="customInput_inner">ラジオボタン</span></label></li>
+						<li class="form_listItem"><label class="customInput"><input type="radio" name="" id=""><span class="customInput_inner">ラジオボタン</span></label></li>
 					</ul>
 					<p class="form_txt">あいうえおあいうえお</p>
 					<p class="form_error">エラーエラーエラーエラー</p>

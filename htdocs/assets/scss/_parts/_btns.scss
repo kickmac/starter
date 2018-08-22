@@ -39,7 +39,7 @@ Styleguide #{$guideNum}
 			width: calc(100%/4 - 20px);
 		}
 		&-m {
-			width: calc(99%/3 - 20px);
+			width: calc(99.9%/3 - 20px);
 		}
 		&-l {
 			width: calc(100%/2 - 20px);
@@ -70,10 +70,19 @@ Styleguide #{$guideNum}
 		}
 	}
 	&-hr.btns-left {
-		justify-content: flex-start;
+		#{$this}_list {
+			justify-content: flex-start;
+		}
 	}
 	&-hr.btns-right {
-		justify-content: flex-end;
+		#{$this}_list {
+			justify-content: flex-end;
+		}
+	}
+	&-hr.btns-spaceBetween {
+		#{$this}_list {
+			justify-content: space-between;
+		}
 	}
 }
 

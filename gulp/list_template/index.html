@@ -1,0 +1,188 @@
+<? var data  =jsonData; ?>
+<!doctype html>
+<html lang="ja">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+	<!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+		.wrapper {
+			margin: 20px 0;
+			overflow: hidden;
+		}
+		.pageTree {
+			margin-left: calc(2em - 5px);
+		}
+		.pageTree > :first-child:before {
+			content: none;
+		}
+		.pageTree > :first-child > :first-child {
+			margin-top: 0;
+		}
+		.pageTree_list {
+			margin-left: 4em;
+			position: relative;
+		}
+		.pageTree_list > :first-child {
+			margin-left: -4em;
+		}
+		.pageTree_list:before {
+			content: '';
+			display: block;
+			position: absolute;
+			left: -6em;
+			top: -55px;
+			/*top: -11px;
+			-webkit-transform: translateY(-50%);
+			-ms-transform: translateY(-50%);
+			-o-transform: translateY(-50%);
+			transform: translateY(-50%);*/
+			width: 5px;
+			height: calc(100% + 20px);
+			background: #000;
+			z-index: 1;
+		}
+		.pageTree_list > :last-child > .pageTree_list:before {
+			height: 80px;
+		}
+		.pageTree_item {
+			margin: 20px 0 0;
+			position: relative;
+		}
+		.pageTree_box {
+			position: relative;
+			display: inline-block;
+			vertical-align: middle;
+			letter-spacing: normal;
+			text-decoration: none;
+			min-width: 300px;
+			color: inherit;
+		}
+		.pageTree_box:before {
+			content: '';
+			display: block;
+			position: absolute;
+			top: 50%;
+			-webkit-transform: translateY(-50%);
+			-ms-transform: translateY(-50%);
+			-o-transform: translateY(-50%);
+			transform: translateY(-50%);
+			left: -2em;
+			width: 2em;
+			height: 5px;
+			background: #000;
+			z-index: 1;
+		}
+		.pageTree_box:after {
+			content: '';
+			display: block;
+			position: absolute;
+			left: -2em;
+			top: -11px;
+			-webkit-transform: translateY(-50%);
+			-ms-transform: translateY(-50%);
+			-o-transform: translateY(-50%);
+			transform: translateY(-50%);
+			width: 5px;
+			height: calc(100% + 22px);
+			background: #000;
+			z-index: 1;
+		}
+		.pageTree_itemInner {
+			position: relative;
+			border-radius: 10px;
+			background: #fafafa;
+			padding: 15px;
+			border: 1px solid #ccc;
+			z-index: 100;
+			-webkit-transition: all .4s;
+			-o-transition: all .4s;
+			transition: all .4s;
+		}
+		.pageTree_box:hover > .pageTree_itemInner {
+			background: #0000aa;
+			border-color: transparent;
+			color: #fff;
+		}
+		.pageTree_name {
+		}
+		.pageTree_path {
+			font-size: 12px;
+			margin: 5px 0 0;
+		}
+
+	</style>
+</head>
+<body>
+<body>
+	<div class="wrapper">
+		<div class="pageTree" id="pageTree">
+			<div class="pageTree_list">
+				<tree-item v-for="(item, index) in list.children" :item="item" :key="index"></tree-item>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		axios.get('./list.json')
+			.then(function (response) {
+				initVue(response.data);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+
+		function initVue(list){
+			console.log(list);
+
+			Vue.component('tree-dir', {
+				data: function () {
+					return {
+					}
+				},
+				props: ['item', 'children'],
+				template: '<div class="pageTree_list">\
+								<tree-item v-for="(item, index) in children" :item="item" :aaa="index"></tree-item>\
+							</div>'
+			})
+
+			Vue.component('tree-item', {
+				data: function () {
+					return {
+					}
+				},
+				props: ['item', 'aaa'],
+				template: '<div class="pageTree_item">\
+								<a :href="item.path" v-if=" item.type === \'file\' " class="pageTree_box" target="_blank">\
+									<div class="pageTree_itemInner">\
+										<p class="pageTree_name">{{item.name}}</p>\
+										<p class="pageTree_path">{{item.path}}</p>\
+									</div>\
+								</a>\
+								<tree-dir v-if=" item.type === \'directory\' " :children="item.children"></tree-dir>\
+							</div>'
+			})
+
+			new Vue({
+				el: '#pageTree',
+				data: {
+					list: list
+				}
+			})
+		}
+
+	</script>
+</body>
+</html>

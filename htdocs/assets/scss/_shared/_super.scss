@@ -245,6 +245,7 @@ Styleguide #{$guideNum}
 .vat { vertical-align: top !important; }
 .vam { vertical-align: middle !important; }
 .vab { vertical-align: bottom !important; }
+.ib { display: inline-block !important; }
 
 @media screen and (min-width: $breakpoint-sp + 1){
 	.fLeft-pc { float: left !important; }
@@ -255,6 +256,7 @@ Styleguide #{$guideNum}
 	.vat-pc { vertical-align: top !important; }
 	.vam-pc { vertical-align: middle !important; }
 	.vab-pc { vertical-align: bottom !important; }
+	.ib-pc { display: inline-block !important; }
 }
 @media screen and (max-width: $breakpoint-sp){
 	.fLeft-sp { float: left !important; }
@@ -265,6 +267,7 @@ Styleguide #{$guideNum}
 	.vat-sp { vertical-align: top !important; }
 	.vam-sp { vertical-align: middle !important; }
 	.vab-sp { vertical-align: bottom !important; }
+	.ib-sp { display: inline-block !important; }
 }
 
 
@@ -282,5 +285,4 @@ Styleguide #{$guideNum}
 	*zoom: 1;
 }
 .clear, .clb { clear: both; }
-
 

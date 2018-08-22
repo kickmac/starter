@@ -34,6 +34,7 @@ Styleguide #{$guideNum}
 	text-decoration: none;
 	cursor: pointer;
 	color: inherit;
+	border: 1px solid transparent;
 
 }
 @media screen and (min-width: $breakpoint-sp +1){
