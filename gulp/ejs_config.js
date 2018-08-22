@@ -1,10 +1,11 @@
+var config = require('./config.js');
 module.exports = {
 	data: {
 		siteName: 'サイト名',
 	},
 	options: {
 		delimiter: '?',
-		root: process.cwd() + '/htdocs/ejs/',
+		root: config.dest + '/ejs/',
 	},
 	settings: {
 		ext: '.html',

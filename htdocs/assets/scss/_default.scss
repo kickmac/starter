@@ -224,11 +224,14 @@ video {
 html {
 	font-family: 'メイリオ',Meiryo, 'ヒラギノ角ゴ Pro','Hiragino Kaku Gothic Pro', Verdana,Arial,sans-serif,'ＭＳ Ｐゴシック';
 	font-size: map-get($font-size, 'pc');
-	line-height: 1.6;
+	line-height: $lineHeight;
 	color: $txtColor;
-	white-space: normal;
+	word-break: break-all;
 	text-align: left;
 	height: 100%;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
 }
 body {
 	min-height: 100%;
@@ -243,6 +246,7 @@ h6 {
 }
 img {
 	vertical-align:bottom;
+	backface-visibility: hidden;
 }
 hr {
 	margin: 20px 0 0;
@@ -262,12 +266,25 @@ button {
 }
 [type="text"],
 [type="password"],
+[type="number"],
 select,
 textarea {
 	width: 100%;
 	min-width: 1px;
 	font-family: inherit;
 	border: 1px solid $gray-border;
+}
+[type="number"]::-webkit-outer-spin-button,
+[type="number"]::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+[type="number"] {
+	-moz-appearance:textfield;
+}
+[type="number"],
+select {
+	padding-right: 0;
 }
 textarea {
 	resize: vertical;
@@ -285,6 +302,7 @@ th,
 td {
 	text-align: left;
 	border: 1px solid $gray-border;
+	background-clip: padding-box;
 	& > :first-child {
 		margin-top: 0;
 	}
@@ -305,6 +323,7 @@ ol {
 a,
 button {
 	outline: none;
+	backface-visibility: hidden;
 }
 @media screen and (min-width: $breakpoint-sp + 1){
 	a,

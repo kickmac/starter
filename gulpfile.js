@@ -2,8 +2,8 @@ var config = require('./gulp/config.js');
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 $.browserSync = require('browser-sync');
-$.async = require('async');
 $.del = require('del');
+$.dirTree  = require('directory-tree');
 
 require('./gulp/tasks/html.js')(gulp, $, config);
 require('./gulp/tasks/html-all.js')(gulp, $, config);

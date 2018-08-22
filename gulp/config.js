@@ -11,8 +11,7 @@ module.exports = {
 		dest: dir
 	},
 	list: {
-		csv: dir + 'ejs/list.csv',
-		temp: './gulp/list_template/index.ejs',
+		temp: './gulp/list_template/index.html',
 		dest: dir + '_html_list'
 	},
 	css: {

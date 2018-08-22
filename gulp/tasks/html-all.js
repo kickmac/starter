@@ -4,8 +4,6 @@ module.exports = function(gulp, $, config) {
 
 	gulp.task(taskName, function () {
 		return gulp.src( config.html.src)
-			.pipe($.cached('html'))
-			.pipe($.progeny())
 			.pipe($.plumber({
 				errorHandler: $.notify.onError("Error: <%= error.message %>")
 			}))

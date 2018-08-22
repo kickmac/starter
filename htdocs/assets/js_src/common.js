@@ -1,5 +1,5 @@
 /*
-* @requires plugins/jquery-1.11.1.min.js
+* @requires plugins/jquery-3.3.1.min.js
 * @requires plugins/jquery.easing.1.3.js
 * @requires plugins/jquery.matchHeight-min.js
 * @requires plugins/slick.min.js
@@ -13,9 +13,11 @@
 var $$$ = $$$ || {};
 
 $(function(){
+	$$$.dummyImage.init.call($('.dam'))
 	$$$.pcsp.init();
 	$$$.viewport.init();
 	$$$.resizeend.init();
+	$$$.vhAdjust.init();
 	$$$.tab.init();
 	$('[data-agree-target]:checked').each(function (index, el) {
 		$$$.agree.change.call($(this));
@@ -38,6 +40,9 @@ $(function(){
 		$$$.tree.init();
 		$$$.windowInfo.init();
 	});
+	$(window).on('resize', function(event) {
+		$$$.vhAdjust.init();
+	});
 
 	/*************************************************************************************
 	* pcspのbreakpointが切り替わったとき
@@ -49,7 +54,7 @@ $(function(){
 	/*************************************************************************************
 	* クリックイベント
 	*************************************************************************************/
-	$(document).on('click', '[href^=#]', function(event) {
+	$(document).on('click', '[href^="#"]', function(event) {
 		event.preventDefault();
 		$$$.smoothScroll.scroll.call($(this))
 	});
@@ -86,6 +91,14 @@ $(function(){
 	$(document).on('change', '[data-agree-target]', function(event) {
 		event.preventDefault();
 		$$$.agree.change.call($(this))
+	});
+
+	//EnterでformのSubmit防止
+	$(document).on('keydown', 'input', function(event) {
+		if ((event.which && event.which === 13) || (event.keyCode && event.keyCode === 13)) {
+			event.preventDefault();
+			return false;
+		}
 	});
 
 
