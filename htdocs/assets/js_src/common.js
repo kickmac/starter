@@ -17,8 +17,10 @@ $(function(){
 	$$$.pcsp.init();
 	$$$.viewport.init();
 	$$$.resizeend.init();
+	$$$.resizeendHeight.init();
 	$$$.vhAdjust.init();
 	$$$.tab.init();
+	$$$.fileForm.init();
 	$('[data-agree-target]:checked').each(function (index, el) {
 		$$$.agree.change.call($(this));
 	});
@@ -39,6 +41,11 @@ $(function(){
 		$$$.accordion.init();
 		$$$.tree.init();
 		$$$.windowInfo.init();
+		$$$.contentsModal.replace();
+	});
+	$(window).on('load resizeendHeight', function(event) {
+		$$$.windowInfo.init();
+		$$$.contentsModal.replace();
 	});
 	$(window).on('resize', function(event) {
 		$$$.vhAdjust.init();
@@ -69,6 +76,19 @@ $(function(){
 	$(document).on('click', '.tree_toggle', function(event) {
 		event.preventDefault();
 		$$$.tree.toggle.call($(this))
+	});
+
+	//fileForm ローカルファイルを選択
+	//選択
+	$(document).on('click', '.fileForm_btn > a', function(event) {
+		event.preventDefault();
+		$$$.fileForm.add.call($(this));
+	});
+
+	//削除
+	$(document).on('click', '.fileForm_del', function(event) {
+		event.preventDefault();
+		$$$.fileForm.remove.call($(this));
 	});
 
 	//overlay
@@ -145,7 +165,7 @@ $(function(){
 	});
 	$(document).on('click', '.contentsModal_close, .contentsModal_overlay', function(event) {
 		event.preventDefault();
-		$$$.contentsModal.close($(this))
+		$$$.contentsModal.close.call($(this))
 	});
 
 	/*************************************************************************************

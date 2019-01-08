@@ -27,41 +27,39 @@ Styleguide #{$guideNum}
 	left: 0;
 	width: 100%;
 	height: 100%;
-	z-index: -9999;
-	opacity: 0;
-	animation-duration: .4s;
-	animation-fill-mode: both;
-	cursor: default;
-	&:hover {
-		opacity: inherit;
+	display: none;
+	transition: .4s opacity;
+	z-index: 1000;
+	&-enter-active {
+		display: block;
 	}
-	&-isOpen {
-		animation-name: overlay-isOpen;
-	}
-	&-isClose {
-		animation-name: overlay-isClose;
-	}
-}
-@keyframes overlay-isOpen {
-	0% {
+	&-enter {
 		opacity: 0;
-		z-index: 1000;
+		&:hover {
+			opacity: 0;
+		}
 	}
-	100% {
+	&-enter-to {
 		opacity: 1;
-		z-index: 1000;
+		&:hover {
+			opacity: 1;
+		}
 	}
-}
-@keyframes overlay-isClose {
-	0% {
+
+	&-leave-active {
+		display: block;
+	}
+	&-leave {
 		opacity: 1;
-		z-index: 1000;
+		&:hover {
+			opacity: 1;
+		}
 	}
-	99% {
-		z-index: 1000;
-	}
-	100% {
+	&-leave-to {
 		opacity: 0;
-		z-index: -9999;
+		&:hover {
+			opacity: 0;
+		}
 	}
 }
+

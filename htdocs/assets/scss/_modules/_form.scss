@@ -9,141 +9,9 @@
 form
 
 Markup:
-<form action="" class="form">
-	<table class="form_table">
-		<tbody>
-			<tr>
-				<th class="form_must">ああああ</th>
-				<td>
-					<div class="form_grid">
-						<div class="form_col form_col-1-12pc  form_col-1-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-2-12pc  form_col-2-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-3-12pc  form_col-3-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-4-12pc  form_col-4-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-5-12pc  form_col-5-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-6-12pc  form_col-6-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-7-12pc  form_col-7-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-8-12pc  form_col-8-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-9-12pc  form_col-9-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-10-12pc  form_col-10-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-11-12pc  form_col-11-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-12-12pc  form_col-12-12sp"><input type="text" name="" id=""></div>
-					</div>
-					<p class="form_txt">あいうえおあいうえお</p>
-					<p class="form_error">エラーエラーエラーエラー</p>
-				</td>
-			</tr>
-			<tr>
-				<th>ああああ</th>
-				<td>
-					<div class="form_grid">
-						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
-						<div class="form_col form_col-1-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th class="form_must">名前</th>
-				<td>
-					<div class="form_grid">
-						<div class="form_col form_col-4-12pc form_col-6-12sp">
-							<span>姓</span>
-							<input type="text" name="" id="">
-						</div>
-						<div class="form_col form_col-4-12pc form_col-6-12sp">
-							<span>名</span>
-							<input type="text" name="" id="">
-						</div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th class="form_must">リスト（縦）</th>
-				<td>
-					<ul class="form_list">
-						<li class="form_listItem"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">チェックボックス</span></label></li>
-						<li class="form_listItem"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">チェックボックス</span></label></li>
-						<li class="form_listItem"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">チェックボックス</span></label></li>
-						<li class="form_listItem"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">チェックボックス</span></label></li>
-						<li class="form_listItem"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">チェックボックス</span></label></li>
-						<li class="form_listItem"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">チェックボックス</span></label></li>
-					</ul>
-					<p class="form_txt">あいうえおあいうえお</p>
-					<p class="form_error">エラーエラーエラーエラー</p>
-				</td>
-			</tr>
-			<tr>
-				<th class="form_must">リスト（横）</th>
-				<td>
-					<ul class="form_list form_list-hr">
-						<li class="form_listItem"><label class="customInput"><input type="radio" name="" id=""><span class="customInput_inner">ラジオボタン</span></label></li>
-						<li class="form_listItem"><label class="customInput"><input type="radio" name="" id=""><span class="customInput_inner">ラジオボタン</span></label></li>
-						<li class="form_listItem"><label class="customInput"><input type="radio" name="" id=""><span class="customInput_inner">ラジオボタン</span></label></li>
-						<li class="form_listItem"><label class="customInput"><input type="radio" name="" id=""><span class="customInput_inner">ラジオボタン</span></label></li>
-						<li class="form_listItem"><label class="customInput"><input type="radio" name="" id=""><span class="customInput_inner">ラジオボタン</span></label></li>
-						<li class="form_listItem"><label class="customInput"><input type="radio" name="" id=""><span class="customInput_inner">ラジオボタン</span></label></li>
-					</ul>
-					<p class="form_txt">あいうえおあいうえお</p>
-					<p class="form_error">エラーエラーエラーエラー</p>
-				</td>
-			</tr>
-			<tr>
-				<th class="form_must">郵便番号</th>
-				<td>
-					<div class="form_grid">
-						<div class="form_col form_col-5-12pc  form_col-10-12sp">
-							<input type="text" name="" id="">
-							<span>-</span>
-							<input type="text" name="" id="">
-							<span><a href="" class="btn">検索</a></span>
-						</div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th class="form_must">セレクトボックス</th>
-				<td>
-					<div class="form_grid">
-						<div class="form_col form_col-5-12pc  form_col-6-12sp">
-							<select name="" id="">
-								<option value="">あああああああ</option>
-								<option value="">あああああああ</option>
-								<option value="">あああああああ</option>
-							</select>
-						</div>
-						<div class="form_col form_col-5-12pc  form_col-6-12sp">
-							<select name="" id="">
-								<option value="">あああああああ</option>
-								<option value="">あああああああ</option>
-								<option value="">あああああああ</option>
-							</select>
-						</div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th class="form_must">テキストエリア</th>
-				<td>
-					<div class="form_grid">
-						<div class="form_col form_col-8-12pc  form_col-12-12sp">
-							<textarea name="" id=""></textarea>
-						</div>
-					</div>
-				</td>
-			</tr>
-		</tbody>
-	</table><!-- /.form_table -->
-</form><!-- /.form -->
+{$modifiers}
+
+.btn-red - red
 
 Styleguide #{$guideNum}
 ============================================================*/
@@ -153,20 +21,18 @@ Styleguide #{$guideNum}
 	$gutter-v: 15px;
 	$gutter-hMin: 8px;
 	$gutter-vMin: 8px;
+	margin: 20px 0 0;
 	&_table {
-		table-layout: fixed;
-	}
-	th {
-		white-space: nowrap;
-		vertical-align: top;
-		padding-top: 16px;
-	}
-	td {
-		& > #{$this}_grid:first-child {
-			margin-top: $gutter-v*-1;
+		th,
+		td {
 		}
-		& > #{$this}_list-hr:first-child {
-			margin-top: $gutter-vMin*-1;
+		td {
+			& > :first-child {
+				margin-top: $gutter-v*-1;
+			}
+		}
+		th {
+
 		}
 	}
 	&_must {
@@ -181,7 +47,8 @@ Styleguide #{$guideNum}
 			color: #fff;
 			border-radius: 2px;
 			position: absolute;
-			top: 15px;
+			top: 50%;
+			transform: translateY(-50%);
 			right: 10px;
 			line-height: 1;
 			padding: 6px 5px 4px;
@@ -193,89 +60,107 @@ Styleguide #{$guideNum}
 		flex-wrap: wrap;
 		-webkit-flex-wrap: wrap;
 		flex-direction: row;
-		justify-content: flex-start;
 		align-items: center;
 		margin: $gutter-v*-1 0 0 $gutter-h*-1;
+		&-v {
+			display: block;
+			overflow: hidden;
+		}
 	}
 	&_col {
 		margin: $gutter-v 0 0 $gutter-h;
 		display: flex;
 		display: -webkit-flex;
-		justify-content: flex-start;
 		align-items: center;
-		& > span,
-		& > [type="text"],
-		& > [type="password"],
-		& > select,
-		& > textarea {
-			margin: 0 0 0 $gutter-hMin;
-		}
-		& > span {
-			flex-grow: 0;
-			flex-shrink: 0;
-		}
-		& > [type="text"],
-		& > [type="password"],
-		& > select,
-		& > textarea {
-			flex-grow: 1;
-			flex-shrink: 1;
-		}
+		line-height: 1;
 		& > :first-child {
-			margin-left: 0;
+			margin-top: 0;
+		}
+		& > * {
+			line-height: normal;
+			& + * {
+				margin-left: $gutter-hMin;
+			}
 		}
 		@for $i from 1 to 13 {
 			&-#{$i}-12 {
 				width: calc(100%/12 * #{$i} - #{$gutter-h});
 			}
 		}
+		&-btn {
+			align-self: stretch;
+		}
 	}
-	&_list {
-		padding-top: 4px;
+
+	/*  form_btn
+	----------------------------------------------------------------------*/
+	&_btn {
+		display: flex;
+		display: -webkit-flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+		text-align: center;
+		text-decoration: none;
+		color: #fff;
+		border-radius: 4px;
+		background: $gray;
+		padding: 0 20px;
+	}
+
+	/*  form_otherInput
+	----------------------------------------------------------------------*/
+	&_otherInput {
+		text-indent: 0;
+		display: inline-block;
+		vertical-align: middle;
+		letter-spacing: normal;
+		margin-left: $gutter-hMin;
+	}
+
+	/* form _imgCheck
+	----------------------------------------------------------------------*/
+	&_imgCheck {
 		& > :first-child {
 			margin-top: 0;
 		}
-		&-hr {
-			display: flex;
-			display: -webkit-flex;
-			flex-wrap: wrap;
-			-webkit-flex-wrap: wrap;
-			flex-direction: row;
-			justify-content: flex-start;
-			align-items: flex-start;
-			margin: $gutter-vMin*-1 0 0 $gutter-h*-1;
-			#{$this}_listItem {
-				margin: $gutter-vMin 0 0 $gutter-h;
-			}
+	}
+	&_imgCheckName {
+		margin: 5px 0 0;
+	}
+	&_imgCheckInner {
+		margin: 5px 0 0;
+		display: flex;
+		display: -webkit-flex;
+	}
+	&_imgCheckSide {
+		flex-grow: 0;
+		flex-shrink: 0;
+		max-width: 150px;
+		& > :first-child {
+			margin-top: 0;
 		}
 	}
-	&_listItem {
-		margin: $gutter-vMin 0 0;
+	&_imgCheckImg {
+		margin: 0;
 	}
-	&_txt {
-		margin: $gutter-vMin 0 0;
-		color: #888;
-	}
-	&_error {
-		margin: $gutter-vMin 0 0;
-		color: #f00;
-	}
-	&_zipBtn {
-		align-self: stretch;
-		& > .btn {
-			padding: 0;
-			height: 100%;
-			&:before {
-				content: '';
-				display: inline-block;
-				vertical-align: middle;
-				letter-spacing: normal;
-				width: 0;
-				height: 100%;
-			}
+	&_imgCheckBody {
+		margin: 0 0 0 $gutter-hMin;
+		align-self: center;
+		& > :first-child {
+			margin-top: 0;
 		}
+	}
+
+
+
+	/*  外部モジュール調整
+	----------------------------------------------------------------------*/
+	.customInput {
+		// line-height: normal;
 	}
 }
+
 @media screen and (min-width: $breakpoint-sp + 1){
 	.form {
 		$this: &;
@@ -283,50 +168,16 @@ Styleguide #{$guideNum}
 		$gutter-v: 15px;
 		$gutter-hMin: 8px;
 		$gutter-vMin: 8px;
-		&_table {
-		}
-		td {
-			& > #{$this}_grid:first-child {
-				margin-top: $gutter-v*-1;
-			}
-			& > #{$this}_list-hr:first-child {
-				margin-top: $gutter-vMin*-1;
-			}
-		}
-		&_must {
-		}
-		&_grid {
-			margin: $gutter-v*-1 0 0 $gutter-h*-1;
-		}
 		&_col {
-			margin: $gutter-v 0 0 $gutter-h;
 			@for $i from 1 to 13 {
 				&-#{$i}-12pc {
 					width: calc(100%/12 * #{$i} - #{$gutter-h});
 				}
 			}
 		}
-		&_set {
-		}
-		&_list {
-			&-hr {
-				margin: $gutter-vMin*-1 0 0 $gutter-h*-1;
-				#{$this}_listItem {
-					margin: $gutter-vMin 0 0 $gutter-h;
-				}
-			}
-		}
-		&_listItem {
-			margin: $gutter-vMin 0 0;
-		}
-		&_txt {
-			margin: $gutter-vMin 0 0;
-		}
-		&_error {
-			margin: $gutter-vMin 0 0;
-		}
 	}
 }
+
 @media screen and (max-width: $breakpoint-sp){
 	.form {
 		$this: &;
@@ -336,37 +187,38 @@ Styleguide #{$guideNum}
 		$gutter-vMin: 8px;
 		&_table {
 			display: block;
-		}
-		tbody,
-		tr,
-		th,
-		td {
-			display: block;
-			padding: 0;
-			border: none;
-		}
-
-		tr {
-			margin: 20px 0 0;
-		}
-		th {
-			padding: 5px;
-		}
-		td {
-			margin: $gutter-h 0 0;
-			& > #{$this}_grid:first-child {
-				margin-top: $gutter-v*-1;
+			& > thead,
+			& > tbody {
+				display: block;
+				& > :first-child {
+					margin-top: 0;
+				}
+				& > tr {
+					& > :first-child {
+						margin-top: 0;
+					}
+					display: block;
+					margin: 20px 0 0;
+					& > th,
+					& > td {
+						display: block;
+						border: none;
+						padding: 0;
+					}
+					& > th {
+						margin: 20px 0 0;
+						padding: 5px;
+					}
+					& > td {
+						margin: 10px 0 0;
+						& > :first-child {
+							margin-top: $gutter-v*-1;
+						}
+					}
+				}
 			}
-			& > #{$this}_list-hr:first-child {
-				margin-top: $gutter-vMin*-1;
-			}
 		}
-		& &_must {
-			padding-right: 45px;
-			&:after {
-				top: 5px;
-				right: 5px;
-			}
+		&_must {
 		}
 		&_grid {
 			margin: $gutter-v*-1 0 0 $gutter-h*-1;
@@ -378,25 +230,6 @@ Styleguide #{$guideNum}
 					width: calc(100%/12 * #{$i} - #{$gutter-h});
 				}
 			}
-		}
-		&_set {
-		}
-		&_list {
-			&-hr {
-				margin: $gutter-vMin*-1 0 0 $gutter-h*-1;
-				#{$this}_listItem {
-					margin: $gutter-vMin 0 0 $gutter-h;
-				}
-			}
-		}
-		&_listItem {
-			margin: $gutter-vMin 0 0;
-		}
-		&_txt {
-			margin: $gutter-vMin 0 0;
-		}
-		&_error {
-			margin: $gutter-vMin 0 0;
 		}
 	}
 }
