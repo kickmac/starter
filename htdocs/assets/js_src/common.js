@@ -26,39 +26,6 @@ $(function(){
 	});
 
 	/*************************************************************************************
-	* window load
-	*************************************************************************************/
-	$(window).on('load', function(event) {
-		$$$.anchorJump.init();
-	});
-
-	/*************************************************************************************
-	* window resize
-	*************************************************************************************/
-	$(window).on('load resizeend', function(event) {
-		$$$.pcsp.judge();
-		$.fn.matchHeight._update();
-		$$$.accordion.init();
-		$$$.tree.init();
-		$$$.windowInfo.init();
-		$$$.contentsModal.replace();
-	});
-	$(window).on('load resizeendHeight', function(event) {
-		$$$.windowInfo.init();
-		$$$.contentsModal.replace();
-	});
-	$(window).on('resize', function(event) {
-		$$$.vhAdjust.init();
-	});
-
-	/*************************************************************************************
-	* pcspのbreakpointが切り替わったとき
-	*************************************************************************************/
-	$(window).on('pcsp.changed', function(event, mode) {
-		// console.log($$$.pcsp.mode)
-	});
-
-	/*************************************************************************************
 	* クリックイベント
 	*************************************************************************************/
 	$(document).on('click', '[href^="#"]', function(event) {
@@ -172,3 +139,37 @@ $(function(){
 	* プラグイン
 	*************************************************************************************/
 })
+
+/*************************************************************************************
+* window load
+*************************************************************************************/
+$(window).on('load', function(event) {
+	$$$.anchorJump.init();
+});
+
+/*************************************************************************************
+* window resize
+*************************************************************************************/
+$(window).on('load resizeend', function(event) {
+	$$$.pcsp.judge();
+	$.fn.matchHeight._update();
+	$$$.accordion.init();
+	$$$.tree.init();
+	$$$.windowInfo.init();
+	$$$.contentsModal.replace();
+	$$$.objFitPolyfill.init();
+});
+$(window).on('load resizeendHeight', function(event) {
+	$$$.windowInfo.init();
+	$$$.contentsModal.replace();
+});
+$(window).on('resize', function(event) {
+	$$$.vhAdjust.init();
+});
+
+/*************************************************************************************
+* pcspのbreakpointが切り替わったとき
+*************************************************************************************/
+$(window).on('pcsp.changed', function(event, mode) {
+	// console.log($$$.pcsp.mode)
+});

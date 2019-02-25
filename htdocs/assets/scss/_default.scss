@@ -97,7 +97,9 @@ sup {
 	top: -0.5em;
 }
 
-input {
+[type="text"],
+[type="number"],
+[type="password"] {
 	border-radius: 0;
 }
 button,
@@ -119,7 +121,10 @@ textarea {
 }
 
 button,
-input,
+[type="button"],
+[type="reset"],
+[type="submit"]
+[role="button"],
 optgroup,
 select,
 textarea {
@@ -160,7 +165,10 @@ select {
 }
 /* Remove the default button styling in all browsers */
 button,
-input,
+[type="button"],
+[type="reset"],
+[type="submit"]
+[role="button"],
 select,
 textarea {
 	background-color: transparent;

@@ -1,6 +1,6 @@
 module.exports = function(gulp, $, config) {
 	var taskName = 'html-all';
-	var ejsConfig = require('../ejs_config.js');
+	var ejsConfig = require('../ejs_config.js')(config);
 
 	gulp.task(taskName, function () {
 		return gulp.src( config.html.src)

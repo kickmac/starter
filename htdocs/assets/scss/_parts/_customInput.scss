@@ -18,9 +18,17 @@ Styleguide #{$guideNum}
 	$this: &;
 	position: relative;
 	overflow: hidden;
+	display: inline-block;
+	vertical-align: middle;
+	letter-spacing: normal;
 	&_inner {
 		overflow: hidden;
 		position: relative;
+		line-height: 1;
+		vertical-align: middle;
+		img {
+			pointer-events: none;
+		}
 	}
 	& > [type="checkbox"],
 	& > [type="radio"] {

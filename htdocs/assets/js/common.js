@@ -3183,27 +3183,27 @@ jQuery.extend(jQuery.easing, {
     /**
       `Promise.resolve` returns a promise that will become resolved with the
       passed `value`. It is shorthand for the following:
-
+    
       ```javascript
       let promise = new Promise(function(resolve, reject){
         resolve(1);
       });
-
+    
       promise.then(function(value){
         // value === 1
       });
       ```
-
+    
       Instead of writing the above, your code now simply becomes the following:
-
+    
       ```javascript
       let promise = Promise.resolve(1);
-
+    
       promise.then(function(value){
         // value === 1
       });
       ```
-
+    
       @method resolve
       @static
       @param {Any} value value that the returned promise will be resolved with
@@ -3581,39 +3581,39 @@ jQuery.extend(jQuery.easing, {
       is fulfilled with an array of fulfillment values for the passed promises, or
       rejected with the reason of the first passed promise to be rejected. It casts all
       elements of the passed iterable to promises as it runs this algorithm.
-
+    
       Example:
-
+    
       ```javascript
       let promise1 = resolve(1);
       let promise2 = resolve(2);
       let promise3 = resolve(3);
       let promises = [ promise1, promise2, promise3 ];
-
+    
       Promise.all(promises).then(function(array){
         // The array here would be [ 1, 2, 3 ];
       });
       ```
-
+    
       If any of the `promises` given to `all` are rejected, the first promise
       that is rejected will be given as an argument to the returned promises's
       rejection handler. For example:
-
+    
       Example:
-
+    
       ```javascript
       let promise1 = resolve(1);
       let promise2 = reject(new Error("2"));
       let promise3 = reject(new Error("3"));
       let promises = [ promise1, promise2, promise3 ];
-
+    
       Promise.all(promises).then(function(array){
         // Code here never runs because there are rejected promises!
       }, function(error) {
         // error.message === "2"
       });
       ```
-
+    
       @method all
       @static
       @param {Array} entries array of promises
@@ -3630,47 +3630,47 @@ jQuery.extend(jQuery.easing, {
     /**
       `Promise.race` returns a new promise which is settled in the same way as the
       first passed promise to settle.
-
+    
       Example:
-
+    
       ```javascript
       let promise1 = new Promise(function(resolve, reject){
         setTimeout(function(){
           resolve('promise 1');
         }, 200);
       });
-
+    
       let promise2 = new Promise(function(resolve, reject){
         setTimeout(function(){
           resolve('promise 2');
         }, 100);
       });
-
+    
       Promise.race([promise1, promise2]).then(function(result){
         // result === 'promise 2' because it was resolved before promise1
         // was resolved.
       });
       ```
-
+    
       `Promise.race` is deterministic in that only the state of the first
       settled promise matters. For example, even if other promises given to the
       `promises` array argument are resolved, but the first settled promise has
       become rejected before the other promises became fulfilled, the returned
       promise will become rejected:
-
+    
       ```javascript
       let promise1 = new Promise(function(resolve, reject){
         setTimeout(function(){
           resolve('promise 1');
         }, 200);
       });
-
+    
       let promise2 = new Promise(function(resolve, reject){
         setTimeout(function(){
           reject(new Error('promise 2'));
         }, 100);
       });
-
+    
       Promise.race([promise1, promise2]).then(function(result){
         // Code here never runs
       }, function(reason){
@@ -3678,13 +3678,13 @@ jQuery.extend(jQuery.easing, {
         // promise 1 became fulfilled
       });
       ```
-
+    
       An example real-world use case is implementing timeouts:
-
+    
       ```javascript
       Promise.race([ajax('foo.json'), timeout(5000)])
       ```
-
+    
       @method race
       @static
       @param {Array} promises array of promises to observe
@@ -3713,31 +3713,31 @@ jQuery.extend(jQuery.easing, {
     /**
       `Promise.reject` returns a promise rejected with the passed `reason`.
       It is shorthand for the following:
-
+    
       ```javascript
       let promise = new Promise(function(resolve, reject){
         reject(new Error('WHOOPS'));
       });
-
+    
       promise.then(function(value){
         // Code here doesn't run because the promise is rejected!
       }, function(reason){
         // reason.message === 'WHOOPS'
       });
       ```
-
+    
       Instead of writing the above, your code now simply becomes the following:
-
+    
       ```javascript
       let promise = Promise.reject(new Error('WHOOPS'));
-
+    
       promise.then(function(value){
         // Code here doesn't run because the promise is rejected!
       }, function(reason){
         // reason.message === 'WHOOPS'
       });
       ```
-
+    
       @method reject
       @static
       @param {Any} reason value that the returned promise will be rejected with.
@@ -3765,66 +3765,66 @@ jQuery.extend(jQuery.easing, {
       primary way of interacting with a promise is through its `then` method, which
       registers callbacks to receive either a promise's eventual value or the reason
       why the promise cannot be fulfilled.
-
+    
       Terminology
       -----------
-
+    
       - `promise` is an object or function with a `then` method whose behavior conforms to this specification.
       - `thenable` is an object or function that defines a `then` method.
       - `value` is any legal JavaScript value (including undefined, a thenable, or a promise).
       - `exception` is a value that is thrown using the throw statement.
       - `reason` is a value that indicates why a promise was rejected.
       - `settled` the final resting state of a promise, fulfilled or rejected.
-
+    
       A promise can be in one of three states: pending, fulfilled, or rejected.
-
+    
       Promises that are fulfilled have a fulfillment value and are in the fulfilled
       state.  Promises that are rejected have a rejection reason and are in the
       rejected state.  A fulfillment value is never a thenable.
-
+    
       Promises can also be said to *resolve* a value.  If this value is also a
       promise, then the original promise's settled state will match the value's
       settled state.  So a promise that *resolves* a promise that rejects will
       itself reject, and a promise that *resolves* a promise that fulfills will
       itself fulfill.
-
-
+    
+    
       Basic Usage:
       ------------
-
+    
       ```js
       let promise = new Promise(function(resolve, reject) {
         // on success
         resolve(value);
-
+    
         // on failure
         reject(reason);
       });
-
+    
       promise.then(function(value) {
         // on fulfillment
       }, function(reason) {
         // on rejection
       });
       ```
-
+    
       Advanced Usage:
       ---------------
-
+    
       Promises shine when abstracting away asynchronous interactions such as
       `XMLHttpRequest`s.
-
+    
       ```js
       function getJSON(url) {
         return new Promise(function(resolve, reject){
           let xhr = new XMLHttpRequest();
-
+    
           xhr.open('GET', url);
           xhr.onreadystatechange = handler;
           xhr.responseType = 'json';
           xhr.setRequestHeader('Accept', 'application/json');
           xhr.send();
-
+    
           function handler() {
             if (this.readyState === this.DONE) {
               if (this.status === 200) {
@@ -3836,16 +3836,16 @@ jQuery.extend(jQuery.easing, {
           };
         });
       }
-
+    
       getJSON('/posts.json').then(function(json) {
         // on fulfillment
       }, function(reason) {
         // on rejection
       });
       ```
-
+    
       Unlike callbacks, promises are great composable primitives.
-
+    
       ```js
       Promise.all([
         getJSON('/posts'),
@@ -3853,11 +3853,11 @@ jQuery.extend(jQuery.easing, {
       ]).then(function(values){
         values[0] // => postsJSON
         values[1] // => commentsJSON
-
+    
         return values;
       });
       ```
-
+    
       @class Promise
       @param {function} resolver
       Useful for tooling.
@@ -7317,6 +7317,53 @@ $.fn.extend({
 });
 
 var $$$ = $$$ || {};
+
+/*************************************************************************************
+* parseArgs
+*************************************************************************************/
+$$$.parseArgs = function () {
+    var _args = function _args(args) {
+        this.values = Array.prototype.slice.call(args, 0);
+    };
+    _args.prototype = {
+        values: undefined,
+        _slice: function _slice(index, type) {
+            var s = this;
+            var hit = !type || _typeof(s.values[index]) === type;
+            if (hit) {
+                return s.values.splice(index, 1).shift();
+            } else {
+                return undefined;
+            }
+        },
+        /** 先頭の型が一致した場合のみ取得 */
+        shift: function shift(type) {
+            var s = this;
+            return s._slice(0, type);
+        },
+        /** 末尾の型が一致した場合のみ取得 */
+        pop: function pop(type) {
+            var s = this;
+            return s._slice(s.values.length - 1, type);
+        },
+        /** 残り全部取得 */
+        remain: function remain() {
+            var s = this;
+            var values = s.values;
+            s.values = undefined;
+            return values;
+        }
+    };
+
+    return function (args) {
+        var _arg = new _args(args);
+        return {
+            callback: _arg.pop('function'),
+            options: _arg.pop('object'),
+            values: _arg.remain()
+        };
+    };
+}();
 /*************************************************************************************
 * amin
 *************************************************************************************/
@@ -7362,9 +7409,9 @@ $$$.anim = function () {
     var _toggle = function _toggle() {
         var _$this = $(this);
         if (_$this.data('anim-flag')) {
-            _enter.call(_$this);
-        } else {
             _leave.call(_$this);
+        } else {
+            _enter.call(_$this);
         }
     };
     return {
@@ -7393,17 +7440,26 @@ $$$.vhAdjust = function () {
 *************************************************************************************/
 $$$.windowInfo = function () {
     var _init = function _init() {
+        _size.w = $(window).innerWidth();
+        _size.h = $(window).innerHeight();
         _sc.top = $(window).scrollTop();
+        _sc.bottom = _sc.top + _size.h;
         _sc.left = $(window).scrollLeft();
+    };
+    var _size = {
+        w: 0,
+        h: 0
     };
     var _sc = {
         top: 0,
+        bottom: 0,
         left: 0
     };
 
     return {
         init: _init,
-        sc: _sc
+        sc: _sc,
+        size: _size
     };
 }();
 
@@ -7726,139 +7782,24 @@ $$$.accordion = function () {
 $$$.overlay = function () {
     var _init = function _init(args) {};
     var _open = function _open() {
-        $('.overlay').switchClass('overlay-isClose', 'overlay-isOpen');
+        $$$.anim.enter.call($('.overlay'));
+        // $('.overlay').switchClass('overlay-isClose', 'overlay-isOpen');
         $('.overlay').on('touchmove', function (event) {
             event.preventDefault();
         });
     };
     var _close = function _close() {
-        if ($('.overlay').hasClass('overlay-isOpen')) {
-            $('.overlay').switchClass('overlay-isOpen', 'overlay-isClose');
-            $('.overlay').off('touchmove');
-        }
+        $$$.anim.leave.call($('.overlay'));
+        $('.overlay').off('touchmove');
     };
     var _toggle = function _toggle() {
-        if ($('.overlay').hasClass('overlay-isOpen')) {
-            $('.overlay').switchClass('overlay-isOpen', 'overlay-isClose');
-        } else {
-            $('.overlay').switchClass('overlay-isClose', 'overlay-isOpen');
-        }
+        $$$.anim.toggle.call($('.overlay'));
     };
 
     return {
-        init: _init,
         open: _open,
         close: _close,
         toggle: _toggle
-    };
-}();
-
-/*************************************************************************************
-* アラート
-*************************************************************************************/
-$$$.alert = function () {
-    var _init = function _init() {
-        $('body').append('<div class="customDialog">\
-				<div class="customDialog_overlay"></div>\
-				<div class="customDialog_inner">\
-				</div>\
-			</div>');
-    };
-    var _pause = function _pause() {
-        return new Promise(function (resolve, reject) {
-            $(document).on('click', '.customDialog_btn-ok > a', function (event) {
-                event.preventDefault();
-                resolve();
-            });
-        });
-    };
-    var _open = function _open(options) {
-        if (!$('.customDialog')[0]) {
-            _init();
-        }
-
-        $('.customDialog_inner').html('');
-        var _contents = '<p class="customDialog_txt">' + options.text + '</p><ul class="customDialog_btns"><li class="customDialog_btn customDialog_btn-ok"><a href="javascript: void(0);">OK</a></li></ul>';
-        $('.customDialog_inner').append(_contents);
-
-        $('.customDialog').switchClass('customDialog-isClose', 'customDialog-isOpen');
-
-        _pause().then(function () {
-            _close();
-            if (options.ok) {
-                options.ok();
-            }
-        }, function () {
-            _close();
-        });
-    };
-
-    var _close = function _close() {
-        $('.customDialog').switchClass('customDialog-isOpen', 'customDialog-isClose');
-        $(document).off('.click', '.customDialog_btn > a');
-    };
-
-    return {
-        open: _open
-    };
-}();
-
-/*************************************************************************************
-* confirm
-*************************************************************************************/
-$$$.confirm = function () {
-    var _init = function _init() {
-        $('body').append('<div class="customDialog">\
-				<div class="customDialog_overlay"></div>\
-				<div class="customDialog_inner">\
-				</div>\
-			</div>');
-    };
-    var _pause = function _pause() {
-        return new Promise(function (resolve, reject) {
-            $(document).on('click', '.customDialog_btn-ok > a', function (event) {
-                event.preventDefault();
-                resolve();
-            });
-            $(document).on('click', '.customDialog_btn-cancel > a', function (event) {
-                event.preventDefault();
-                reject();
-            });
-        });
-    };
-    var _open = function _open(options) {
-        if (!$('.customDialog')[0]) {
-            _init();
-        }
-
-        $('.customDialog_inner').html('');
-        var _contents = '<p class="customDialog_txt">' + options.text + '</p><ul class="customDialog_btns"><li class="customDialog_btn customDialog_btn-cancel"><a href="javascript: void(0);">キャンセル</a></li><li class="customDialog_btn customDialog_btn-ok"><a href="javascript: void(0);">OK</a></li></ul>';
-        $('.customDialog_inner').append(_contents);
-
-        $('.customDialog').switchClass('customDialog-isClose', 'customDialog-isOpen');
-
-        _pause().then(function () {
-            _close();
-            if (options.ok) {
-                options.ok();
-            }
-            return true;
-        }, function () {
-            _close();
-            if (options.cancel) {
-                options.cancel();
-            }
-            return false;
-        });
-    };
-
-    var _close = function _close() {
-        $('.customDialog').switchClass('customDialog-isOpen', 'customDialog-isClose');
-        $(document).off('.click', '.customDialog_btn > a');
-    };
-
-    return {
-        open: _open
     };
 }();
 
@@ -7867,7 +7808,7 @@ $$$.confirm = function () {
 *************************************************************************************/
 $$$.dialog = function () {
     var _init = function _init() {
-        $('body').append('<div class="customDialog">\
+        $('body').append('<div class="customDialog" data-anim="customDialog">\
 				<div class="customDialog_overlay"></div>\
 				<div class="customDialog_inner">\
 				</div>\
@@ -7889,25 +7830,34 @@ $$$.dialog = function () {
         $('.customDialog_inner').html('');
         var _btns = '';
         for (var i = 0, l = options.btns.length; i < l; i++) {
-            _btns += '<li class="customDialog_btn"><a href="javascript: void(0);" data-btn-id="' + i + '">' + options.btns[i].txt + '</a></li>';
+            _btns += '<li class="customDialog_btn"><a href="javascript: void(0);" data-btn-id="' + i + '">' + options.btns[i].name + '</a></li>';
         }
-        var _contents = '<p class="customDialog_txt">' + options.text + '</p><ul class="customDialog_btns">' + _btns + '</ul>';
+        var _contents = '<div class="customDialog_txt">' + options.txt + '</div><ul class="customDialog_btns">' + _btns + '</ul>';
         $('.customDialog_inner').append(_contents);
 
-        $('.customDialog').switchClass('customDialog-isClose', 'customDialog-isOpen');
+        $$$.anim.enter.call($('.customDialog'));
 
         _pause().then(function (id) {
-            _close();
-            if (options.btns[id].ok) {
-                options.btns[id].ok();
+            if (options.btns[id].action) {
+                options.btns[id].action();
+            }
+
+            if (options.btns[id].callback) {
+                _close(options.btns[id].callback);
+            } else {
+                _close();
             }
         }, function () {
             _close();
         });
     };
 
-    var _close = function _close() {
-        $('.customDialog').switchClass('customDialog-isOpen', 'customDialog-isClose');
+    var _close = function _close(cb) {
+        if (cb) {
+            $$$.anim.leave.call($('.customDialog'), cb);
+        } else {
+            $$$.anim.leave.call($('.customDialog'));
+        }
         $(document).off('.click', '.customDialog_btn > a');
     };
 
@@ -7921,7 +7871,7 @@ $$$.dialog = function () {
 *************************************************************************************/
 $$$.loading = function () {
     var _init = function _init() {
-        $('body').append('<div class="customDialog">\
+        $('body').append('<div class="customDialog" data-anim="customDialog">\
 				<div class="customDialog_overlay"></div>\
 				<div class="customDialog_inner">\
 				</div>\
@@ -7933,14 +7883,14 @@ $$$.loading = function () {
         }
 
         $('.customDialog_inner').html('');
-        var _contents = '<p class="customDialog_txt">' + options.text + '</p>';
+        var _contents = '<div class="customDialog_txt">' + options.txt + '</div>';
         $('.customDialog_inner').append(_contents);
 
-        $('.customDialog').switchClass('customDialog-isClose', 'customDialog-isOpen');
+        $$$.anim.enter.call($('.customDialog'));
     };
 
-    var _close = function _close() {
-        $('.customDialog').switchClass('customDialog-isOpen', 'customDialog-isClose');
+    var _close = function _close(cb) {
+        $$$.anim.leave.call($('.customDialog'), cb);
     };
 
     return {
@@ -8022,10 +7972,11 @@ $$$.tree = function () {
 /*************************************************************************************
 * agree 同意しますか？のやつ
 *************************************************************************************/
+//yesのチェック1個ならこっち
 $$$.agree = function () {
     var _change = function _change(args) {
         var _$target = $(this).data('agree-target');
-        if ($(this).data('agree-condition') === 'yes') {
+        if ($(this).prop('checked')) {
             $('[data-agree="' + _$target + '"]').removeAttr('disabled');
         } else {
             $('[data-agree="' + _$target + '"]').attr('disabled', 'disabled');
@@ -8036,6 +7987,23 @@ $$$.agree = function () {
         change: _change
     };
 }();
+
+// yes / no のラジオならこっち
+// $$$.agree = function () {
+// 	var _change = function _change(args) {
+// 		var _$target = $(this).data('agree-target');
+// 		if ($(this).data('agree-condition') === 'yes') {
+// 			$('[data-agree="' + _$target + '"]').removeAttr('disabled');
+// 		} else {
+// 			$('[data-agree="' + _$target + '"]').attr('disabled', 'disabled');
+// 		}
+// 	};
+
+// 	return {
+// 		change: _change
+// 	};
+// }();
+
 
 /*************************************************************************************
 * contentsModal
@@ -8073,6 +8041,7 @@ $$$.contentsModal = function () {
             _onImgLoad(function () {
                 $$$.anim.enter.call($target.find('.contentsModal_contents'));
                 $$$.anim.leave.call($target.find('.contentsModal_loading'));
+                _replace();
             });
             _replace();
         });
@@ -8135,16 +8104,16 @@ $$$.contentsModal = function () {
         }
     };
     var _killScroll = function _killScroll() {
-        // $('html, body').css({
-        //     overflowY: 'hidden'
-        // });
+        $('html, body').css({
+            overflowY: 'hidden'
+        });
         $('.contentsModal_overlay').on('scroll wheel touchmove', _noScroll);
         $('.contentsModal_contents').on('scroll wheel touchmove', _contentsScroll);
     };
     var _revivalScroll = function _revivalScroll(e) {
-        // $('html, body').css({
-        //     overflowY: 'inherit'
-        // });
+        $('html, body').css({
+            overflowY: 'inherit'
+        });
         $('.contentsModal_overlay').off('scroll wheel touchmove', _noScroll);
         $('.contentsModal_contents').off('scroll wheel touchmove', _contentsScroll);
     };
@@ -8174,9 +8143,9 @@ $$$.contentsModal = function () {
     };
 }();
 
-/*************************************************************************************
-* dummyImage生成
-*************************************************************************************/
+// /*************************************************************************************
+// * dummyImage生成
+// *************************************************************************************/
 $$$.dummyImage = function () {
     var _init = function _init() {
         $(this).each(function (index, el) {
@@ -8225,15 +8194,157 @@ $$$.dummyImage = function () {
 }();
 
 /*************************************************************************************
-* コメント
+* fileForm
 *************************************************************************************/
-$$$.moduleName = function () {
-    var _init = function _init(args) {};
+$$$.fileForm = function () {
+    var _parent;
+    var _option;
+
+    var _init = function _init() {
+
+        $(document).on('dragover', '.fileForm_dropArea', function (event) {
+            event.preventDefault();
+            event.originalEvent.dataTransfer.dropEffect = 'copy';
+            $(this).addClass('fileForm_dropArea-isDragOver');
+        });
+
+        $(document).on('dragleave', '.fileForm_dropArea', function (event) {
+            event.preventDefault();
+            $(this).removeClass('fileForm_dropArea-isDragOver');
+        });
+
+        $(document).on('drop', '.fileForm_dropArea', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            $(this).closest('.fileForm_dropArea').removeClass('fileForm_dropArea-isDragOver');
+            _drop.call($(this), event.originalEvent.dataTransfer.files);
+        });
+    };
+
+    var _add = function _add(args) {
+        _parent = $(this).closest('.fileForm');
+        _option = _parent.data('option') || {};
+
+        if (_qtyError([''])) {
+            return false;
+        };
+
+        var _$dom = _parent.find('.fileForm_item-template').clone().removeClass('fileForm_item-template');
+        $(_$dom.find('[type="file"]')).on('change', function (event) {
+            if (_typeError(_$dom.find('[type="file"]')[0].files[0]) || _sizeError(_$dom.find('[type="file"]')[0].files[0])) {
+                return false;
+            }
+
+            _$dom.find('span').text(_$dom.find('[type="file"]')[0].files[0].name);
+            _parent.find('.fileForm_list').append(_$dom);
+            $(this).off('change');
+        });
+        _$dom.find('[type="file"]').trigger('click');
+    };
+
+    var _drop = function _drop(files) {
+        _parent = $(this).closest('.fileForm');
+        _option = _parent.data('option') || {};
+
+        if (_qtyError(files)) {
+            return false;
+        };
+
+        for (var i = 0, l = files.length; i < l; i++) {
+            if (_typeError(files[i]) || _sizeError(files[i])) {
+                return false;
+            }
+            var _fd = new FormData();
+            _fd.append('file', files[i]);
+
+            $.ajax({
+                url: '/_action.php?mode=ajax_upload',
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                data: _fd,
+                dataType: 'json',
+                rsync: true
+            }).done(function (res) {
+                var _$dom = _parent.find('.fileForm_item-template').clone().removeClass('fileForm_item-template');
+                _$dom.find('[name*="selected"]').val(res.path);
+                _$dom.find('[name*="original_name"]').val(res.name);
+                _$dom.find('span').text(res.name);
+                _parent.find('.fileForm_list').append(_$dom);
+            }).fail(function () {
+                // console.log("error");
+            }).always(function () {
+                // console.log("complete");
+            });
+        }
+    };
+
+    var _qtyError = function _qtyError(files) {
+        if (_option.maxQty && _parent.find('.fileForm_item').not('.fileForm_item-template').length + files.length > _option.maxQty) {
+            $$$.alert.open({
+                text: _option.maxQtyError
+            });
+            return true;
+        }
+    };
+
+    var _typeError = function _typeError(file) {
+        if (_option.type && _option.type.length > 0 && _option.type.indexOf(file.name.toLowerCase().split('.').pop()) < 0) {
+            $$$.alert.open({
+                text: _option.typeError
+            });
+            return true;
+        }
+    };
+
+    var _sizeError = function _sizeError(file) {
+        if (_option.maxSize && _option.maxSize > 0 && file.size > _option.maxSize) {
+            $$$.alert.open({
+                text: _option.maxSizeError
+            });
+            return true;
+        }
+    };
+
+    var _remove = function _remove() {
+        var _$this = $(this);
+        $$$.dialog.open({
+            txt: '削除しますか？',
+            btns: [{
+                name: 'はい',
+                action: function action() {
+                    _$this.closest('.fileForm_item').remove();
+                }
+            }, {
+                name: 'いいえ'
+            }]
+        });
+    };
 
     return {
-        init: _init
+        init: _init,
+        add: _add,
+        remove: _remove
     };
 }();
+
+/*************************************************************************************
+* コメント
+*************************************************************************************/
+/*$$$.moduleName = (function() {
+	var _init = function() {
+		var _args = $$$.parseArgs(arguments);
+		console.log({
+			callback: _args.callback,
+			options: _args.options,
+			values: _args.values
+		});
+	}
+
+	return {
+		init: _init,
+	};
+}());*/
 
 /*
 * @requires plugins/jquery-3.3.1.min.js
@@ -8256,6 +8367,7 @@ $(function () {
     $$$.resizeendHeight.init();
     $$$.vhAdjust.init();
     $$$.tab.init();
+    $$$.fileForm.init();
     $('[data-agree-target]:checked').each(function (index, el) {
         $$$.agree.change.call($(this));
     });
@@ -8311,6 +8423,19 @@ $(function () {
     $(document).on('click', '.tree_toggle', function (event) {
         event.preventDefault();
         $$$.tree.toggle.call($(this));
+    });
+
+    //fileForm ローカルファイルを選択
+    //選択
+    $(document).on('click', '.fileForm_btn > a', function (event) {
+        event.preventDefault();
+        $$$.fileForm.add.call($(this));
+    });
+
+    //削除
+    $(document).on('click', '.fileForm_del', function (event) {
+        event.preventDefault();
+        $$$.fileForm.remove.call($(this));
     });
 
     //overlay

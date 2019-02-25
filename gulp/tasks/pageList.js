@@ -1,7 +1,7 @@
 module.exports = function(gulp, $, config) {
 	var taskName = 'pageList';
 
-	var ejsConfig = require('../ejs_config.js');
+	var ejsConfig = require('../ejs_config.js')(config);
 	var fs = require("fs");
 	var path = require("path");
 	var cheerio  = require('cheerio');

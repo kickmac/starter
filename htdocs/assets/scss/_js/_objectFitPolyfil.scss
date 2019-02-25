@@ -1,0 +1,32 @@
+// @import '../_config';
+// @import '../_iconFontMixin';
+// @import '../_svgSpriteMixin';
+// @import '../_plugins/_magic';
+
+/*
+object-fitのIE対策
+
+.js-objectFitPolyfil
+data-object-fitにbind
+cover || contain || scale-down (default: scale-down)
+data-object-position="center center"で位置指定(無しの場合center center)
+
+Markup:
+<img src="http://satyr.io/300x300/dddddd?text=This+is+Dummy+Image!!!&texture=cross" alt="ダミーイメージ" data-object-fit="cover" data-object-position="center center">
+
+Styleguide #{$guideNum}
+============================================================*/
+.js-objectFitPolyfil {
+	overflow: hidden;
+	position: relative;
+	& > img {
+		position: absolute;
+		max-width: none;
+		max-height: none;
+		width: auto;
+		height: auto;
+	}
+}
+@media screen and (max-width: $breakpoint-sp){
+
+}

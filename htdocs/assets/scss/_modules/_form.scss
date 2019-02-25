@@ -9,9 +9,235 @@
 form
 
 Markup:
-{$modifiers}
-
-.btn-red - red
+<div class="form">
+	<table class="form_table">
+		<colgroup>
+			<col style="width: 280px;">
+			<col style="">
+		</colgroup>
+		<tbody>
+			<tr>
+				<th class="form_must">テキスト横</th>
+				<td>
+					<div class="form_grid">
+						<div class="form_col form_col-1-12pc form_col-12-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-2-12pc form_col-11-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-3-12pc form_col-10-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-4-12pc form_col-9-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-5-12pc form_col-8-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-6-12pc form_col-7-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-7-12pc form_col-6-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-8-12pc form_col-5-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-9-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-10-12pc form_col-3-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-11-12pc form_col-2-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-12-12pc form_col-1-12sp"><input type="text" name="" id=""></div>
+					</div>
+					<p class="form_note">あいうえおあいうえおあいうえおあいうえお</p>
+					<p class="form_error">エラーエラーエラーエラーエラー</p>
+				</td>
+			</tr>
+			<tr>
+				<th class="form_must">テキスト縦</th>
+				<td>
+					<div class="form_grid form_grid-v">
+						<div class="form_col form_col-1-12pc form_col-12-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-2-12pc form_col-11-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-3-12pc form_col-10-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-4-12pc form_col-9-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-5-12pc form_col-8-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-6-12pc form_col-7-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-7-12pc form_col-6-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-8-12pc form_col-5-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-9-12pc form_col-4-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-10-12pc form_col-3-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-11-12pc form_col-2-12sp"><input type="text" name="" id=""></div>
+						<div class="form_col form_col-12-12pc form_col-1-12sp"><input type="text" name="" id=""></div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th class="form_must">名前</th>
+				<td>
+					<div class="form_grid">
+						<div class="form_col form_col-3-12pc form_col-6-12sp"><span>姓</span><input type="text" name="" id=""></div>
+						<div class="form_col form_col-3-12pc form_col-6-12sp"><span>名</span><input type="text" name="" id=""></div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th class="form_must">電話番号</th>
+				<td>
+					<div class="form_grid">
+						<div class="form_col form_col-6-12pc form_col-12-12sp">
+							<input type="text" name="" id=""><span>-</span>
+							<input type="text" name="" id=""><span>-</span>
+							<input type="text" name="" id="">
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th class="form_must">郵便番号</th>
+				<td>
+					<div class="form_grid">
+						<div class="form_col form_col-4-12pc form_col-8-12sp">
+							<input type="text" name="" id=""><span>-</span>
+							<input type="text" name="" id="">
+						</div>
+						<div class="form_col form_col-btn"><a href="" class="btn">検索</a></div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th class="form_must">チェック横</th>
+				<td>
+					<div class="form_grid">
+						<div class="form_col"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">ああああああ</span></label></div>
+						<div class="form_col"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">ああああああ</span></label></div>
+						<div class="form_col"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">ああああああ</span></label></div>
+						<div class="form_col"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">ああああああ</span></label></div>
+						<div class="form_col">
+							<label class="customInput">
+								<input type="checkbox" name="" id="">
+								<span class="customInput_inner">
+									その他
+									<span class="form_otherInput"><input type="text" name="" id=""></span>
+								</span>
+							</label>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th class="form_must">チェック縦</th>
+				<td>
+					<div class="form_grid form_grid-v">
+						<div class="form_col"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">ああああああ</span></label></div>
+						<div class="form_col"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">ああああああ</span></label></div>
+						<div class="form_col"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">ああああああ</span></label></div>
+						<div class="form_col"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">ああああああ</span></label></div>
+						<div class="form_col">
+							<label class="customInput">
+								<input type="checkbox" name="" id="">
+								<span class="customInput_inner">
+									その他
+									<span class="form_otherInput"><input type="text" name="" id=""></span>
+								</span>
+							</label>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th class="form_must">画像チェック横</th>
+				<td>
+					<div class="form_grid">
+						<div class="form_col">
+							<div class="form_imgCheck">
+								<p class="form_imgCheckName"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">ああああああ</span></label></p>
+								<div class="form_imgCheckInner">
+									<div class="form_imgCheckSide">
+										<figure class="form_imgCheckImg"><img src="http://satyr.io/300x300/dddddd?text=This+is+Dummy+Image!!!&texture=cross" alt="ダミーイメージ"></figure>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form_col">
+							<div class="form_imgCheck">
+								<p class="form_imgCheckName"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">ああああああ</span></label></p>
+								<div class="form_imgCheckInner">
+									<div class="form_imgCheckSide">
+										<figure class="form_imgCheckImg"><img src="http://satyr.io/300x300/dddddd?text=This+is+Dummy+Image!!!&texture=cross" alt="ダミーイメージ"></figure>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form_col">
+							<div class="form_imgCheck">
+								<p class="form_imgCheckName"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">ああああああ</span></label></p>
+								<div class="form_imgCheckInner">
+									<div class="form_imgCheckSide">
+										<figure class="form_imgCheckImg"><img src="http://satyr.io/300x300/dddddd?text=This+is+Dummy+Image!!!&texture=cross" alt="ダミーイメージ"></figure>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form_col">
+							<div class="form_imgCheck">
+								<p class="form_imgCheckName"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">ああああああ</span></label></p>
+								<div class="form_imgCheckInner">
+									<div class="form_imgCheckSide">
+										<figure class="form_imgCheckImg"><img src="http://satyr.io/300x300/dddddd?text=This+is+Dummy+Image!!!&texture=cross" alt="ダミーイメージ"></figure>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th class="form_must">画像チェック縦</th>
+				<td>
+					<div class="form_grid">
+						<div class="form_col">
+							<div class="form_imgCheck">
+								<p class="form_imgCheckName"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">ああああああ</span></label></p>
+								<div class="form_imgCheckInner">
+									<div class="form_imgCheckSide">
+										<figure class="form_imgCheckImg"><img src="http://satyr.io/300x300/dddddd?text=This+is+Dummy+Image!!!&texture=cross" alt="ダミーイメージ"></figure>
+									</div>
+									<div class="form_imgCheckBody">
+										<p>あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form_col">
+							<div class="form_imgCheck">
+								<p class="form_imgCheckName"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">ああああああ</span></label></p>
+								<div class="form_imgCheckInner">
+									<div class="form_imgCheckSide">
+										<figure class="form_imgCheckImg"><img src="http://satyr.io/300x300/dddddd?text=This+is+Dummy+Image!!!&texture=cross" alt="ダミーイメージ"></figure>
+									</div>
+									<div class="form_imgCheckBody">
+										<p>あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form_col">
+							<div class="form_imgCheck">
+								<p class="form_imgCheckName"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">ああああああ</span></label></p>
+								<div class="form_imgCheckInner">
+									<div class="form_imgCheckSide">
+										<figure class="form_imgCheckImg"><img src="http://satyr.io/300x300/dddddd?text=This+is+Dummy+Image!!!&texture=cross" alt="ダミーイメージ"></figure>
+									</div>
+									<div class="form_imgCheckBody">
+										<p>あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form_col">
+							<div class="form_imgCheck">
+								<p class="form_imgCheckName"><label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">ああああああ</span></label></p>
+								<div class="form_imgCheckInner">
+									<div class="form_imgCheckSide">
+										<figure class="form_imgCheckImg"><img src="http://satyr.io/300x300/dddddd?text=This+is+Dummy+Image!!!&texture=cross" alt="ダミーイメージ"></figure>
+									</div>
+									<div class="form_imgCheckBody">
+										<p>あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div><!-- /.form -->
 
 Styleguide #{$guideNum}
 ============================================================*/
@@ -23,6 +249,20 @@ Styleguide #{$guideNum}
 	$gutter-vMin: 8px;
 	margin: 20px 0 0;
 	&_table {
+		border-collapse: separate;
+		border-spacing: 0;
+		border-top: 1px solid $gray-border;
+		border-left: 1px solid $gray-border;
+		& > thead,
+		& > tbody {
+			& > tr {
+				& > th,
+				& > td {
+					border-top: none;
+					border-left: none;
+				}
+			}
+		}
 		th,
 		td {
 		}
@@ -90,6 +330,15 @@ Styleguide #{$guideNum}
 		&-btn {
 			align-self: stretch;
 		}
+	}
+	&_note {
+		margin: $gutter-vMin 0 0;
+		line-height: normal;
+	}
+	&_error {
+		margin: $gutter-vMin 0 0;
+		line-height: normal;
+		color: #a00;
 	}
 
 	/*  form_btn
@@ -187,6 +436,7 @@ Styleguide #{$guideNum}
 		$gutter-vMin: 8px;
 		&_table {
 			display: block;
+			border: none;
 			& > thead,
 			& > tbody {
 				display: block;
@@ -230,6 +480,12 @@ Styleguide #{$guideNum}
 					width: calc(100%/12 * #{$i} - #{$gutter-h});
 				}
 			}
+		}
+		&_note {
+			margin: $gutter-vMin 0 0;
+		}
+		&_error {
+			margin: $gutter-vMin 0 0;
 		}
 	}
 }
