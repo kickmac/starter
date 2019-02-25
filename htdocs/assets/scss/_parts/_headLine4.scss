@@ -1,0 +1,24 @@
+// @import '../_config';
+// @import '../_iconFontMixin';
+// @import '../_svgSpriteMixin';
+// @import '../_plugins/_magic';
+
+/*
+見出し4
+
+headLine4
+
+Markup:
+<h4 class="headLine4">見出し4</h4>
+
+Styleguide #{$guideNum}
+============================================================*/
+.headLine4 {
+	$this: &;
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.headLine4 {
+		$this: &;
+	}
+}

@@ -1,25 +1,45 @@
 /*
-* @requires plugins/jquery-3.3.1.min.js
-* @requires plugins/jquery.easing.1.3.js
-* @requires plugins/jquery.matchHeight-min.js
-* @requires plugins/slick.min.js
-* @requires plugins/es6-promise.auto.js
-* @requires plugins/lightgallery-all.js
+* @requires _plugins/_jquery-3.3.1.min.js
+* @requires _plugins/_jquery.easing.1.3.js
+* @requires _plugins/_jquery.matchHeight-min.js
+* @requires _plugins/_slick.min.js
+* @requires _plugins/_es6-promise.auto.js
+* @requires _plugins/_lightgallery-all.js
 *
-* @requires modules.js
+* @requires ./_modules/_acc.js
+* @requires ./_modules/_agree.js
+* @requires ./_modules/_anchorJump.js
+* @requires ./_modules/_anim.js
+* @requires ./_modules/_contentsModal.js
+* @requires ./_modules/_dialog.js
+* @requires ./_modules/_dummyImage.js
+* @requires ./_modules/_fileForm.js
+* @requires ./_modules/_imagesLoadListener.js
+* @requires ./_modules/_loading.js
+* @requires ./_modules/_objFitPolyfill.js
+* @requires ./_modules/_overlay.js
+* @requires ./_modules/_parseArgs.js
+* @requires ./_modules/_pcsp.js
+* @requires ./_modules/_resizeend.js
+* @requires ./_modules/_resizeendHeight.js
+* @requires ./_modules/_smoothScroll.js
+* @requires ./_modules/_tab.js
+* @requires ./_modules/_tree.js
+* @requires ./_modules/_ua.js
+* @requires ./_modules/_vhAdjust.js
+* @requires ./_modules/_viewport.js
+* @requires ./_modules/_windowInfo.js
 */
 
 
-var $$$ = $$$ || {};
-
 $(function(){
+	$$$.ua.judge();
 	$$$.dummyImage.init.call($('.dam'))
 	$$$.pcsp.init();
 	$$$.viewport.init();
 	$$$.resizeend.init();
 	$$$.resizeendHeight.init();
 	$$$.vhAdjust.init();
-	$$$.tab.init();
 	$$$.fileForm.init();
 	$('[data-agree-target]:checked').each(function (index, el) {
 		$$$.agree.change.call($(this));
@@ -31,18 +51,6 @@ $(function(){
 	$(document).on('click', '[href^="#"]', function(event) {
 		event.preventDefault();
 		$$$.smoothScroll.scroll.call($(this))
-	});
-	$(document).on('click', '[data-acc-btn], [data-acc-close]', function(event) {
-		event.preventDefault();
-		$$$.accordion.toggle.call($(this))
-	});
-	$(document).on('click', '[data-tab-item]', function(event) {
-		event.preventDefault();
-		$$$.tab.show.call($(this))
-	});
-	$(document).on('click', '.tree_toggle', function(event) {
-		event.preventDefault();
-		$$$.tree.toggle.call($(this))
 	});
 
 	//fileForm ローカルファイルを選択
@@ -145,6 +153,9 @@ $(function(){
 *************************************************************************************/
 $(window).on('load', function(event) {
 	$$$.anchorJump.init();
+	$$$.acc.init.call($('[data-acc]'));
+	$$$.tab.init.call($('[data-tab]'));
+	$$$.tree.init.call($('[data-tree]'));
 });
 
 /*************************************************************************************
@@ -153,8 +164,6 @@ $(window).on('load', function(event) {
 $(window).on('load resizeend', function(event) {
 	$$$.pcsp.judge();
 	$.fn.matchHeight._update();
-	$$$.accordion.init();
-	$$$.tree.init();
 	$$$.windowInfo.init();
 	$$$.contentsModal.replace();
 	$$$.objFitPolyfill.init();
@@ -173,3 +182,4 @@ $(window).on('resize', function(event) {
 $(window).on('pcsp.changed', function(event, mode) {
 	// console.log($$$.pcsp.mode)
 });
+

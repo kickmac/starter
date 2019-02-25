@@ -36,12 +36,72 @@ $black: #222;
 
 //  font
 //----------------------------------------------------------------------
-@mixin fa($code) {
+$fa-font-path: "../fonts/font-awesome";
+$fa-font-size-base: map-get($font-size, 'pc');
+$fa-fw-width: (20em / 16);
+
+@mixin far($code, $fw: true) {
 	content: $code;
-	font-family: FontAwesome;
-	text-rendering: auto;
-	-webkit-font-smoothing: antialiased;
+	font-family: 'Font Awesome 5 Free';
+	font-weight: 400;
 	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	display: inline-block;
+	font-style: normal;
+	font-variant: normal;
+	text-rendering: auto;
+	line-height: 1;
+	@if $fw {
+		text-align: center;
+		width: $fa-fw-width;
+	}
+}
+@mixin fa($code, $fw: true) {
+	content: $code;
+	font-family: 'Font Awesome 5 Free';
+	font-weight: 900;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	display: inline-block;
+	font-style: normal;
+	font-variant: normal;
+	text-rendering: auto;
+	line-height: 1;
+	@if $fw {
+		text-align: center;
+		width: $fa-fw-width;
+	}
+}
+@mixin fas($code, $fw: true) {
+	content: $code;
+	font-family: 'Font Awesome 5 Free';
+	font-weight: 900;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	display: inline-block;
+	font-style: normal;
+	font-variant: normal;
+	text-rendering: auto;
+	line-height: 1;
+	@if $fw {
+		text-align: center;
+		width: $fa-fw-width;
+	}
+}
+@mixin fab($code, $fw: true) {
+	content: $code;
+	font-family: 'Font Awesome 5 Brands';
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	display: inline-block;
+	font-style: normal;
+	font-variant: normal;
+	text-rendering: auto;
+	line-height: 1;
+	@if $fw {
+		text-align: center;
+		width: $fa-fw-width;
+	}
 }
 
 //px to rem

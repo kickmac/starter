@@ -15,9 +15,12 @@
 Styleguide #{$guideNum}
 ============================================================*/
 .wrapper {
+	$this: &;
 	min-height: 100%;
 	background: #fff;
 }
 @media screen and (max-width: $breakpoint-sp){
-
+	.wrapper {
+		$this: &;
+	}
 }

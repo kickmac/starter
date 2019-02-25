@@ -194,8 +194,10 @@ Styleguide #{$guideNum}
 		z-index: 2100;
 		display: none;
 		transition: opacity .4s;
+		color: #fff;
 		&:before {
 			content: 'loading...';
+			animation: blink .5s infinite alternate;
 		}
 		&-enter-active {
 			display: block;
@@ -217,6 +219,22 @@ Styleguide #{$guideNum}
 			opacity: 0;
 		}
 	}
+}
+@-webkit-keyframes blink {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+@-o-keyframes blink {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+@-moz-keyframes blink {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+@keyframes blink {
+	from { opacity: 0; }
+	to { opacity: 1; }
 }
 
 @media screen and (max-width: $breakpoint-sp){

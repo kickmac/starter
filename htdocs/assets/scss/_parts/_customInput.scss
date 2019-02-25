@@ -47,12 +47,14 @@ Styleguide #{$guideNum}
 				border: 1px solid $gray-border;
 				background: #fff;
 				display: inline-block;
-				vertical-align: -2px;
 				letter-spacing: normal;
 				margin-right: .5em;
-				width: 14px;
-				height: 14px;
-				line-height: 13px;
+				width: 1em;
+				height: 1em;
+				font-size: calc(1em - 2px);
+				line-height: calc(1em - 2px);
+				color: $txtColor;
+				vertical-align: -.1em; //check on / off でガタつく場合はここ調整
 			}
 		}
 		& + #{$this}_inner:empty {
@@ -64,10 +66,9 @@ Styleguide #{$guideNum}
 	& > [type="checkbox"] {
 		&:checked + #{$this}_inner {
 			&:before {
-				text-indent: 0;
-				@include fa('\f00c');
-				color: $txtColor;
-				vertical-align: 0;
+				@include fa('\f00c', false);
+				line-height: calc(1em - 2px);
+				vertical-align: 0; //check on / off でガタつく場合はここ調整
 			}
 		}
 	}

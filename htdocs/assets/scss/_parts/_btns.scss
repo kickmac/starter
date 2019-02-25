@@ -11,9 +11,9 @@ btns
 Markup:
 <div class="btns {$modifiers}">
 	<ul class="btns_list">
-		<li class="btns_btn btns_btn-s"><a href="" class="btn">ボタン小</a></li>
-		<li class="btns_btn btns_btn-m"><a href="" class="btn">ボタン中</a></li>
-		<li class="btns_btn btns_btn-l"><a href="" class="btn">ボタン大</a></li>
+		<li class="btns_btn btns_btn-4-12pc btns_btn-6-12sp"><a href="" class="btn">PC: 4/12　SP: 6/12</a></li>
+		<li class="btns_btn btns_btn-4-12pc btns_btn-6-12sp"><a href="" class="btn">PC: 4/12　SP: 6/12</a></li>
+		<li class="btns_btn btns_btn-4-12pc btns_btn-12-12sp"><a href="" class="btn">PC: 4/12　SP: 12/12</a></li>
 	</ul>
 </div><!-- /.btns -->
 
@@ -35,14 +35,10 @@ Styleguide #{$guideNum}
 	}
 	&_btn {
 		margin: 20px auto 0;
-		&-s {
-			width: calc(100%/4 - 20px);
-		}
-		&-m {
-			width: calc(99.9%/3 - 20px);
-		}
-		&-l {
-			width: calc(100%/2 - 20px);
+		@for $i from 1 through 12 {
+			&-#{$i}-12 {
+				width: calc(99.9%/12 * #{$i});
+			}
 		}
 	}
 	&-left {
@@ -67,6 +63,11 @@ Styleguide #{$guideNum}
 		}
 		#{$this}_btn {
 			margin: 20px 0 0 20px;
+			@for $i from 1 through 12 {
+				&-#{$i}-12 {
+					width: calc(99.9%/12 * #{$i} - 20px);
+				}
+			}
 		}
 	}
 	&-hr.btns-left {
@@ -86,34 +87,41 @@ Styleguide #{$guideNum}
 	}
 }
 
+@media screen and (min-width: $breakpoint-sp + 1){
+	.btns {
+		$this: &;
+		&_btn {
+		}
+		&-hr {
+			#{$this}_btn {
+				@for $i from 1 through 12 {
+					&-#{$i}-12pc {
+						width: calc(99.9%/12 * #{$i} - 20px);
+					}
+				}
+			}
+		}
+	}
+}
+
 @media screen and (max-width: $breakpoint-sp){
 	.btns {
 		$this: &;
 		&_list {}
-		&_btn {
-			&-s {
-				width: auto;
-			}
-			&-m {
-				width: auto;
-			}
-			&-l {
-				width: auto;
-			}
-		}
-
 		&-hr {
-			display: block;
 			#{$this}_list {
-				margin: 0;
-				& > :first-child {
-					margin-top: 0;
-				}
+				margin: -10px 0 0 -10px;
 			}
 			#{$this}_btn {
-				width: 100%;
-				margin: 20px 0 0;
+				margin: 10px 0 0 10px;
+				@for $i from 1 through 12 {
+					&-#{$i}-12sp {
+						width: calc(99.9%/12 * #{$i} - 10px);
+					}
+				}
 			}
+		}
+		&_btn {
 		}
 	}
 }

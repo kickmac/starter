@@ -268,6 +268,9 @@ Styleguide #{$guideNum}
 		}
 		td {
 			& > :first-child {
+				margin-top: 0;
+			}
+			& > #{$this}_grid:first-child {
 				margin-top: $gutter-v*-1;
 			}
 		}
@@ -301,7 +304,7 @@ Styleguide #{$guideNum}
 		-webkit-flex-wrap: wrap;
 		flex-direction: row;
 		align-items: center;
-		margin: $gutter-v*-1 0 0 $gutter-h*-1;
+		margin: $gutter-v*-1+$gutter-vMin 0 0 $gutter-h*-1;
 		&-v {
 			display: block;
 			overflow: hidden;
@@ -462,6 +465,9 @@ Styleguide #{$guideNum}
 					& > td {
 						margin: 10px 0 0;
 						& > :first-child {
+							margin-top: 0;
+						}
+						& > #{$this}_grid:first-child {
 							margin-top: $gutter-v*-1;
 						}
 					}
@@ -471,7 +477,7 @@ Styleguide #{$guideNum}
 		&_must {
 		}
 		&_grid {
-			margin: $gutter-v*-1 0 0 $gutter-h*-1;
+			margin: $gutter-v*-1+$gutter-vMin 0 0 $gutter-h*-1;
 		}
 		&_col {
 			margin: $gutter-v 0 0 $gutter-h;

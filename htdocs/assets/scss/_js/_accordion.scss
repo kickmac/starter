@@ -6,29 +6,104 @@
 /*
 アコーディオン
 
-$$$.accordion
+$$$.acc.init.call($('.acc'), {
+	content: '.acc_content',
+	toggleBtn: '.acc_btn',
+	openBtn: '.acc_open',
+	closeBtn: '.acc_close',
+	beforeInit: function(){
+		console.log('before init callback');
+	},
+	afterInit: function(elems){
+		console.log('after init callback');
+	},
+	beforeResize: function(){
+		console.log('before resize callback');
+	},
+	afterResize: function(elems){
+		console.log('after resize callback');
+	},
+	beforeOpen: function(elems){
+		console.log('before open callbackn')
+	},
+	afterOpen: function(elems){
+		console.log('after open callbackn')
+	},
+	beforeClose: function(elems){
+		console.log('befor close callbacke')
+	},
+	afterClose: function(elems){
+		console.log('close callbacke')
+	},
+});
+$$$.acc.init.call($('[data-acc]'));
+
 
 Markup:
 <dl data-acc>
-	<dt><a href="javascript: void(0);" data-acc-btn>aaaaaaaaa</a></dt>
+	<dt><a href="javascript: void(0);" data-acc-btn>default</a></dt>
 	<dd>
-		<div class="inner" data-acc-body>
-			<p>あああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<div data-acc-content>
 			<p>あああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
 			<p>あああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
 			<p>あああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
 			<p>あああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
 			<p>あああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
 		</div>
-		<p><a href="javascript: void(0);" data-acc-btn data-acc-btn-txt="閉じる">開く</a></p>
 	</dd>
 </dl>
+<dl class="acc">
+	<dt><a href="javascript: void(0);" class="acc_btn">advanced</a></dt>
+	<dd>
+		<div class="acc_content">
+			<p>あああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+			<p>あああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+			<p>あああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+			<p>あああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+			<p>あああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+			<p><a href="javascript: void(0);" class="acc_close">close btn</a></p>
+		</div>
+		<p><a href="javascript: void(0);" class="acc_open">open btn</a></p>
+	</dd>
+</dl>
+<script>
+$$$.acc.init.call($('.acc'), {
+	content: '.acc_content',
+	toggleBtn: '.acc_btn',
+	openBtn: '.acc_open',
+	closeBtn: '.acc_close',
+	beforeInit: function(){
+		console.log('before init callback');
+	},
+	afterInit: function(elems){
+		console.log('after init callback');
+	},
+	beforeResize: function(){
+		console.log('before resize callback');
+	},
+	afterResize: function(elems){
+		console.log('after resize callback');
+	},
+	beforeOpen: function(elems){
+		console.log('before open callbackn')
+	},
+	afterOpen: function(elems){
+		console.log('after open callbackn')
+	},
+	beforeClose: function(elems){
+		console.log('befor close callbacke')
+	},
+	afterClose: function(elems){
+		console.log('close callbacke')
+	},
+});
+</script>
 
 Styleguide #{$guideNum}
 ============================================================*/
 [data-acc] {}
 [data-acc-btn] {}
-[data-acc-body] {
+[data-acc-content] {
 	overflow: hidden;
 	visibility: hidden;
 	transition: max-height .4s;
