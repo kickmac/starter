@@ -10,6 +10,7 @@ fileForm
 
 Markup:
 <div class="fileForm" data-option='{
+	"src": "pre upload path 必須",
 	"maxQty": 3,
 	"maxQtyError": "3個以上選択できません",
 	"type": ["png", "jpg"],
@@ -18,15 +19,17 @@ Markup:
 	"maxSizeError": "2M以上のファイルは選択できません"
 }'>
 	<p class="fileForm_btn"><a href="javascript: void(0);" class="btn btn-s btn-gray">ファイルを選択</a></p>
-	<p class="mt10 indent10e">※ドラッグ&amp;ドロップでファイル選択可能です。</p>
+	<p class="fileForm_ddComment">※ドラッグ&amp;ドロップでファイル選択可能です。</p>
 	<div class="fileForm_dropArea">
 		<p class="fileForm_dropTxt">ここにドラッグ&amp;ドロップ</p>
 	</div>
 	<ul class="fileForm_list">
 		<li class="fileForm_item fileForm_item-template">
-			<a href="javascript: void(0);" class="fileForm_del">×</a><span>選択されていません</span>
+			<a href="javascript: void(0);" class="fileForm_del">×</a><a href="" class="fileForm_name">選択されていません</a>
 			<div class="fileForm_comment"><input type="text" name="" id=""></div>
-			<input type="file" name="" id="">
+			<input type="file" name="file[]" id="">
+			<input type="hidden" name="selected[]" id="">
+			<input type="hidden" name="original_name[]" id="">
 		</li>
 	</ul>
 </div><!-- /.fileForm -->
@@ -44,7 +47,13 @@ Styleguide #{$guideNum}
 		margin: 0;
 		width: 154px;
 	}
+	&_ddComment {
+		padding-left: 1em;
+		text-indent: -1em;
+		margin: 10px 0 0;
+	}
 	&_dropArea {
+		width: 100%;
 		margin: 5px 0 0;
 		background: #eee;
 		padding: 30px 20px;
@@ -85,14 +94,16 @@ Styleguide #{$guideNum}
 			top: -100%;
 			opacity: 0;
 		}
-		& > span {
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-		}
 		&-template {
 			display: none;
 		}
+	}
+	&_name {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		text-decoration: none;
+		color: inherit;
 	}
 	&_del {
 		flex-grow: 0;
@@ -140,6 +151,12 @@ Styleguide #{$guideNum}
 		&_comment {
 			margin: 5px 0 0;
 			width: 100%;
+		}
+		&_ddComment {
+			display: none;
+		}
+		&_dropArea {
+			display: none;
 		}
 	}
 }

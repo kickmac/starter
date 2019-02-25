@@ -6,25 +6,33 @@
 /*
 カスタムダイアログ
 
-$$$.alert.open({
-	text: 'bbb',
-	ok: function(){
-		console.log('ok');
+$$$.dialog.open({
+	txt: 'aaaaaaaa',
+	btns: [{
+		name: 'ok',
+		action: function(){
+			alert('ok')
+		},
+		callback: function(){
+			alert('after ok')
+		},
 	},
-});
-$$$.confirm.open({
-	text: 'bbb',
-	ok: function(){
-		console.log('ok');
-	},
-	cancel: function(){
-		console.log('cancel');
-	}
-});
+	{
+		name: 'cancel',
+		action: function(){
+			alert('cancel')
+		},
+		callback: function(){
+			alert('after cancel')
+		},
+	}]
+})
 $$$.loading.open({
 	text: 'bbb'
 });
-$$$.loading.close();
+$$$.loading.close(function(){
+	alert('aaa')
+});
 
 Markup:
 <div class="customDialog">
@@ -49,17 +57,11 @@ Styleguide #{$guideNum}
 	left: 0;
 	width: 100%;
 	height: 100%;
-	z-index: -9999;
-	opacity: 0;
-	animation-duration: .4s;
-	animation-fill-mode: both;
+	z-index: 3000;
+	display: none;
+	transition: .4s opacity;
 	cursor: default;
-	&-isOpen {
-		animation-name: customDialog-isOpen;
-	}
-	&-isClose {
-		animation-name: customDialog-isClose;
-	}
+
 	&_overlay {
 		display: block;
 		background: rgba(#000, .5);
@@ -110,6 +112,40 @@ Styleguide #{$guideNum}
 		&-cancel {
 		}
 		&-ok {
+		}
+	}
+
+	/*
+	----------------------------------------------------------------------*/
+	&-enter-active {
+		display: block;
+	}
+	&-enter {
+		opacity: 0;
+		&:hover {
+			opacity: 0;
+		}
+	}
+	&-enter-to {
+		opacity: 1;
+		&:hover {
+			opacity: 1;
+		}
+	}
+
+	&-leave-active {
+		display: block;
+	}
+	&-leave {
+		opacity: 1;
+		&:hover {
+			opacity: 1;
+		}
+	}
+	&-leave-to {
+		opacity: 0;
+		&:hover {
+			opacity: 0;
 		}
 	}
 }

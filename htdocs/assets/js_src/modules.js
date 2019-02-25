@@ -92,9 +92,9 @@ $$$.anim = (function(){
 	var _toggle = function(){
 		var _$this = $(this);
 		if (_$this.data('anim-flag')) {
-			_enter.call(_$this)
-		} else {
 			_leave.call(_$this)
+		} else {
+			_enter.call(_$this)
 		}
 	}
 	return {
@@ -103,6 +103,113 @@ $$$.anim = (function(){
 		toggle: _toggle,
 	}
 }())
+
+/*************************************************************************************
+* objFitPolyfill
+*************************************************************************************/
+$$$.objFitPolyfill = (function() {
+	var _init = function() {
+		$('[data-object-fit]').removeAttr('style').unwrap('.js-objectFitPolyfil');
+
+		var _img = $('<img />');
+		_img.css({
+			objectFit: 'cover'
+		})
+		if (!_img.css('object-fit')) {
+			$('[data-object-fit]').each(function(index, el) {
+				_fit.call($(this))
+			});
+		}
+	}
+	var _fit = function(){
+		var _mode = $(this).data('object-fit') || 'scale-down';
+
+		var _size = {
+			natural: {
+				w: $(this)[0].naturalWidth,
+				h: $(this)[0].naturalHeight,
+				ratio: $(this)[0].naturalHeight / $(this)[0].naturalWidth
+			},
+			assigned: {
+				w: $(this).width(),
+				h: $(this).height(),
+				ratio: $(this).height() / $(this).width()
+			}
+		}
+		$(this).wrap('<div class="js-objectFitPolyfil" />')
+		$(this).parent('.js-objectFitPolyfil').css({
+			width: _size.assigned.w,
+			height: _size.assigned.h,
+		})
+
+		if (_mode === 'cover') {
+			_cover.call($(this), _size)
+		} else if(_mode === 'contain') {
+			_contain.call($(this), _size)
+		} else if(_mode === 'scale-down') {
+			_scaleDown.call($(this), _size)
+		}
+		_rePosition.call($(this), _size)
+	}
+
+	var _cover = function(_size){
+		if (_size.natural.ratio < _size.assigned.ratio) {
+			$(this).height('100%')
+		} else {
+			$(this).width('100%')
+		}
+	}
+
+	var _contain = function(_size){
+		if (_size.natural.ratio < _size.assigned.ratio) {
+			$(this).width('100%');
+		} else {
+			$(this).height('100%')
+		}
+	}
+
+	var _scaleDown = function(_size){
+		if (_size.natural.ratio < _size.assigned.ratio) {
+			$(this).css('max-width', '100%');
+		} else {
+			$(this).css('max-height', '100%');
+		}
+	}
+
+	var _rePosition = function(_size){
+
+		var _position = $(this).data('object-position') || '.5 .5';
+		_position = _position.split(' ');
+		_position = $.grep(_position, function(e){return e !== '';});
+
+		if (_position.length === 1 ) {
+			_position[1] = '.5'
+		}
+		for (var i = 0, l = _position.length; i < l; i++) {
+			if (_position[i].match(/%/)) {
+				_position[i] = parseFloat(_position[i]) / 100
+			}
+
+			if (_position[i] === 'center') {
+				_position[i] = .5
+			} else if(_position[i] === 'left' || _position[i] === 'top') {
+				_position[i] = 0
+			}else if(_position[i] === 'right' || _position[i] === 'bottom') {
+				_position[i] = 1
+			}
+
+		}
+
+		$(this).css({
+			top: (typeof _position[1] === 'string' && _position[1].match(/px/)) ? parseInt(_position[1]) : ( _size.assigned.h - $(this).height() ) * _position[1],
+			left: (typeof _position[0] === 'string' && _position[0].match(/px/)) ? parseInt(_position[0]) :( _size.assigned.w - $(this).width() ) * _position[0],
+		})
+	}
+
+	return {
+		init: _init,
+	};
+}());
 
 /*************************************************************************************
 * vh adjust
@@ -123,17 +230,26 @@ $$$.vhAdjust = (function(){
 *************************************************************************************/
 $$$.windowInfo = (function(){
 	var _init = function(){
+		_size.w = $(window).innerWidth();
+		_size.h = $(window).innerHeight();
 		_sc.top = $(window).scrollTop();
+		_sc.bottom = _sc.top + _size.h;
 		_sc.left = $(window).scrollLeft();
+	}
+	var _size = {
+		w: 0,
+		h: 0,
 	}
 	var _sc = {
 		top: 0,
+		bottom: 0,
 		left: 0
 	}
 
 	return {
 		init: _init,
 		sc: _sc,
+		size: _size,
 	}
 
 }())
@@ -141,35 +257,38 @@ $$$.windowInfo = (function(){
 /*************************************************************************************
 * 画像preload
 *************************************************************************************/
-$$$.imagesLoadListener = (function() {
-	var _imageCollector = function(expectedCount, completeFn) {
-		var receivedCount = 0;
-		return function() {
-			receivedCount++;
-			if (receivedCount === expectedCount) {
-				completeFn();
-			}
-		};
-	};
-	var _imagesLoadListener = function(element, callback) {
-		var _images = element.find('img');
-		if (!_images[0]) {
-			callback();
-			return;
+$$$.imagesLoadListener = (function(){
+	var _listen = function(elem, cb){
+		var _imgs = elem.find('img');
+		var _counter = 0;
+
+		if (!_imgs[0]) {
+			cb();
+			return false;
 		}
-		//画像の数だけloadListenerが呼ばれたらcallbackが呼ばれる;
-		var _loadListener = _imageCollector(_images.length, callback);
-		Array.prototype.forEach.call(_images, function(img) {
-			if (img.complete) {
-				_loadListener();
-			} else {
-				img.onload = _loadListener;
+
+		for (var i = 0, l = _imgs.length; i < l; i++) {
+			var _img = new Image();
+
+			_img.onload = function(){
+				_counter++;
+				_judge(_counter, i, cb)
 			}
-		});
-	};
+			_img.onerror = function(){
+				_counter++;
+				_judge(_counter, i, cb)
+			}
+			_img.src = _imgs.eq(i).attr('src');
+		}
+	}
+
+	var _judge = function(a, b, cb){
+		if (a !== b) { return false }
+			cb();
+	}
 
 	return {
-		listen: _imagesLoadListener,
+		listen: _listen,
 	}
 })();
 
@@ -384,96 +503,95 @@ $$$.smoothScroll = (function() {
 * アコーディオン
 *************************************************************************************/
 $$$.accordion = (function() {
-	var _init = function(args) {
+	var _init = function() {
 		$('[data-acc-body]').attr('style', '');
 		$('[data-acc]').each(function(index, el) {
 			var _$root = $(this);
 			var _$btn = _$root.find('[data-acc-btn]');
 			var _$body = _$root.find('[data-acc-body]');
 
-			_$body
-				.data('acc-max-h', _$body.outerHeight())
-				.css({
-					visibility: 'visible',
-				});
+			_$body.data('acc-max-h', _$body.outerHeight())
 
-			_slide.call(_$btn)
+			if (_$btn.attr('data-acc-btn') !== 'open') {
+				_$body.css({
+					maxHeight: _$body.data('acc-max-h'),
+				});
+				_close.call(_$btn)
+			} else {
+				_open.call(_$btn)
+			}
+			_swTxt.call(_$root)
+
+			_$body.css({
+				visibility: 'visible',
+			});
+
+			// init callback
+			// alert('init end')
 		});
-	}
-	var _slide = function(){
+	};
+
+	var _open = function(){
 		var _$root = $(this).closest('[data-acc]');
 		var _$btn = _$root.find('[data-acc-btn]');
 		var _$body = _$root.find('[data-acc-body]');
 
-		if (_$btn.attr('data-acc-btn') === 'open') {
-			_$body.css({
-				maxHeight: _$body.data('acc-max-h')
-			})
-		} else {
-			_$body.css({
-				maxHeight: 0
-			})
-		}
-	}
-	var _txtSwitch = function(){
-		var _$root = $(this).closest('[data-acc]');
-		var _$txt = _$root.find('[data-acc-btn-txt]');
-		var _cash = '';
+		//call back
+		// _$body.off('transitionend webkitTransitionEnd')
+		// _$body.on('transitionend webkitTransitionEnd', function(e){
+		// 	if(e.target === _$body[0]) {
+		// 		alert('open end')
+		// 	}
+		// })
 
-		if (!_$txt) { return false }
-		_$txt.each(function(index, el) {
-			if ( $(this).data('acc-btn-txt') === '') { return false }
-			_cash =$(this).text();
-			$(this).text($(this).data('acc-btn-txt'));
-			$(this).data('acc-btn-txt', _cash);
-		});
-
-	}
-	var _toggle = function(){
-		var _$btns = $(this).closest('[data-acc]').find('[data-acc-btn]');
-		if ($(this).attr('data-acc-btn') === 'open') {
-			_$btns.each(function(index, el) {
-				$(this).attr('data-acc-btn', '');
-			});
-		} else {
-			_$btns.each(function(index, el) {
-				$(this).attr('data-acc-btn', 'open');
-			});
-		}
-		_txtSwitch.call($(this));
-		_slide.call($(this));
+		_$btn.attr('data-acc-btn', 'open');
+		_$body.css({
+			maxHeight: _$body.data('acc-max-h')
+		})
+		_swTxt.call(_$root)
 	}
 
-	return {
-		init: _init,
-		toggle: _toggle
-	};
-}());
-
-/*************************************************************************************
-* オーバーレイ
-*************************************************************************************/
-$$$.overlay = (function() {
-	var _init = function(args) {}
-	var _open = function(){
-		$('.overlay').switchClass('overlay-isClose', 'overlay-isOpen');
-		$('.overlay').on('touchmove', function(event) {
-			event.preventDefault();
-		});
-	}
 	var _close = function(){
-		if ($('.overlay').hasClass('overlay-isOpen')) {
-			$('.overlay').switchClass('overlay-isOpen', 'overlay-isClose');
-			$('.overlay').off('touchmove');
-		}
+		var _$root = $(this).closest('[data-acc]');
+		var _$btn = _$root.find('[data-acc-btn]');
+		var _$body = _$root.find('[data-acc-body]');
+
+		//call back
+		// _$body.off('transitionend webkitTransitionEnd')
+		// _$body.on('transitionend webkitTransitionEnd', function(e){
+		// 	if(e.target === _$body[0]) {
+		// 		alert('close end')
+		// 	}
+		// })
+
+		_$btn.attr('data-acc-btn', '');
+		_$body.css({
+			maxHeight: 0
+		})
+		_swTxt.call(_$root)
 	}
+
+	var _swTxt = function(){
+		var _$btn = $(this).closest('[data-acc]').find('[data-acc-btn]');
+
+		_$btn.each(function(index, el) {
+			if (!$(this).attr('data-acc-btn-txt')) { return true }
+
+			var _cache = $(this).text();
+
+			$(this).text($(this).attr('data-acc-btn-txt'));
+			$(this).attr('data-acc-btn-txt', _cache)
+		});
+	}
+
 	var _toggle = function(){
-		if ($('.overlay').hasClass('overlay-isOpen')) {
-			$('.overlay').switchClass('overlay-isOpen', 'overlay-isClose');
+		if ($(this).attr('data-acc-btn') === 'open') {
+			_close.call($(this))
 		} else {
-			$('.overlay').switchClass('overlay-isClose', 'overlay-isOpen');
+			_open.call($(this))
 		}
 	}
+
 
 	return {
 		init: _init,
@@ -484,116 +602,30 @@ $$$.overlay = (function() {
 }());
 
 /*************************************************************************************
-* アラート
+* オーバーレイ
 *************************************************************************************/
-$$$.alert = (function() {
-	var _init = function(){
-		$('body').append(
-			'<div class="customDialog">\
-				<div class="customDialog_overlay"></div>\
-				<div class="customDialog_inner">\
-				</div>\
-			</div>'
-		);
+$$$.overlay = (function() {
+	var _init = function(args) {}
+	var _open = function(){
+		$$$.anim.enter.call($('.overlay'))
+		// $('.overlay').switchClass('overlay-isClose', 'overlay-isOpen');
+		$('.overlay').on('touchmove', function(event) {
+			event.preventDefault();
+		});
 	}
-	var _pause = function(){
-		return new Promise(function(resolve, reject){
-			$(document).on('click', '.customDialog_btn-ok > a', function(event) {
-				event.preventDefault();
-				resolve();
-			});
-		})
-	}
-	var _open = function(options){
-		if (!$('.customDialog')[0]) { _init(); }
-
-		$('.customDialog_inner').html('');
-		var _contents = '<p class="customDialog_txt">' + options.text + '</p><ul class="customDialog_btns"><li class="customDialog_btn customDialog_btn-ok"><a href="javascript: void(0);">OK</a></li></ul>';
-		$('.customDialog_inner').append(_contents);
-
-		$('.customDialog').switchClass('customDialog-isClose', 'customDialog-isOpen');
-
-		_pause().then(
-			function(){
-				_close();
-				if (options.ok) {options.ok()}
-			},
-			function(){
-				_close();
-			}
-		);
-
-	}
-
 	var _close = function(){
-		$('.customDialog').switchClass('customDialog-isOpen', 'customDialog-isClose');
-		$(document).off('.click', '.customDialog_btn > a');
+		$$$.anim.leave.call($('.overlay'))
+		$('.overlay').off('touchmove');
 	}
-
+	var _toggle = function(){
+		$$$.anim.toggle.call($('.overlay'))
+	}
 
 	return {
-		open: _open
+		open: _open,
+		close: _close,
+		toggle: _toggle,
 	};
-}());
-
-/*************************************************************************************
-* confirm
-*************************************************************************************/
-$$$.confirm = (function() {
-	var _init = function(){
-		$('body').append(
-			'<div class="customDialog">\
-				<div class="customDialog_overlay"></div>\
-				<div class="customDialog_inner">\
-				</div>\
-			</div>'
-		);
-	}
-	var _pause = function(){
-		return new Promise(function(resolve, reject){
-			$(document).on('click', '.customDialog_btn-ok > a', function(event) {
-				event.preventDefault();
-				resolve();
-			});
-			$(document).on('click', '.customDialog_btn-cancel > a', function(event) {
-				event.preventDefault();
-				reject();
-			});
-		})
-	}
-	var _open = function(options){
-		if (!$('.customDialog')[0]) { _init(); }
-
-		$('.customDialog_inner').html('');
-		var _contents = '<p class="customDialog_txt">' + options.text + '</p><ul class="customDialog_btns"><li class="customDialog_btn customDialog_btn-cancel"><a href="javascript: void(0);">キャンセル</a></li><li class="customDialog_btn customDialog_btn-ok"><a href="javascript: void(0);">OK</a></li></ul>';
-		$('.customDialog_inner').append(_contents);
-
-		$('.customDialog').switchClass('customDialog-isClose', 'customDialog-isOpen');
-
-		_pause().then(
-			function(){
-				_close();
-				if (options.ok) {options.ok()}
-				return true;
-			},
-			function(){
-				_close();
-				if (options.cancel) {options.cancel()}
-				return false;
-			}
-		);
-
-	}
-
-	var _close = function(){
-		$('.customDialog').switchClass('customDialog-isOpen', 'customDialog-isClose');
-		$(document).off('.click', '.customDialog_btn > a');
-	}
-
-
-	return {
-		open: _open
-	}
 }());
 
 /*************************************************************************************
@@ -602,7 +634,7 @@ $$$.confirm = (function() {
 $$$.dialog = (function() {
 	var _init = function(){
 		$('body').append(
-			'<div class="customDialog">\
+			'<div class="customDialog" data-anim="customDialog">\
 				<div class="customDialog_overlay"></div>\
 				<div class="customDialog_inner">\
 				</div>\
@@ -623,17 +655,22 @@ $$$.dialog = (function() {
 		$('.customDialog_inner').html('');
 		var _btns = ''
 		for (var i = 0, l = options.btns.length; i < l; i++) {
-			_btns += '<li class="customDialog_btn"><a href="javascript: void(0);" data-btn-id="' + i + '">' + options.btns[i].txt +'</a></li>'
+			_btns += '<li class="customDialog_btn"><a href="javascript: void(0);" data-btn-id="' + i + '">' + options.btns[i].name +'</a></li>'
 		}
-		var _contents = '<p class="customDialog_txt">' + options.text + '</p><ul class="customDialog_btns">' + _btns + '</ul>';
+		var _contents = '<div class="customDialog_txt">' + options.txt + '</div><ul class="customDialog_btns">' + _btns + '</ul>';
 		$('.customDialog_inner').append(_contents);
 
-		$('.customDialog').switchClass('customDialog-isClose', 'customDialog-isOpen');
+		$$$.anim.enter.call($('.customDialog'))
 
 		_pause().then(
 			function(id){
-				_close();
-				if (options.btns[id].ok) {options.btns[id].ok()}
+				if (options.btns[id].action) {options.btns[id].action()}
+
+				if (options.btns[id].callback) {
+					_close(options.btns[id].callback);
+				} else {
+					_close();
+				}
 			},
 			function(){
 				_close();
@@ -642,8 +679,12 @@ $$$.dialog = (function() {
 
 	}
 
-	var _close = function(){
-		$('.customDialog').switchClass('customDialog-isOpen', 'customDialog-isClose');
+	var _close = function(cb){
+		if (cb) {
+			$$$.anim.leave.call($('.customDialog'), cb)
+		} else {
+			$$$.anim.leave.call($('.customDialog'))
+		}
 		$(document).off('.click', '.customDialog_btn > a');
 	}
 
@@ -659,7 +700,7 @@ $$$.dialog = (function() {
 $$$.loading = (function() {
 	var _init = function(){
 		$('body').append(
-			'<div class="customDialog">\
+			'<div class="customDialog" data-anim="customDialog">\
 				<div class="customDialog_overlay"></div>\
 				<div class="customDialog_inner">\
 				</div>\
@@ -670,14 +711,14 @@ $$$.loading = (function() {
 		if (!$('.customDialog')[0]) { _init(); }
 
 		$('.customDialog_inner').html('');
-		var _contents = '<p class="customDialog_txt">' + options.text + '</p>';
+		var _contents = '<div class="customDialog_txt">' + options.txt + '</div>';
 		$('.customDialog_inner').append(_contents);
 
-		$('.customDialog').switchClass('customDialog-isClose', 'customDialog-isOpen');
+		$$$.anim.enter.call($('.customDialog'))
 	}
 
-	var _close = function(){
-		$('.customDialog').switchClass('customDialog-isOpen', 'customDialog-isClose');
+	var _close = function(cb){
+		$$$.anim.leave.call($('.customDialog'), cb)
 	}
 
 
@@ -760,10 +801,11 @@ $$$.tree = (function() {
 /*************************************************************************************
 * agree 同意しますか？のやつ
 *************************************************************************************/
+//yesのチェック1個ならこっち
 $$$.agree = function () {
 	var _change = function _change(args) {
 		var _$target = $(this).data('agree-target');
-		if ($(this).data('agree-condition') === 'yes') {
+		if ($(this).prop('checked')) {
 			$('[data-agree="' + _$target + '"]').removeAttr('disabled');
 		} else {
 			$('[data-agree="' + _$target + '"]').attr('disabled', 'disabled');
@@ -774,6 +816,22 @@ $$$.agree = function () {
 		change: _change
 	};
 }();
+
+// yes / no のラジオならこっち
+// $$$.agree = function () {
+// 	var _change = function _change(args) {
+// 		var _$target = $(this).data('agree-target');
+// 		if ($(this).data('agree-condition') === 'yes') {
+// 			$('[data-agree="' + _$target + '"]').removeAttr('disabled');
+// 		} else {
+// 			$('[data-agree="' + _$target + '"]').attr('disabled', 'disabled');
+// 		}
+// 	};
+
+// 	return {
+// 		change: _change
+// 	};
+// }();
 
 
 /*************************************************************************************
@@ -795,6 +853,14 @@ $$$.contentsModal = (function() {
 		$('.contentsModal_contents').removeAttr('style')
 	}
 	var _ajax = function(url, $target, options) {
+		if (options.width) {
+			$target.find('.contentsModal_contents').css('width', options.width)
+		}
+		$$$.anim.enter.call($target)
+		$$$.anim.enter.call($target.find('.contentsModal_overlay'))
+		$$$.anim.enter.call($target.find('.contentsModal_loading'))
+		_killScroll();
+
 		$.ajax({
 			url: url,
 		})
@@ -805,16 +871,10 @@ $$$.contentsModal = (function() {
 			$target.find('.contentsModal_body').append('<p>読み込みエラー</p>');
 		})
 		.always(function() {
-			if (options.width) {
-				$target.find('.contentsModal_contents').css('width', options.width)
-			}
-			$$$.anim.enter.call($target)
-			$$$.anim.enter.call($target.find('.contentsModal_overlay'))
-			$$$.anim.enter.call($target.find('.contentsModal_loading'))
-			_killScroll();
 			_onImgLoad(function(){
 				$$$.anim.enter.call($target.find('.contentsModal_contents'))
 				$$$.anim.leave.call($target.find('.contentsModal_loading'))
+				_replace();
 			})
 			_replace();
 		});
@@ -915,9 +975,9 @@ $$$.contentsModal = (function() {
 	};
 }());
 
-/*************************************************************************************
-* dummyImage生成
-*************************************************************************************/
+// /*************************************************************************************
+// * dummyImage生成
+// *************************************************************************************/
 $$$.dummyImage = (function(){
 	var _init = function(){
 		$(this).each(function(index, el) {
@@ -1003,15 +1063,11 @@ $$$.fileForm = (function() {
 
 		var _$dom = _parent.find('.fileForm_item-template').clone().removeClass('fileForm_item-template');
 		$(_$dom.find('[type="file"]')).on('change', function(event) {
-			if(_typeError(_$dom.find('[type="file"]')[0].files[0]) || _sizeError(_$dom.find('[type="file"]')[0].files[0])) {
-				return false
-			}
 
-			_$dom.find('span').text(_$dom.find('[type="file"]')[0].files[0].name);
-			_parent.find('.fileForm_list').append(_$dom);
+			_preUpload(_$dom.find('[type="file"]')[0].files[0], _option.src);
+
 			$(this).off('change')
 
-			// _fd.append('body', $('.contents').val())
 		});
 		_$dom.find('[type="file"]').trigger('click');
 	}
@@ -1019,52 +1075,58 @@ $$$.fileForm = (function() {
 	var _drop = function(files){
 		_parent = $(this).closest('.fileForm');
 		_option = _parent.data('option') || {};
+
 		if(_qtyError(files)){
 			return false
 		};
 
 
 		for (var i = 0, l = files.length; i < l; i++) {
-			var _$dom = _parent.find('.fileForm_item-template').clone().removeClass('fileForm_item-template');
-			if(_typeError(files[i]) || _sizeError(files[i])) {
-				return false
-			}
-			var _fd = new FormData();
-			_fd.append('file', files[i])
-
-			$.ajax({
-				url: '/', //ここに送信先
-				type: 'POST',
-				contentType: false,
-				processData: false,
-				data: _fd,
-				dataType: 'json',
-			})
-			.done(function(res) {
-				_$dom.find('[name*="selected"]').val(res.path)
-				_$dom.find('[name*="original_name"]').val(res.name)
-			})
-			.fail(function() {
-				console.log("error");
-			})
-			.always(function() {
-				console.log("complete");
-			});
-
-
-			_$dom.find('span').text(files[i].name);
-			_parent.find('.fileForm_list').append(_$dom);
-
-			// _$dom.find('[type="file"]')[0] = files[i];
+			_preUpload(files[i], _option.src);
 		}
+	}
 
+	var _preUpload = function(file, src){
+		if(_typeError(file) || _sizeError(file)) {
+			return false
+		}
+		var _fd = new FormData();
+		_fd.append('file', file)
 
+		$.ajax({
+			url: src,
+			type: 'GET',
+			contentType: false,
+			processData: false,
+			data: _fd,
+			dataType: 'json',
+			rsync:true
+		})
+		.done(function(res) {
+			var _$dom = _parent.find('.fileForm_item-template').clone().removeClass('fileForm_item-template');
+			_$dom.find('[name*="selected"]').val(res.path)
+			_$dom.find('[name*="original_name"]').val(res.name)
+			_$dom.find('.fileForm_name').text(res.name);
+			if (_$dom.find('.fileForm_name').get(0).tagName === 'A') {
+				_$dom.find('.fileForm_name').attr('href', res.path)
+			}
+			_parent.find('.fileForm_list').append(_$dom);
+		})
+		.fail(function() {
+			// console.log("error");
+		})
+		.always(function() {
+			// console.log("complete");
+		});
 	}
 
 	var _qtyError = function(files){
 		if (_option.maxQty && _parent.find('.fileForm_item').not('.fileForm_item-template').length + files.length > _option.maxQty) {
-			$$$.alert.open({
-				text: _option.maxQtyError
+			$$$.dialog.open({
+				txt: _option.maxQtyError,
+				btns: [{
+					name: 'OK'
+				}]
 			})
 			return true;
 		}
@@ -1072,9 +1134,11 @@ $$$.fileForm = (function() {
 
 	var _typeError = function(file){
 		if (_option.type && _option.type.length > 0 && _option.type.indexOf(file.name.toLowerCase().split('.').pop()) < 0) {
-
-			$$$.alert.open({
-				text: _option.typeError
+			$$$.dialog.open({
+				txt: _option.typeError,
+				btns: [{
+					name: 'OK'
+				}]
 			})
 			return true;
 		}
@@ -1082,8 +1146,11 @@ $$$.fileForm = (function() {
 
 	var _sizeError = function(file){
 		if (_option.maxSize && _option.maxSize > 0 && file.size > _option.maxSize) {
-			$$$.alert.open({
-				text: _option.maxSizeError
+			$$$.dialog.open({
+				txt: _option.maxSizeError,
+				btns: [{
+					name: 'OK'
+				}]
 			})
 			return true;
 		}
@@ -1091,12 +1158,16 @@ $$$.fileForm = (function() {
 
 	var _remove = function(){
 		var _$this = $(this)
-		$$$.confirm.open({
-			text: '削除しますか？',
-			ok: function(){
-				_$this.closest('.fileForm_item').remove();
-			},
-			cancel: function(){}
+		$$$.dialog.open({
+			txt: '削除しますか？',
+			btns: [{
+				name: 'はい',
+				action:function(){
+					_$this.closest('.fileForm_item').remove();
+				},
+			},{
+				name: 'いいえ',
+			}]
 		});
 	}
 
@@ -1106,6 +1177,7 @@ $$$.fileForm = (function() {
 		remove: _remove,
 	};
 }());
+
 
 /*************************************************************************************
 * コメント
