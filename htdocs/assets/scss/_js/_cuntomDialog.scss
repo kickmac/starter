@@ -7,7 +7,7 @@
 カスタムダイアログ
 
 $$$.dialog.open({
-	txt: 'aaaaaaaa',
+	txt: '<p class="tCenter">aaaaaaa</p>',
 	btns: [{
 		name: 'ok',
 		action: function(){
@@ -28,11 +28,13 @@ $$$.dialog.open({
 	}]
 })
 $$$.loading.open({
-	text: 'bbb'
-});
-$$$.loading.close(function(){
-	alert('aaa')
-});
+	txt: '<p class="tCenter">loading</p>',
+})
+setTimeout(function(){
+	$$$.loading.close(function(){
+		alert('cb')
+	});
+}, 3000)
 
 Markup:
 <div class="customDialog">
@@ -64,7 +66,7 @@ Styleguide #{$guideNum}
 
 	&_overlay {
 		display: block;
-		background: rgba(#000, .5);
+		background: $overlayBg;
 		position: fixed;
 		top: 0;
 		right: 0;
@@ -92,6 +94,9 @@ Styleguide #{$guideNum}
 		}
 	}
 	&_txt {
+		& > :first-child {
+			margin-top: 0;
+		}
 	}
 	&_btns {
 		display: flex;

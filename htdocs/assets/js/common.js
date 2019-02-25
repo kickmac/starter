@@ -7309,61 +7309,259 @@ jQuery.extend(jQuery.easing, {
     })();
 });
 
-$.fn.extend({
-    switchClass: function switchClass(before, after) {
-        $(this).removeClass(before);
-        $(this).addClass(after);
-    }
-});
-
 var $$$ = $$$ || {};
-
 /*************************************************************************************
-* parseArgs
+* acc
 *************************************************************************************/
-$$$.parseArgs = function () {
-    var _args = function _args(args) {
-        this.values = Array.prototype.slice.call(args, 0);
-    };
-    _args.prototype = {
-        values: undefined,
-        _slice: function _slice(index, type) {
-            var s = this;
-            var hit = !type || _typeof(s.values[index]) === type;
-            if (hit) {
-                return s.values.splice(index, 1).shift();
-            } else {
-                return undefined;
+$$$.acc = function () {
+    var _init = function _init() {
+        var op = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+            root: null,
+            content: '[data-acc-content]',
+            toggleBtn: '[data-acc-btn]',
+            openBtn: '[data-acc-open-btn]',
+            closeBtn: '[data-acc-close-btn]',
+
+            beforeInit: null,
+            afterInit: null,
+            beforeResize: null,
+            afterResize: null,
+            beforeOpen: null,
+            afterOpen: null,
+            beforeClose: null,
+            afterClose: null
+        };
+
+        $(this).each(function (index, el) {
+
+            var _options = {};
+            $.extend(_options, op);
+
+            _options.root = $(this);
+            _options.content = $(this).find(_options.content);
+            _options.toggleBtn = $(this).find(_options.toggleBtn);
+            _options.openBtn = $(this).find(_options.openBtn);
+            _options.closeBtn = $(this).find(_options.closeBtn);
+
+            if (_options.beforeInit) {
+                _options.beforeInit();
             }
-        },
-        /** 先頭の型が一致した場合のみ取得 */
-        shift: function shift(type) {
-            var s = this;
-            return s._slice(0, type);
-        },
-        /** 末尾の型が一致した場合のみ取得 */
-        pop: function pop(type) {
-            var s = this;
-            return s._slice(s.values.length - 1, type);
-        },
-        /** 残り全部取得 */
-        remain: function remain() {
-            var s = this;
-            var values = s.values;
-            s.values = undefined;
-            return values;
+
+            if (_options.root.attr('data-acc-root') !== 'open') {
+                _options.root.attr('data-acc-root', '');
+            }
+            _options.content.attr('data-acc-content', '');
+            _options.toggleBtn.attr('data-acc-btn', '');
+            _options.openBtn.attr('data-acc-open-btn', '');
+            _options.closeBtn.attr('data-acc-close-btn', '');
+
+            _set(_options);
+
+            _options.toggleBtn.on('click', function (event) {
+                event.preventDefault();
+                _toggle(_options);
+            });
+            _options.openBtn.on('click', function (event) {
+                event.preventDefault();
+                _open(_options);
+            });
+            _options.closeBtn.on('click', function (event) {
+                event.preventDefault();
+                _close(_options);
+            });
+
+            $(window).on('resizeend, pcsp.changed', function (event) {
+                event.preventDefault();
+                _set(_options);
+            });
+
+            if (_options.afterInit) {
+                _options.afterInit({
+                    root: _options.root,
+                    content: _options.content,
+                    toggleBtn: _options.toggleBtn,
+                    openBtn: _options.openBtn,
+                    closeBtn: _options.closeBtn
+                });
+            }
+        });
+    };
+
+    var _set = function _set(_options) {
+        if (_options.beforeResize) {
+            _options.beforeResize({
+                root: _options.root,
+                content: _options.content,
+                toggleBtn: _options.toggleBtn,
+                openBtn: _options.openBtn,
+                closeBtn: _options.closeBtn
+            });
+        }
+
+        _options.content.attr('style', '');
+        _options.content.data('acc-max-h', _options.content.outerHeight());
+
+        if (_options.root.attr('data-acc-root') !== 'open') {
+            _options.content.css({
+                maxHeight: 0
+            });
+        } else {
+            _options.content.css({
+                maxHeight: _options.content.data('acc-max-h')
+            });
+        }
+
+        _options.content.css({
+            visibility: 'visible'
+        });
+
+        if (_options.afterResize) {
+            _options.afterResize({
+                root: _options.root,
+                content: _options.content,
+                toggleBtn: _options.toggleBtn,
+                openBtn: _options.openBtn,
+                closeBtn: _options.closeBtn
+            });
         }
     };
 
-    return function (args) {
-        var _arg = new _args(args);
-        return {
-            callback: _arg.pop('function'),
-            options: _arg.pop('object'),
-            values: _arg.remain()
-        };
+    var _open = function _open(_options) {
+        if (_options.beforeOpen) {
+            _options.beforeOpen({
+                root: _options.root,
+                content: _options.content,
+                toggleBtn: _options.toggleBtn,
+                openBtn: _options.openBtn,
+                closeBtn: _options.closeBtn
+            });
+        }
+
+        _options.content.off('transitionend webkitTransitionEnd');
+        if (_options.afterOpen) {
+            _options.content.on('transitionend webkitTransitionEnd', function (e) {
+                if (e.target === _options.content[0]) {
+                    _options.afterOpen({
+                        root: _options.root,
+                        content: _options.content,
+                        toggleBtn: _options.toggleBtn,
+                        openBtn: _options.openBtn,
+                        closeBtn: _options.closeBtn
+                    });
+                }
+            });
+        }
+
+        _options.root.attr('data-acc-root', 'open');
+        _options.content.css({
+            maxHeight: _options.content.data('acc-max-h')
+        });
+    };
+
+    var _close = function _close(_options) {
+        if (_options.beforeClose) {
+            _options.beforeClose({
+                root: _options.root,
+                content: _options.content,
+                toggleBtn: _options.toggleBtn,
+                openBtn: _options.openBtn,
+                closeBtn: _options.closeBtn
+            });
+        }
+
+        _options.content.off('transitionend webkitTransitionEnd');
+        if (_options.afterClose) {
+            _options.content.on('transitionend webkitTransitionEnd', function (e) {
+                if (e.target === _options.content[0]) {
+                    _options.afterClose({
+                        root: _options.root,
+                        content: _options.content,
+                        toggleBtn: _options.toggleBtn,
+                        openBtn: _options.openBtn,
+                        closeBtn: _options.closeBtn
+                    });
+                }
+            });
+        }
+
+        _options.root.attr('data-acc-root', '');
+        _options.content.css({
+            maxHeight: 0
+        });
+    };
+
+    var _toggle = function _toggle(_options) {
+        if (_options.root.attr('data-acc-root') === 'open') {
+            _close(_options);
+        } else {
+            _open(_options);
+        }
+    };
+
+    return {
+        init: _init
     };
 }();
+
+var $$$ = $$$ || {};
+/*************************************************************************************
+* agree 同意しますか？のやつ
+*************************************************************************************/
+//yesのチェック1個ならこっち
+$$$.agree = function () {
+    var _change = function _change(args) {
+        var _$target = $(this).data('agree-target');
+        if ($(this).prop('checked')) {
+            $('[data-agree="' + _$target + '"]').removeAttr('disabled');
+        } else {
+            $('[data-agree="' + _$target + '"]').attr('disabled', 'disabled');
+        }
+    };
+
+    return {
+        change: _change
+    };
+}();
+
+// yes / no のラジオならこっち
+// $$$.agree = function () {
+// 	var _change = function _change(args) {
+// 		var _$target = $(this).data('agree-target');
+// 		if ($(this).data('agree-condition') === 'yes') {
+// 			$('[data-agree="' + _$target + '"]').removeAttr('disabled');
+// 		} else {
+// 			$('[data-agree="' + _$target + '"]').attr('disabled', 'disabled');
+// 		}
+// 	};
+
+// 	return {
+// 		change: _change
+// 	};
+// }();
+var $$$ = $$$ || {};
+/*************************************************************************************
+* anchorJump
+*************************************************************************************/
+$$$.anchorJump = function () {
+    var _hash = location.hash;
+    var _adjust = 0;
+
+    var _jump = function _jump(args) {
+        if (_hash) {
+            if ($$$.pcsp.getMode() === 'sp') {
+                _adjust = 63 + 10;
+            } else {
+                _adjust = 0;
+            }
+            $(window).scrollTop($(_hash).offset().top - _adjust);
+        }
+    };
+    return {
+        init: _jump
+    };
+}();
+
+var $$$ = $$$ || {};
 /*************************************************************************************
 * amin
 *************************************************************************************/
@@ -7421,590 +7619,7 @@ $$$.anim = function () {
     };
 }();
 
-/*************************************************************************************
-* vh adjust
-*************************************************************************************/
-$$$.vhAdjust = function () {
-    var _vh = 0;
-    var _init = function _init() {
-        _vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', _vh + 'px');
-    };
-    return {
-        init: _init
-    };
-}();
-
-/*************************************************************************************
-* windowInfo
-*************************************************************************************/
-$$$.windowInfo = function () {
-    var _init = function _init() {
-        _size.w = $(window).innerWidth();
-        _size.h = $(window).innerHeight();
-        _sc.top = $(window).scrollTop();
-        _sc.bottom = _sc.top + _size.h;
-        _sc.left = $(window).scrollLeft();
-    };
-    var _size = {
-        w: 0,
-        h: 0
-    };
-    var _sc = {
-        top: 0,
-        bottom: 0,
-        left: 0
-    };
-
-    return {
-        init: _init,
-        sc: _sc,
-        size: _size
-    };
-}();
-
-/*************************************************************************************
-* 画像preload
-*************************************************************************************/
-$$$.imagesLoadListener = function () {
-    var _imageCollector = function _imageCollector(expectedCount, completeFn) {
-        var receivedCount = 0;
-        return function () {
-            receivedCount++;
-            if (receivedCount === expectedCount) {
-                completeFn();
-            }
-        };
-    };
-    var _imagesLoadListener = function _imagesLoadListener(element, callback) {
-        var _images = element.find('img');
-        if (!_images[0]) {
-            callback();
-            return;
-        }
-        //画像の数だけloadListenerが呼ばれたらcallbackが呼ばれる;
-        var _loadListener = _imageCollector(_images.length, callback);
-        Array.prototype.forEach.call(_images, function (img) {
-            if (img.complete) {
-                _loadListener();
-            } else {
-                img.onload = _loadListener;
-            }
-        });
-    };
-
-    return {
-        listen: _imagesLoadListener
-    };
-}();
-
-/*************************************************************************************
-* resizeend(幅のみ)
-*************************************************************************************/
-$$$.resizeend = function () {
-    var _delta = 200;
-    var _rtime;
-    var _timeout = false;
-    var _ww = 0;
-
-    var _init = function _init(args) {
-        _ww = $(window).width();
-
-        $(window).on('resize', function (event) {
-            _rtime = new Date();
-            if (!_timeout) {
-                _timeout = true;
-                setTimeout(_judge, _delta);
-            }
-        });
-    };
-
-    var _judge = function _judge() {
-        if (new Date() - _rtime < _delta) {
-            setTimeout(_judge, _delta);
-        } else {
-            _timeout = false;
-            $$$.viewport.init();
-            if (_ww !== $(window).width()) {
-                $(window).trigger('resizeend');
-            }
-            _ww = $(window).width();
-        }
-    };
-    return {
-        init: _init
-    };
-}();
-
-/*************************************************************************************
-* resizeendHeight
-*************************************************************************************/
-$$$.resizeendHeight = function () {
-    var _delta = 200;
-    var _rtime;
-    var _timeout = false;
-    var _wh = 0;
-
-    var _init = function _init(args) {
-        _wh = $(window).height();
-
-        $(window).on('resize', function (event) {
-            _rtime = new Date();
-            if (!_timeout) {
-                _timeout = true;
-                setTimeout(_judge, _delta);
-            }
-        });
-    };
-
-    var _judge = function _judge() {
-        if (new Date() - _rtime < _delta) {
-            setTimeout(_judge, _delta);
-        } else {
-            _timeout = false;
-            if (_wh !== $(window).height()) {
-                $(window).trigger('resizeendHeight');
-            }
-            _wh = $(window).height();
-        }
-    };
-    return {
-        init: _init
-    };
-}();
-
-/*************************************************************************************
-* pcかスマホか判定（幅で）
-*************************************************************************************/
-$$$.pcsp = function () {
-    var _breakpoint = 736;
-    var _mode;
-    var _oldMode;
-    var _init = function _init(args) {
-        _judge();
-    };
-    var _judge = function _judge() {
-        if (_mode) {
-            _oldMode = _mode;
-        }
-        if ($(window).innerWidth() > _breakpoint) {
-            _mode = 'pc';
-        } else {
-            _mode = 'sp';
-        }
-
-        //modeが変わったらpcsp.changedイベント発火
-        if (_mode !== _oldMode) {
-            $(window).trigger('pcsp.changed', [_mode]);
-        }
-    };
-    var _getMode = function _getMode() {
-        return _mode;
-    };
-    var _getBreakpoint = function _getBreakpoint() {
-        return _breakpoint;
-    };
-
-    return {
-        init: _init,
-        judge: _judge,
-        getMode: _getMode,
-        getBreakpoint: _getBreakpoint
-    };
-}();
-
-/*************************************************************************************
-* タブレットにフィットさせる
-*************************************************************************************/
-$$$.viewport = function () {
-    var _tag = $('meta[name=viewport]');
-    var _ww = $(window).innerWidth() < window.screen.width ? $(window).innerWidth() : window.screen.width; //get proper width
-    var _mw = 1220;
-    var _ratio = _ww / _mw;
-
-    var _init = function _init(args) {
-        _tag.attr('content', 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0');
-        _ww = $(window).innerWidth() < window.screen.width ? $(window).innerWidth() : window.screen.width;
-        _ratio = _ww / _mw;
-        if (_ww < _mw && _ww > 767) {
-            _tag.attr('content', 'width=' + _ww + ', initial-scale=' + _ratio + ', minimum-scale=' + _ratio + ', maximum-scale=' + _ratio);
-        }
-    };
-    return {
-        init: _init
-    };
-}();
-
-/*************************************************************************************
-* anchorJump
-*************************************************************************************/
-$$$.anchorJump = function () {
-    var _hash = location.hash;
-    var _adjust = 0;
-
-    var _jump = function _jump(args) {
-        if (_hash) {
-            if ($$$.pcsp.getMode() === 'sp') {
-                _adjust = 63 + 10;
-            } else {
-                _adjust = 0;
-            }
-            $(window).scrollTop($(_hash).offset().top - _adjust);
-        }
-    };
-    return {
-        init: _jump
-    };
-}();
-
-/*************************************************************************************
-* スムーズスクロール
-*************************************************************************************/
-$$$.smoothScroll = function () {
-    var _config = {
-        speed: 1000, // 'slow', 'fast', 1000
-        easing: 'easeInOutQuad' // 'swing', 'linear'
-    };
-    var _speed;
-    var _hash;
-    var _top = 0;
-    var _adjust = 0;
-
-    var _getOffset = function _getOffset() {
-        _hash = $(this).attr('href');
-        if (_hash === '#') {
-            _top = 0;
-        } else {
-            _top = $(_hash).offset().top;
-        }
-        if ($$$.pcsp.getMode() === 'sp') {
-            _adjust = 63 + 10;
-        } else {
-            _adjust = 0;
-        }
-        return _top - _adjust;
-    };
-    var _scroll = function _scroll() {
-        var $self = this;
-        _stopScroll();
-        $(window).on('wheel', function (event) {
-            _stopScroll();
-        });
-        $('html,body').animate({
-            scrollTop: _getOffset.call($self)
-        }, _config.speed, _config.easing, function () {
-            $(window).off('wheel');
-        });
-    };
-    var _stopScroll = function _stopScroll() {
-        $('html,body').stop();
-    };
-
-    return {
-        scroll: _scroll
-    };
-}();
-
-/*************************************************************************************
-* アコーディオン
-*************************************************************************************/
-$$$.accordion = function () {
-    var _init = function _init(args) {
-        $('[data-acc-body]').attr('style', '');
-        $('[data-acc]').each(function (index, el) {
-            var _$root = $(this);
-            var _$btn = _$root.find('[data-acc-btn]');
-            var _$body = _$root.find('[data-acc-body]');
-
-            _$body.data('acc-max-h', _$body.outerHeight()).css({
-                visibility: 'visible'
-            });
-
-            _slide.call(_$btn);
-        });
-    };
-    var _slide = function _slide() {
-        var _$root = $(this).closest('[data-acc]');
-        var _$btn = _$root.find('[data-acc-btn]');
-        var _$body = _$root.find('[data-acc-body]');
-
-        if (_$btn.attr('data-acc-btn') === 'open') {
-            _$body.css({
-                maxHeight: _$body.data('acc-max-h')
-            });
-        } else {
-            _$body.css({
-                maxHeight: 0
-            });
-        }
-    };
-    var _txtSwitch = function _txtSwitch() {
-        var _$root = $(this).closest('[data-acc]');
-        var _$txt = _$root.find('[data-acc-btn-txt]');
-        var _cash = '';
-
-        if (!_$txt) {
-            return false;
-        }
-        _$txt.each(function (index, el) {
-            if ($(this).data('acc-btn-txt') === '') {
-                return false;
-            }
-            _cash = $(this).text();
-            $(this).text($(this).data('acc-btn-txt'));
-            $(this).data('acc-btn-txt', _cash);
-        });
-    };
-    var _toggle = function _toggle() {
-        var _$btns = $(this).closest('[data-acc]').find('[data-acc-btn]');
-        if ($(this).attr('data-acc-btn') === 'open') {
-            _$btns.each(function (index, el) {
-                $(this).attr('data-acc-btn', '');
-            });
-        } else {
-            _$btns.each(function (index, el) {
-                $(this).attr('data-acc-btn', 'open');
-            });
-        }
-        _txtSwitch.call($(this));
-        _slide.call($(this));
-    };
-
-    return {
-        init: _init,
-        toggle: _toggle
-    };
-}();
-
-/*************************************************************************************
-* オーバーレイ
-*************************************************************************************/
-$$$.overlay = function () {
-    var _init = function _init(args) {};
-    var _open = function _open() {
-        $$$.anim.enter.call($('.overlay'));
-        // $('.overlay').switchClass('overlay-isClose', 'overlay-isOpen');
-        $('.overlay').on('touchmove', function (event) {
-            event.preventDefault();
-        });
-    };
-    var _close = function _close() {
-        $$$.anim.leave.call($('.overlay'));
-        $('.overlay').off('touchmove');
-    };
-    var _toggle = function _toggle() {
-        $$$.anim.toggle.call($('.overlay'));
-    };
-
-    return {
-        open: _open,
-        close: _close,
-        toggle: _toggle
-    };
-}();
-
-/*************************************************************************************
-* dialog
-*************************************************************************************/
-$$$.dialog = function () {
-    var _init = function _init() {
-        $('body').append('<div class="customDialog" data-anim="customDialog">\
-				<div class="customDialog_overlay"></div>\
-				<div class="customDialog_inner">\
-				</div>\
-			</div>');
-    };
-    var _pause = function _pause() {
-        return new Promise(function (resolve, reject) {
-            $(document).on('click', '.customDialog_btn > a', function (event) {
-                event.preventDefault();
-                resolve($(this).data('btn-id'));
-            });
-        });
-    };
-    var _open = function _open(options) {
-        if (!$('.customDialog')[0]) {
-            _init();
-        }
-
-        $('.customDialog_inner').html('');
-        var _btns = '';
-        for (var i = 0, l = options.btns.length; i < l; i++) {
-            _btns += '<li class="customDialog_btn"><a href="javascript: void(0);" data-btn-id="' + i + '">' + options.btns[i].name + '</a></li>';
-        }
-        var _contents = '<div class="customDialog_txt">' + options.txt + '</div><ul class="customDialog_btns">' + _btns + '</ul>';
-        $('.customDialog_inner').append(_contents);
-
-        $$$.anim.enter.call($('.customDialog'));
-
-        _pause().then(function (id) {
-            if (options.btns[id].action) {
-                options.btns[id].action();
-            }
-
-            if (options.btns[id].callback) {
-                _close(options.btns[id].callback);
-            } else {
-                _close();
-            }
-        }, function () {
-            _close();
-        });
-    };
-
-    var _close = function _close(cb) {
-        if (cb) {
-            $$$.anim.leave.call($('.customDialog'), cb);
-        } else {
-            $$$.anim.leave.call($('.customDialog'));
-        }
-        $(document).off('.click', '.customDialog_btn > a');
-    };
-
-    return {
-        open: _open
-    };
-}();
-
-/*************************************************************************************
-* loading
-*************************************************************************************/
-$$$.loading = function () {
-    var _init = function _init() {
-        $('body').append('<div class="customDialog" data-anim="customDialog">\
-				<div class="customDialog_overlay"></div>\
-				<div class="customDialog_inner">\
-				</div>\
-			</div>');
-    };
-    var _open = function _open(options) {
-        if (!$('.customDialog')[0]) {
-            _init();
-        }
-
-        $('.customDialog_inner').html('');
-        var _contents = '<div class="customDialog_txt">' + options.txt + '</div>';
-        $('.customDialog_inner').append(_contents);
-
-        $$$.anim.enter.call($('.customDialog'));
-    };
-
-    var _close = function _close(cb) {
-        $$$.anim.leave.call($('.customDialog'), cb);
-    };
-
-    return {
-        open: _open,
-        close: _close
-    };
-}();
-
-/*************************************************************************************
-* tab
-*************************************************************************************/
-$$$.tab = function () {
-    var _init = function _init(args) {
-        $('[data-tab]').each(function (index, el) {
-            $(this).find('[data-tab-content-active]').removeAttr('data-tab-content-active');
-            var _index = 0;
-            if ($(this).find('[data-tab-item][data-tab-item-active]').length > 0) {
-                _index = $(this).find('[data-tab-item][data-tab-item-active]').eq(0).data('tab-item');
-                $(this).find('[data-tab-item-active]').removeAttr('data-tab-item-active');
-            }
-            $(this).find('[data-tab-item]').eq(_index).attr('data-tab-item-active', '');
-            $(this).find('[data-tab-content]').eq(_index).attr('data-tab-content-active', '');
-        });
-    };
-    var _show = function _show() {
-        var _$root = $(this).closest('[data-tab]');
-        var _index = $(this).data('tab-item');
-        _hide.call($(this));
-        _$root.find('[data-tab-item=' + _index + ']').attr('data-tab-item-active', '');
-        _$root.find('[data-tab-content=' + _index + ']').attr('data-tab-content-active', '');
-    };
-    var _hide = function _hide() {
-        $(this).closest('[data-tab]').find('[data-tab-content-active]').removeAttr('data-tab-content-active');
-        $(this).closest('[data-tab]').find('[data-tab-item-active]').removeAttr('data-tab-item-active');
-    };
-
-    return {
-        init: _init,
-        show: _show,
-        hide: _hide
-    };
-}();
-
-/*************************************************************************************
-* tree
-*************************************************************************************/
-$$$.tree = function () {
-    var _init = function _init(args) {
-        $('.tree_name-isActive').each(function (index, el) {
-            var _$parent = $(this).parents('.tree_list');
-            _$parent.addClass('tree_list-isOpen');
-            _$parent.prev('.tree_head').find('.tree_toggle').addClass('tree_toggle-isOpen');
-        });
-    };
-    var _open = function _open(args) {
-        $(this).children('.tree_head').children('.tree_toggle').addClass('tree_toggle-isOpen');
-        $(this).children('.tree_list').addClass('tree_list-isOpen');
-    };
-    var _close = function _close(args) {
-        $(this).find('.tree_toggle').removeClass('tree_toggle-isOpen');
-        $(this).find('.tree_list').removeClass('tree_list-isOpen');
-    };
-    var _toggle = function _toggle(args) {
-        var _$root = $(this).closest('.tree_item');
-        var _$btn = $(this).closest('.tree_toggle');
-        if (_$btn.hasClass('tree_toggle-isOpen')) {
-            _close.call(_$root);
-        } else {
-            _open.call(_$root);
-        }
-    };
-
-    return {
-        init: _init,
-        toggle: _toggle
-    };
-}();
-
-/*************************************************************************************
-* agree 同意しますか？のやつ
-*************************************************************************************/
-//yesのチェック1個ならこっち
-$$$.agree = function () {
-    var _change = function _change(args) {
-        var _$target = $(this).data('agree-target');
-        if ($(this).prop('checked')) {
-            $('[data-agree="' + _$target + '"]').removeAttr('disabled');
-        } else {
-            $('[data-agree="' + _$target + '"]').attr('disabled', 'disabled');
-        }
-    };
-
-    return {
-        change: _change
-    };
-}();
-
-// yes / no のラジオならこっち
-// $$$.agree = function () {
-// 	var _change = function _change(args) {
-// 		var _$target = $(this).data('agree-target');
-// 		if ($(this).data('agree-condition') === 'yes') {
-// 			$('[data-agree="' + _$target + '"]').removeAttr('disabled');
-// 		} else {
-// 			$('[data-agree="' + _$target + '"]').attr('disabled', 'disabled');
-// 		}
-// 	};
-
-// 	return {
-// 		change: _change
-// 	};
-// }();
-
-
+var $$$ = $$$ || {};
 /*************************************************************************************
 * contentsModal
 *************************************************************************************/
@@ -8015,14 +7630,46 @@ $$$.contentsModal = function () {
     };
     var _listTemplate = '<div class="contentsModal"><div class="contentsModal_list"></div></div>';
     var _itemTemplate = '<div class="contentsModal_item" data-anim="contentsModal_item"><a href="javascript: void(0);" class="contentsModal_overlay" data-anim="contentsModal_overlay"></a><div class="contentsModal_toolBar"><a href="javascript: void(0);" class="contentsModal_close"></a></div><div class="contentsModal_contents" data-anim="contentsModal_contents"><div class="contentsModal_body"></div></div><div class="contentsModal_loading" data-anim="contentsModal_loading"></div></div>';
-
     var _init = function _init(args) {
         $('body').append(_listTemplate);
     };
-    var _destroy = function _destroy(args) {
-        $('.contentsModal_body').html('');
-        $('.contentsModal_contents').removeAttr('style');
+
+    var _open = function _open() {
+        if (!$('.contentsModal')[0]) {
+            _init();
+        }
+        $('.contentsModal_list').append(_itemTemplate);
+        var _$target = $('.contentsModal_list').find('.contentsModal_item').last();
+
+        var _url = $(this).attr('href');
+        var _options = $(this).data('modal-contents');
+
+        _killScroll();
+        $$$.anim.enter.call(_$target);
+        $$$.anim.enter.call(_$target.find('.contentsModal_overlay'));
+        $$$.anim.enter.call(_$target.find('.contentsModal_loading'));
+        if (_options.width) {
+            _$target.find('.contentsModal_contents').css('width', _options.width);
+        }
+
+        if (_url.match(/^#.+/)) {
+            _html(_url, _$target, _options);
+        } else {
+            _ajax(_url, _$target, _options);
+        }
     };
+
+    var _close = function _close() {
+        var _$target = $(this).closest('.contentsModal_item');
+        $$$.anim.leave.call(_$target.find('.contentsModal_overlay'));
+        $$$.anim.leave.call(_$target, function () {
+            _$target.remove();
+            if (!$('.contentsModal_item')[0]) {
+                _revivalScroll();
+            }
+        });
+    };
+
     var _ajax = function _ajax(url, $target, options) {
         $.ajax({
             url: url
@@ -8031,58 +7678,22 @@ $$$.contentsModal = function () {
         }).fail(function () {
             $target.find('.contentsModal_body').append('<p>読み込みエラー</p>');
         }).always(function () {
-            if (options.width) {
-                $target.find('.contentsModal_contents').css('width', options.width);
-            }
-            $$$.anim.enter.call($target);
-            $$$.anim.enter.call($target.find('.contentsModal_overlay'));
-            $$$.anim.enter.call($target.find('.contentsModal_loading'));
-            _killScroll();
-            _onImgLoad(function () {
+            $$$.imagesLoadListener.listen($target, function () {
                 $$$.anim.enter.call($target.find('.contentsModal_contents'));
                 $$$.anim.leave.call($target.find('.contentsModal_loading'));
                 _replace();
             });
-            _replace();
         });
     };
     var _html = function _html(url, $target, options) {
         $target.find('.contentsModal_body').append($(url).clone());
-        $$$.anim.enter.call($target);
-        if (options.width) {
-            $target.find('.contentsModal_contents').css('width', options.width);
-        }
-        setTimeout(function () {
-            $$$.anim.enter.call($target.find('.contentsModal_overlay'));
-            _killScroll();
+        $$$.imagesLoadListener.listen($target, function () {
             $$$.anim.enter.call($target.find('.contentsModal_contents'));
-        }, 100);
-        _replace;
-    };
-    var _open = function _open() {
-        if (!$('.contentsModal')[0]) {
-            _init();
-        }
-        $('.contentsModal_list').append(_itemTemplate);
-        var _$target = $('.contentsModal_list').find('.contentsModal_item').last();
-
-        // _destroy();
-        var _url = $(this).attr('href');
-        var _options = $(this).data('modal-contents');
-        if (_url.match(/^#.+/)) {
-            _html(_url, _$target, _options);
-        } else {
-            _ajax(_url, _$target, _options);
-        }
-    };
-    var _close = function _close() {
-        var _$target = $(this).closest('.contentsModal_item');
-        $$$.anim.leave.call(_$target.find('.contentsModal_overlay'));
-        $$$.anim.leave.call(_$target, function () {
-            _$target.remove();
-            _revivalScroll();
+            $$$.anim.leave.call($target.find('.contentsModal_loading'));
+            _replace();
         });
     };
+
     var _noScroll = function _noScroll(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -8143,9 +7754,78 @@ $$$.contentsModal = function () {
     };
 }();
 
-// /*************************************************************************************
-// * dummyImage生成
-// *************************************************************************************/
+var $$$ = $$$ || {};
+/*************************************************************************************
+* dialog
+*************************************************************************************/
+$$$.dialog = function () {
+    var _init = function _init() {
+        $('body').append('<div class="customDialog" data-anim="customDialog">\
+				<div class="customDialog_overlay"></div>\
+				<div class="customDialog_inner">\
+				</div>\
+			</div>');
+    };
+    var _pause = function _pause() {
+        return new Promise(function (resolve, reject) {
+            $(document).on('click', '.customDialog_btn > a', function (event) {
+                event.preventDefault();
+                resolve($(this).data('btn-id'));
+            });
+        });
+    };
+    var _open = function _open(options) {
+        if (!$('.customDialog')[0]) {
+            _init();
+        }
+
+        $('.customDialog_inner').html('');
+        var _btns = '';
+        if (options.btns) {
+            for (var i = 0, l = options.btns.length; i < l; i++) {
+                _btns += '<li class="customDialog_btn"><a href="javascript: void(0);" data-btn-id="' + i + '">' + options.btns[i].name + '</a></li>';
+            }
+            _btns = '<ul class="customDialog_btns">' + _btns + '</ul>';
+        }
+        var _contents = '<div class="customDialog_txt">' + options.txt + '</div>';
+        $('.customDialog_inner').append(_contents);
+
+        $$$.anim.enter.call($('.customDialog'));
+
+        _pause().then(function (id) {
+            if (options.btns[id].action) {
+                options.btns[id].action();
+            }
+
+            if (options.btns[id].callback) {
+                _close(options.btns[id].callback);
+            } else {
+                _close();
+            }
+        }, function () {
+            _close();
+        });
+    };
+
+    var _close = function _close(cb) {
+        if (cb) {
+            $$$.anim.leave.call($('.customDialog'), cb);
+        } else {
+            $$$.anim.leave.call($('.customDialog'));
+        }
+        $(document).off('.click', '.customDialog_btn > a');
+    };
+
+    return {
+        open: _open,
+        close: _close
+    };
+}();
+
+var $$$ = $$$ || {};
+/*************************************************************************************
+* dummyImage生成
+*************************************************************************************/
 $$$.dummyImage = function () {
     var _init = function _init() {
         $(this).each(function (index, el) {
@@ -8193,6 +7873,7 @@ $$$.dummyImage = function () {
     };
 }();
 
+var $$$ = $$$ || {};
 /*************************************************************************************
 * fileForm
 *************************************************************************************/
@@ -8231,12 +7912,9 @@ $$$.fileForm = function () {
 
         var _$dom = _parent.find('.fileForm_item-template').clone().removeClass('fileForm_item-template');
         $(_$dom.find('[type="file"]')).on('change', function (event) {
-            if (_typeError(_$dom.find('[type="file"]')[0].files[0]) || _sizeError(_$dom.find('[type="file"]')[0].files[0])) {
-                return false;
-            }
 
-            _$dom.find('span').text(_$dom.find('[type="file"]')[0].files[0].name);
-            _parent.find('.fileForm_list').append(_$dom);
+            _preUpload(_$dom.find('[type="file"]')[0].files[0], _option.src);
+
             $(this).off('change');
         });
         _$dom.find('[type="file"]').trigger('click');
@@ -8251,38 +7929,48 @@ $$$.fileForm = function () {
         };
 
         for (var i = 0, l = files.length; i < l; i++) {
-            if (_typeError(files[i]) || _sizeError(files[i])) {
-                return false;
-            }
-            var _fd = new FormData();
-            _fd.append('file', files[i]);
-
-            $.ajax({
-                url: '/_action.php?mode=ajax_upload',
-                type: 'POST',
-                contentType: false,
-                processData: false,
-                data: _fd,
-                dataType: 'json',
-                rsync: true
-            }).done(function (res) {
-                var _$dom = _parent.find('.fileForm_item-template').clone().removeClass('fileForm_item-template');
-                _$dom.find('[name*="selected"]').val(res.path);
-                _$dom.find('[name*="original_name"]').val(res.name);
-                _$dom.find('span').text(res.name);
-                _parent.find('.fileForm_list').append(_$dom);
-            }).fail(function () {
-                // console.log("error");
-            }).always(function () {
-                // console.log("complete");
-            });
+            _preUpload(files[i], _option.src);
         }
+    };
+
+    var _preUpload = function _preUpload(file, src) {
+        if (_typeError(file) || _sizeError(file)) {
+            return false;
+        }
+        var _fd = new FormData();
+        _fd.append('file', file);
+
+        $.ajax({
+            url: src,
+            type: 'GET',
+            contentType: false,
+            processData: false,
+            data: _fd,
+            dataType: 'json',
+            rsync: true
+        }).done(function (res) {
+            var _$dom = _parent.find('.fileForm_item-template').clone().removeClass('fileForm_item-template');
+            _$dom.find('[name*="selected"]').val(res.path);
+            _$dom.find('[name*="original_name"]').val(res.name);
+            _$dom.find('.fileForm_name').text(res.name);
+            if (_$dom.find('.fileForm_name').get(0).tagName === 'A') {
+                _$dom.find('.fileForm_name').attr('href', res.path);
+            }
+            _parent.find('.fileForm_list').append(_$dom);
+        }).fail(function () {
+            // console.log("error");
+        }).always(function () {
+            // console.log("complete");
+        });
     };
 
     var _qtyError = function _qtyError(files) {
         if (_option.maxQty && _parent.find('.fileForm_item').not('.fileForm_item-template').length + files.length > _option.maxQty) {
-            $$$.alert.open({
-                text: _option.maxQtyError
+            $$$.dialog.open({
+                txt: _option.maxQtyError,
+                btns: [{
+                    name: 'OK'
+                }]
             });
             return true;
         }
@@ -8290,8 +7978,11 @@ $$$.fileForm = function () {
 
     var _typeError = function _typeError(file) {
         if (_option.type && _option.type.length > 0 && _option.type.indexOf(file.name.toLowerCase().split('.').pop()) < 0) {
-            $$$.alert.open({
-                text: _option.typeError
+            $$$.dialog.open({
+                txt: _option.typeError,
+                btns: [{
+                    name: 'OK'
+                }]
             });
             return true;
         }
@@ -8299,8 +7990,11 @@ $$$.fileForm = function () {
 
     var _sizeError = function _sizeError(file) {
         if (_option.maxSize && _option.maxSize > 0 && file.size > _option.maxSize) {
-            $$$.alert.open({
-                text: _option.maxSizeError
+            $$$.dialog.open({
+                txt: _option.maxSizeError,
+                btns: [{
+                    name: 'OK'
+                }]
             });
             return true;
         }
@@ -8328,81 +8022,813 @@ $$$.fileForm = function () {
     };
 }();
 
+var $$$ = $$$ || {};
 /*************************************************************************************
-* コメント
+* 画像preload
 *************************************************************************************/
-/*$$$.moduleName = (function() {
-	var _init = function() {
-		var _args = $$$.parseArgs(arguments);
-		console.log({
-			callback: _args.callback,
-			options: _args.options,
-			values: _args.values
-		});
-	}
+$$$.imagesLoadListener = function () {
+    var _listen = function _listen(elem, cb) {
+        var _imgs = elem.find('img');
+        var _counter = 0;
 
-	return {
-		init: _init,
-	};
-}());*/
+        if (!_imgs[0]) {
+            cb();
+            return false;
+        }
 
-/*
-* @requires plugins/jquery-3.3.1.min.js
-* @requires plugins/jquery.easing.1.3.js
-* @requires plugins/jquery.matchHeight-min.js
-* @requires plugins/slick.min.js
-* @requires plugins/es6-promise.auto.js
-* @requires plugins/lightgallery-all.js
-*
-* @requires modules.js
-*/
+        for (var i = 0, l = _imgs.length; i < l; i++) {
+            var _img = new Image();
+
+            _img.onload = function () {
+                _counter++;
+                _judge(_counter, i, cb);
+            };
+            _img.onerror = function () {
+                _counter++;
+                _judge(_counter, i, cb);
+            };
+            _img.src = _imgs.eq(i).attr('src');
+        }
+    };
+
+    var _judge = function _judge(a, b, cb) {
+        if (a !== b) {
+            return false;
+        }
+        cb();
+    };
+
+    return {
+        listen: _listen
+    };
+}();
+var $$$ = $$$ || {};
+/*************************************************************************************
+* loading
+*************************************************************************************/
+$$$.loading = function () {
+    var _open = function _open(options) {
+        $$$.dialog.open({
+            txt: options.txt
+        });
+    };
+
+    var _close = function _close(cb) {
+        $$$.dialog.close(function () {
+            if (cb) {
+                cb();
+            }
+        });
+    };
+
+    return {
+        open: _open,
+        close: _close
+    };
+}();
 
 var $$$ = $$$ || {};
+/*************************************************************************************
+* objFitPolyfill
+*************************************************************************************/
+$$$.objFitPolyfill = function () {
+    var _init = function _init() {
+        $('[data-object-fit]').removeAttr('style').unwrap('.js-objectFitPolyfil');
+
+        var _img = $('<img />');
+        _img.css({
+            objectFit: 'cover'
+        });
+        if (!_img.css('object-fit')) {
+            $('[data-object-fit]').each(function (index, el) {
+                _fit.call($(this));
+            });
+        }
+    };
+    var _fit = function _fit() {
+        var _mode = $(this).data('object-fit') || 'scale-down';
+
+        var _size = {
+            natural: {
+                w: $(this)[0].naturalWidth,
+                h: $(this)[0].naturalHeight,
+                ratio: $(this)[0].naturalHeight / $(this)[0].naturalWidth
+            },
+            assigned: {
+                w: $(this).width(),
+                h: $(this).height(),
+                ratio: $(this).height() / $(this).width()
+            }
+        };
+        $(this).wrap('<div class="js-objectFitPolyfil" />');
+        $(this).parent('.js-objectFitPolyfil').css({
+            width: _size.assigned.w,
+            height: _size.assigned.h
+        });
+
+        if (_mode === 'cover') {
+            _cover.call($(this), _size);
+        } else if (_mode === 'contain') {
+            _contain.call($(this), _size);
+        } else if (_mode === 'scale-down') {
+            _scaleDown.call($(this), _size);
+        }
+        _rePosition.call($(this), _size);
+    };
+
+    var _cover = function _cover(_size) {
+        if (_size.natural.ratio < _size.assigned.ratio) {
+            $(this).height('100%');
+        } else {
+            $(this).width('100%');
+        }
+    };
+
+    var _contain = function _contain(_size) {
+        if (_size.natural.ratio < _size.assigned.ratio) {
+            $(this).width('100%');
+        } else {
+            $(this).height('100%');
+        }
+    };
+
+    var _scaleDown = function _scaleDown(_size) {
+        if (_size.natural.ratio < _size.assigned.ratio) {
+            $(this).css('max-width', '100%');
+        } else {
+            $(this).css('max-height', '100%');
+        }
+    };
+
+    var _rePosition = function _rePosition(_size) {
+
+        var _position = $(this).data('object-position') || '.5 .5';
+        _position = _position.split(' ');
+        _position = $.grep(_position, function (e) {
+            return e !== '';
+        });
+
+        if (_position.length === 1) {
+            _position[1] = '.5';
+        }
+        for (var i = 0, l = _position.length; i < l; i++) {
+            if (_position[i].match(/%/)) {
+                _position[i] = parseFloat(_position[i]) / 100;
+            }
+
+            if (_position[i] === 'center') {
+                _position[i] = .5;
+            } else if (_position[i] === 'left' || _position[i] === 'top') {
+                _position[i] = 0;
+            } else if (_position[i] === 'right' || _position[i] === 'bottom') {
+                _position[i] = 1;
+            }
+        }
+
+        $(this).css({
+            top: typeof _position[1] === 'string' && _position[1].match(/px/) ? parseInt(_position[1]) : (_size.assigned.h - $(this).height()) * _position[1],
+            left: typeof _position[0] === 'string' && _position[0].match(/px/) ? parseInt(_position[0]) : (_size.assigned.w - $(this).width()) * _position[0]
+        });
+    };
+
+    return {
+        init: _init
+    };
+}();
+
+var $$$ = $$$ || {};
+/*************************************************************************************
+* オーバーレイ
+*************************************************************************************/
+$$$.overlay = function () {
+    var _init = function _init(args) {};
+    var _open = function _open() {
+        $$$.anim.enter.call($('.overlay'));
+        $('.overlay').on('touchmove', function (event) {
+            event.preventDefault();
+        });
+    };
+    var _close = function _close() {
+        $$$.anim.leave.call($('.overlay'));
+        $('.overlay').off('touchmove');
+    };
+    var _toggle = function _toggle() {
+        $$$.anim.toggle.call($('.overlay'));
+    };
+
+    return {
+        open: _open,
+        close: _close,
+        toggle: _toggle
+    };
+}();
+
+var $$$ = $$$ || {};
+/*************************************************************************************
+* parseArgs
+*************************************************************************************/
+$$$.parseArgs = function () {
+    var _args = function _args(args) {
+        this.values = Array.prototype.slice.call(args, 0);
+    };
+    _args.prototype = {
+        values: undefined,
+        _slice: function _slice(index, type) {
+            var s = this;
+            var hit = !type || _typeof(s.values[index]) === type;
+            if (hit) {
+                return s.values.splice(index, 1).shift();
+            } else {
+                return undefined;
+            }
+        },
+        /** 先頭の型が一致した場合のみ取得 */
+        shift: function shift(type) {
+            var s = this;
+            return s._slice(0, type);
+        },
+        /** 末尾の型が一致した場合のみ取得 */
+        pop: function pop(type) {
+            var s = this;
+            return s._slice(s.values.length - 1, type);
+        },
+        /** 残り全部取得 */
+        remain: function remain() {
+            var s = this;
+            var values = s.values;
+            s.values = undefined;
+            return values;
+        }
+    };
+
+    return function (args) {
+        var _arg = new _args(args);
+        return {
+            callback: _arg.pop('function'),
+            options: _arg.pop('object'),
+            values: _arg.remain()
+        };
+    };
+}();
+
+var $$$ = $$$ || {};
+/*************************************************************************************
+* pcかスマホか判定（幅で）
+*************************************************************************************/
+$$$.pcsp = function () {
+    var _breakpoint = 736;
+    var _mode;
+    var _oldMode;
+    var _init = function _init(args) {
+        _judge();
+    };
+    var _judge = function _judge() {
+        if (_mode) {
+            _oldMode = _mode;
+        }
+        if ($(window).innerWidth() > _breakpoint) {
+            _mode = 'pc';
+        } else {
+            _mode = 'sp';
+        }
+
+        //modeが変わったらpcsp.changedイベント発火
+        if (_mode !== _oldMode) {
+            $(window).trigger('pcsp.changed', [_mode]);
+        }
+    };
+    var _getMode = function _getMode() {
+        return _mode;
+    };
+    var _getBreakpoint = function _getBreakpoint() {
+        return _breakpoint;
+    };
+
+    return {
+        init: _init,
+        judge: _judge,
+        getMode: _getMode,
+        getBreakpoint: _getBreakpoint
+    };
+}();
+var $$$ = $$$ || {};
+/*************************************************************************************
+* resizeend(幅のみ)
+*************************************************************************************/
+$$$.resizeend = function () {
+    var _delta = 200;
+    var _rtime;
+    var _timeout = false;
+    var _ww = 0;
+
+    var _init = function _init(args) {
+        _ww = $(window).width();
+
+        $(window).on('resize', function (event) {
+            _rtime = new Date();
+            if (!_timeout) {
+                _timeout = true;
+                setTimeout(_judge, _delta);
+            }
+        });
+    };
+
+    var _judge = function _judge() {
+        if (new Date() - _rtime < _delta) {
+            setTimeout(_judge, _delta);
+        } else {
+            _timeout = false;
+            $$$.viewport.init();
+            if (_ww !== $(window).width()) {
+                $(window).trigger('resizeend');
+            }
+            _ww = $(window).width();
+        }
+    };
+    return {
+        init: _init
+    };
+}();
+var $$$ = $$$ || {};
+/*************************************************************************************
+* resizeendHeight
+*************************************************************************************/
+$$$.resizeendHeight = function () {
+    var _delta = 200;
+    var _rtime;
+    var _timeout = false;
+    var _wh = 0;
+
+    var _init = function _init(args) {
+        _wh = $(window).height();
+
+        $(window).on('resize', function (event) {
+            _rtime = new Date();
+            if (!_timeout) {
+                _timeout = true;
+                setTimeout(_judge, _delta);
+            }
+        });
+    };
+
+    var _judge = function _judge() {
+        if (new Date() - _rtime < _delta) {
+            setTimeout(_judge, _delta);
+        } else {
+            _timeout = false;
+            if (_wh !== $(window).height()) {
+                $(window).trigger('resizeendHeight');
+            }
+            _wh = $(window).height();
+        }
+    };
+    return {
+        init: _init
+    };
+}();
+var $$$ = $$$ || {};
+/*************************************************************************************
+* スムーズスクロール
+*************************************************************************************/
+$$$.smoothScroll = function () {
+    var _config = {
+        speed: 1000, // 'slow', 'fast', 1000
+        easing: 'easeInOutQuad' // 'swing', 'linear'
+    };
+    var _speed;
+    var _hash;
+    var _top = 0;
+    var _adjust = 0;
+
+    var _getOffset = function _getOffset() {
+        _hash = $(this).attr('href');
+        if (_hash === '#') {
+            _top = 0;
+        } else {
+            _top = $(_hash).offset().top;
+        }
+        if ($$$.pcsp.getMode() === 'sp') {
+            _adjust = 63 + 10;
+        } else {
+            _adjust = 0;
+        }
+        return _top - _adjust;
+    };
+    var _scroll = function _scroll() {
+        var $self = this;
+        _stopScroll();
+        $(window).on('wheel', function (event) {
+            _stopScroll();
+        });
+        $('html,body').animate({
+            scrollTop: _getOffset.call($self)
+        }, _config.speed, _config.easing, function () {
+            $(window).off('wheel');
+        });
+    };
+    var _stopScroll = function _stopScroll() {
+        $('html,body').stop();
+    };
+
+    return {
+        scroll: _scroll
+    };
+}();
+
+var $$$ = $$$ || {};
+/*************************************************************************************
+* tab
+*************************************************************************************/
+$$$.tab = function () {
+    var _init = function _init() {
+        var op = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+            btns: '[data-tab-btn]',
+            contents: '[data-tab-content]',
+
+            beforeInit: null,
+            afterInit: null,
+            beforeChange: null,
+            afterChange: null
+        };
+
+        $(this).each(function (index, el) {
+            var _options = {};
+            $.extend(_options, op);
+            _options.root = $(this);
+            _options.btns = $(this).find(_options.btns);
+            _options.contents = $(this).find(_options.contents);
+
+            if (_options.beforeInit) {
+                _options.beforeInit();
+            }
+
+            if (!_options.root.attr('data-tab-root')) {
+                _options.root.attr('data-tab-root', 0);
+            }
+            _options.btns.each(function (index, el) {
+                if (!$(this).attr('data-tab-btn')) {
+                    $(this).attr('data-tab-btn', index);
+                }
+            });
+            _options.contents.each(function (index, el) {
+                if (!$(this).attr('data-tab-content')) {
+                    $(this).attr('data-tab-content', index);
+                }
+            });
+
+            _set(_options);
+
+            _options.btns.on('click', function (event) {
+                event.preventDefault();
+                _change.call($(this), _options);
+            });
+
+            if (_options.afterInit) {
+                _options.afterInit({
+                    root: _options.root,
+                    contents: _options.contents,
+                    btns: _options.btns
+                });
+            }
+        });
+    };
+
+    var _set = function _set(_options) {
+        var _index = _options.root.attr('data-tab-root');
+
+        _options.btns.removeAttr('data-tab-btn-active');
+        _options.contents.removeAttr('data-tab-content-active');
+
+        _options.root.find("[data-tab-btn=\"" + _index + "\"]").attr('data-tab-btn-active', '');
+        _options.root.find("[data-tab-content=\"" + _index + "\"]").attr('data-tab-content-active', '');
+    };
+
+    var _change = function _change(_options) {
+        if (_options.beforeChange) {
+            _options.beforeChange({
+                root: _options.root,
+                contents: _options.contents,
+                btns: _options.btns
+            });
+        }
+
+        var _index = $(this).attr('data-tab-btn');
+        _options.root.attr('data-tab-root', _index);
+
+        _set(_options);
+
+        _options.contents.off('transitionend webkitTransitionEnd');
+        if (_options.afterChange) {
+            _options.contents.on('transitionend webkitTransitionEnd', function (e) {
+                if (e.target === _options.contents[0]) {
+                    _options.afterChange({
+                        root: _options.root,
+                        contents: _options.contents,
+                        btns: _options.btns
+                    });
+                }
+            });
+        }
+    };
+
+    return {
+        init: _init
+    };
+}();
+
+var $$$ = $$$ || {};
+/*************************************************************************************
+* tree
+*************************************************************************************/
+$$$.tree = function () {
+    var _init = function _init() {
+        var op = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+            root: null,
+            list: '[data-tree-list]',
+            item: '[data-tree-item]',
+            toggleBtn: '[data-tree-toggle]',
+
+            beforeInit: null,
+            afterInit: null,
+            beforeOpen: null,
+            afterOpen: null,
+            beforeClose: null,
+            afterClose: null
+        };
+
+        $(this).each(function (index, el) {
+            var _options = {};
+            $.extend(_options, op);
+
+            _options.root = $(this);
+            _options.list = $(this).find(_options.list);
+            _options.item = $(this).find(_options.item);
+            _options.toggleBtn = $(this).find(_options.toggleBtn);
+
+            if (_options.beforeInit) {
+                _options.beforeInit();
+            }
+
+            _options.root.attr('data-tree-root', '');
+            _options.list.attr('data-tree-list', '');
+            _options.item.attr('data-tree-item', '');
+            _options.toggleBtn.attr('data-tree-toggle', '');
+
+            $(_options.toggleBtn).on('click', function (event) {
+                event.preventDefault();
+                _toggle.call($(this), _options);
+            });
+
+            if (_options.afterInit) {
+                _options.afterInit({
+                    root: _options.root,
+                    list: _options.list,
+                    item: _options.item,
+                    toggleBtn: _options.toggleBtn
+                });
+            }
+        });
+    };
+    var _open = function _open(_options) {
+        var _target = $(this).closest('[data-tree-item]').children('[data-tree-list]');
+
+        if (_options.beforeOpen) {
+            _options.beforeOpen({
+                root: _options.root,
+                list: _options.list,
+                item: _options.item,
+                toggleBtn: _options.toggleBtn,
+                target: _target
+            });
+        }
+
+        $(this).attr('data-tree-toggle', 'open');
+        $(this).closest('[data-tree-item]').children('[data-tree-list]').attr('data-tree-list', 'open');
+
+        _target.off('transitionend webkitTransitionEnd');
+        if (_options.afterOpen) {
+            _target.on('transitionend webkitTransitionEnd', function (e) {
+                if (e.target === _target[0] && e.originalEvent.propertyName === "line-height") {
+                    _options.afterOpen({
+                        root: _options.root,
+                        list: _options.list,
+                        item: _options.item,
+                        toggleBtn: _options.toggleBtn,
+                        target: _target
+                    });
+                }
+            });
+        }
+    };
+    var _close = function _close(_options) {
+        var _target = $(this).closest('[data-tree-item]').children('[data-tree-list]');
+
+        if (_options.beforeClose) {
+            _options.beforeClose({
+                root: _options.root,
+                list: _options.list,
+                item: _options.item,
+                toggleBtn: _options.toggleBtn,
+                target: _target
+            });
+        }
+
+        $(this).closest('[data-tree-item]').find('[data-tree-toggle]').attr('data-tree-toggle', '');
+        $(this).closest('[data-tree-item]').find('[data-tree-list]').attr('data-tree-list', '');
+
+        $(this).closest('[data-tree-item]').find('[data-tree-list]').off('transitionend webkitTransitionEnd');
+        if (_options.afterClose) {
+            _target.on('transitionend webkitTransitionEnd', function (e) {
+                if (e.target === _target[0] && e.originalEvent.propertyName === "line-height") {
+                    _options.afterClose({
+                        root: _options.root,
+                        list: _options.list,
+                        item: _options.item,
+                        toggleBtn: _options.toggleBtn,
+                        target: _target
+                    });
+                }
+            });
+        }
+    };
+    var _toggle = function _toggle(_options) {
+        if ($(this).attr('data-tree-toggle') === 'open') {
+            _close.call($(this), _options);
+        } else {
+            _open.call($(this), _options);
+        }
+    };
+
+    return {
+        init: _init
+    };
+}();
+
+/*************************************************************************************
+* tree
+*************************************************************************************/
+
+// $$$.tree = (function() {
+// 	var _init = function(args) {
+// 		$('.tree_name-isActive').each(function(index, el) {
+// 			var _$parent = $(this).parents('.tree_list');
+// 			_$parent.addClass('tree_list-isOpen');
+// 			_$parent.prev('.tree_head').find('.tree_toggle').addClass('tree_toggle-isOpen')
+// 		});
+// 	}
+// 	var _open = function(args) {
+// 		$(this).children('.tree_head').children('.tree_toggle').addClass('tree_toggle-isOpen');
+// 		$(this).children('.tree_list').addClass('tree_list-isOpen');
+// 	}
+// 	var _close = function(args) {
+// 		$(this).find('.tree_toggle').removeClass('tree_toggle-isOpen')
+// 		$(this).find('.tree_list').removeClass('tree_list-isOpen')
+// 	}
+// 	var _toggle = function(args) {
+// 		var _$root = $(this).closest('.tree_item');
+// 		var _$btn = $(this).closest('.tree_toggle');
+// 		if (_$btn.hasClass('tree_toggle-isOpen')) {
+// 			_close.call(_$root)
+// 		} else {
+// 			_open.call(_$root)
+// 		}
+// 	}
+
+// 	return {
+// 		init: _init,
+// 		toggle: _toggle,
+// 	};
+// }());
+var $$$ = $$$ || {};
+/*************************************************************************************
+* ua判定
+*************************************************************************************/
+$$$.ua = function () {
+    var _judge = function _judge() {
+        var _ua = navigator.userAgent;
+        if (_ua.indexOf('iPhone') > 0 || _ua.indexOf('iPod') > 0 || _ua.indexOf('Android') > 0 && _ua.indexOf('Mobile') > 0) {
+            $('body').addClass('UA-sp');
+        } else if (_ua.indexOf('iPad') > 0 || _ua.indexOf('Android') > 0) {
+            $('body').addClass('UA-tab');
+        } else {
+            $('body').addClass('UA-pc');
+        }
+    };
+
+    return {
+        judge: _judge
+    };
+}();
+
+var $$$ = $$$ || {};
+/*************************************************************************************
+* vh adjust
+*************************************************************************************/
+$$$.vhAdjust = function () {
+    var _vh = 0;
+    var _init = function _init() {
+        _vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', _vh + 'px');
+    };
+    return {
+        init: _init
+    };
+}();
+
+var $$$ = $$$ || {};
+/*************************************************************************************
+* タブレットにフィットさせる
+*************************************************************************************/
+$$$.viewport = function () {
+    var _tag = $('meta[name=viewport]');
+    var _ww = $(window).innerWidth() < window.screen.width ? $(window).innerWidth() : window.screen.width; //get proper width
+    var _mw = 1220;
+    var _ratio = _ww / _mw;
+
+    var _init = function _init(args) {
+        _tag.attr('content', 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0');
+        _ww = $(window).innerWidth() < window.screen.width ? $(window).innerWidth() : window.screen.width;
+        _ratio = _ww / _mw;
+        if (_ww < _mw && _ww > 767) {
+            _tag.attr('content', 'width=' + _ww + ', initial-scale=' + _ratio + ', minimum-scale=' + _ratio + ', maximum-scale=' + _ratio);
+        }
+    };
+    return {
+        init: _init
+    };
+}();
+var $$$ = $$$ || {};
+/*************************************************************************************
+* windowInfo
+*************************************************************************************/
+$$$.windowInfo = function () {
+    var _init = function _init() {
+        _size.w = $(window).innerWidth();
+        _size.h = $(window).innerHeight();
+        _sc.top = $(window).scrollTop();
+        _sc.bottom = _sc.top + _size.h;
+        _sc.left = $(window).scrollLeft();
+    };
+    var _size = {
+        w: 0,
+        h: 0
+    };
+    var _sc = {
+        top: 0,
+        bottom: 0,
+        left: 0
+    };
+
+    return {
+        init: _init,
+        sc: _sc,
+        size: _size
+    };
+}();
+/*
+* @requires _plugins/_jquery-3.3.1.min.js
+* @requires _plugins/_jquery.easing.1.3.js
+* @requires _plugins/_jquery.matchHeight-min.js
+* @requires _plugins/_slick.min.js
+* @requires _plugins/_es6-promise.auto.js
+* @requires _plugins/_lightgallery-all.js
+*
+* @requires ./_modules/_acc.js
+* @requires ./_modules/_agree.js
+* @requires ./_modules/_anchorJump.js
+* @requires ./_modules/_anim.js
+* @requires ./_modules/_contentsModal.js
+* @requires ./_modules/_dialog.js
+* @requires ./_modules/_dummyImage.js
+* @requires ./_modules/_fileForm.js
+* @requires ./_modules/_imagesLoadListener.js
+* @requires ./_modules/_loading.js
+* @requires ./_modules/_objFitPolyfill.js
+* @requires ./_modules/_overlay.js
+* @requires ./_modules/_parseArgs.js
+* @requires ./_modules/_pcsp.js
+* @requires ./_modules/_resizeend.js
+* @requires ./_modules/_resizeendHeight.js
+* @requires ./_modules/_smoothScroll.js
+* @requires ./_modules/_tab.js
+* @requires ./_modules/_tree.js
+* @requires ./_modules/_ua.js
+* @requires ./_modules/_vhAdjust.js
+* @requires ./_modules/_viewport.js
+* @requires ./_modules/_windowInfo.js
+*/
 
 $(function () {
+    $$$.ua.judge();
     $$$.dummyImage.init.call($('.dam'));
     $$$.pcsp.init();
     $$$.viewport.init();
     $$$.resizeend.init();
     $$$.resizeendHeight.init();
     $$$.vhAdjust.init();
-    $$$.tab.init();
     $$$.fileForm.init();
     $('[data-agree-target]:checked').each(function (index, el) {
         $$$.agree.change.call($(this));
-    });
-
-    /*************************************************************************************
-    * window load
-    *************************************************************************************/
-    $(window).on('load', function (event) {
-        $$$.anchorJump.init();
-    });
-
-    /*************************************************************************************
-    * window resize
-    *************************************************************************************/
-    $(window).on('load resizeend', function (event) {
-        $$$.pcsp.judge();
-        $.fn.matchHeight._update();
-        $$$.accordion.init();
-        $$$.tree.init();
-        $$$.windowInfo.init();
-        $$$.contentsModal.replace();
-    });
-    $(window).on('load resizeendHeight', function (event) {
-        $$$.windowInfo.init();
-        $$$.contentsModal.replace();
-    });
-    $(window).on('resize', function (event) {
-        $$$.vhAdjust.init();
-    });
-
-    /*************************************************************************************
-    * pcspのbreakpointが切り替わったとき
-    *************************************************************************************/
-    $(window).on('pcsp.changed', function (event, mode) {
-        // console.log($$$.pcsp.mode)
     });
 
     /*************************************************************************************
@@ -8411,18 +8837,6 @@ $(function () {
     $(document).on('click', '[href^="#"]', function (event) {
         event.preventDefault();
         $$$.smoothScroll.scroll.call($(this));
-    });
-    $(document).on('click', '[data-acc-btn], [data-acc-close]', function (event) {
-        event.preventDefault();
-        $$$.accordion.toggle.call($(this));
-    });
-    $(document).on('click', '[data-tab-item]', function (event) {
-        event.preventDefault();
-        $$$.tab.show.call($(this));
-    });
-    $(document).on('click', '.tree_toggle', function (event) {
-        event.preventDefault();
-        $$$.tree.toggle.call($(this));
     });
 
     //fileForm ローカルファイルを選択
@@ -8517,4 +8931,39 @@ $(function () {
     /*************************************************************************************
     * プラグイン
     *************************************************************************************/
+});
+
+/*************************************************************************************
+* window load
+*************************************************************************************/
+$(window).on('load', function (event) {
+    $$$.anchorJump.init();
+    $$$.acc.init.call($('[data-acc]'));
+    $$$.tab.init.call($('[data-tab]'));
+    $$$.tree.init.call($('[data-tree]'));
+});
+
+/*************************************************************************************
+* window resize
+*************************************************************************************/
+$(window).on('load resizeend', function (event) {
+    $$$.pcsp.judge();
+    $.fn.matchHeight._update();
+    $$$.windowInfo.init();
+    $$$.contentsModal.replace();
+    $$$.objFitPolyfill.init();
+});
+$(window).on('load resizeendHeight', function (event) {
+    $$$.windowInfo.init();
+    $$$.contentsModal.replace();
+});
+$(window).on('resize', function (event) {
+    $$$.vhAdjust.init();
+});
+
+/*************************************************************************************
+* pcspのbreakpointが切り替わったとき
+*************************************************************************************/
+$(window).on('pcsp.changed', function (event, mode) {
+    // console.log($$$.pcsp.mode)
 });

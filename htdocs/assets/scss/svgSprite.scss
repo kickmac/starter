@@ -73,7 +73,7 @@ $totalHeight: 2524;
 	);
 
 
-@mixin svgSprite($code, $width: 100) {
+@mixin svgSpritee($code, $width: 100) {
 	$ratio: $width/nth($code, 1);
 	background-image: url("../../../assets/svg/sprite.png");
 	background-image: url("../../../assets/svg/sprite.svg");
@@ -119,7 +119,7 @@ $totalHeight: 2524;
 		&-adelivery-truck {
 			& > a {
 				&:before {
-					@include svgSprite($adelivery-truck);
+					@include svgSpritee($adelivery-truck);
 				}
 			}
 		}
@@ -127,7 +127,7 @@ $totalHeight: 2524;
 		&-coffee {
 			& > a {
 				&:before {
-					@include svgSprite($coffee);
+					@include svgSpritee($coffee);
 				}
 			}
 		}
@@ -135,7 +135,7 @@ $totalHeight: 2524;
 		&-coffee-green {
 			& > a {
 				&:before {
-					@include svgSprite($coffee-green);
+					@include svgSpritee($coffee-green);
 				}
 			}
 		}
@@ -143,7 +143,7 @@ $totalHeight: 2524;
 		&-coffee-pink {
 			& > a {
 				&:before {
-					@include svgSprite($coffee-pink);
+					@include svgSpritee($coffee-pink);
 				}
 			}
 		}
@@ -151,7 +151,7 @@ $totalHeight: 2524;
 		&-delivery-truck {
 			& > a {
 				&:before {
-					@include svgSprite($delivery-truck);
+					@include svgSpritee($delivery-truck);
 				}
 			}
 		}

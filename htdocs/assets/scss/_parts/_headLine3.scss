@@ -1,0 +1,24 @@
+// @import '../_config';
+// @import '../_iconFontMixin';
+// @import '../_svgSpriteMixin';
+// @import '../_plugins/_magic';
+
+/*
+見出し3
+
+headLine3
+
+Markup:
+<h3 class="headLine3">見出し3</h3>
+
+Styleguide #{$guideNum}
+============================================================*/
+.headLine3 {
+	$this: &;
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.headLine3 {
+		$this: &;
+	}
+}

@@ -11,84 +11,43 @@ tree
 Markup:
 <div class="tree">
 	<ul class="tree_list">
-		<li class="tree_item">
-			<div class="tree_head">
-				<a href="" class="tree_name">第一階層</a>
-				<button class="tree_toggle"></button>
-			</div>
-			<ul class="tree_list">
-				<li class="tree_item">
-					<div class="tree_head">
-						<a href="" class="tree_name">第二階層第二階層第二階層第二階層第二階層第二階層第二階層第二階層</a>
-						<button class="tree_toggle"></button>
-					</div>
-					<ul class="tree_list">
+		<? for (var i = 0; i < 5; i++) { -?>
+			<li class="tree_item">
+				<div class="tree_itemHead">
+					<a href="" class="tree_name">111111111111111111</a>
+					<a href="javascript: void(0);"  class="tree_toggle"></a>
+				</div>
+				<ul class="tree_list">
+					<? for (var ii = 0; ii < 5; ii++) { -?>
 						<li class="tree_item">
-							<div class="tree_head">
-								<a href="" class="tree_name">第三階層</a>
-							</div>
-						</li>
-						<li class="tree_item">
-							<div class="tree_head">
-								<a href="" class="tree_name">第三階層</a>
-								<button class="tree_toggle"></button>
+							<div class="tree_itemHead">
+								<a href="" class="tree_name">222222222222222222</a>
+								<a href="javascript: void(0);" class="tree_toggle"></a>
 							</div>
 							<ul class="tree_list">
-								<li class="tree_item">
-									<div class="tree_head">
-										<a href="" class="tree_name tree_name-isActive">第四階層</a>
-									</div>
-								</li>
-								<li class="tree_item">
-									<div class="tree_head">
-										<a href="" class="tree_name">第四階層</a>
-									</div>
-								</li>
+								<? for (var iii = 0; iii < 5; iii++) { -?>
+									<li class="tree_item">
+										<div class="tree_itemHead">
+											<a href="" class="tree_name">33333333333333333333</a>
+											<a href="javascript: void(0);" class="tree_toggle"></a>
+										</div>
+										<ul class="tree_list">
+											<? for (var iiii = 0; iiii < 5; iiii++) { -?>
+												<li class="tree_item">
+													<div class="tree_itemHead">
+														<a href="" class="tree_name">444444444444444444444444</a>
+													</div>
+												</li><!-- /.tree_item -->
+											<? } -?>
+										</ul><!-- /.tree_list -->
+									</li><!-- /.tree_item -->
+								<? } -?>
 							</ul><!-- /.tree_list -->
-						</li>
-					</ul><!-- /.tree_list -->
-				</li>
-			</ul><!-- /.tree_list -->
-		</li>
-		<li class="tree_item">
-			<div class="tree_head">
-				<a href="" class="tree_name">第一階層</a>
-				<button class="tree_toggle"></button>
-			</div>
-			<ul class="tree_list">
-				<li class="tree_item">
-					<div class="tree_head">
-						<a href="" class="tree_name">第二階層第二階層第二階層第二階層第二階層第二階層第二階層第二階層</a>
-						<button class="tree_toggle"></button>
-					</div>
-					<ul class="tree_list">
-						<li class="tree_item">
-							<div class="tree_head">
-								<a href="" class="tree_name">第三階層</a>
-							</div>
-						</li>
-						<li class="tree_item">
-							<div class="tree_head">
-								<a href="" class="tree_name">第三階層</a>
-								<button class="tree_toggle"></button>
-							</div>
-							<ul class="tree_list">
-								<li class="tree_item">
-									<div class="tree_head">
-										<a href="" class="tree_name">第四階層</a>
-									</div>
-								</li>
-								<li class="tree_item">
-									<div class="tree_head">
-										<a href="" class="tree_name">第四階層</a>
-									</div>
-								</li>
-							</ul><!-- /.tree_list -->
-						</li>
-					</ul><!-- /.tree_list -->
-				</li>
-			</ul><!-- /.tree_list -->
-		</li>
+						</li><!-- /.tree_item -->
+					<? } -?>
+				</ul><!-- /.tree_list -->
+			</li><!-- /.tree_item -->
+		<? } -?>
 	</ul><!-- /.tree_list -->
 </div><!-- /.tree -->
 
@@ -98,91 +57,68 @@ Styleguide #{$guideNum}
 	$this: &;
 	margin: 20px 0 0;
 	&_list {
-		margin: 0 0 0 1em;
+		margin: 0;
+		& > :first-child {
+			border-top: none;
+		}
 	}
 	&_item {
-		overflow: hidden;
-		opacity: 0;
-		transition: opacity .4s;
+		margin: 0 0 0 1em;
+		#{$this}_itemHead {
+		}
+		&[data-tree-item="open"] {
+			& > #{$this}_itemHead {
+				& > #{$this}_name {
+					padding-top: 5px;
+					padding-bottom: 5px;
+				}
+			}
+		}
 	}
-	&_head {
+	&_itemHead {
 		display: flex;
 		display: -webkit-flex;
-		justify-content: space-between;
 	}
 	&_name {
-		text-decoration: none;
-		color: inherit;
 		flex-grow: 1;
 		flex-shrink: 1;
-		line-height: 0;
-		padding: 0 10px;
-		transition: all .4s;
-		&-isActive {
-			color: $red;
-			font-weight: bold;
-		}
+		padding-top: 0;
+		padding-bottom: 0;
 	}
 	&_toggle {
 		flex-grow: 0;
 		flex-shrink: 0;
-		// margin: 5px 0 0 10px;
-		margin: 0 0 0 10px;
-		background: #000;
-		width: 20px;
-		height: 0;
-		// height: 20px;
-		text-align: center;
-		// line-height: 20px;
-		line-height: 0;
-		transition: all .4s;
+		width: 30px;
+		display: flex;
+		display: -webkit-flex;
+		align-items: center;
+		justify-content: center;
 		&:before {
-			@include fa('\f107');
-			color: #fff;
+			@include fa('\f107', true);
+			line-height: inherit;
 		}
-		&-isOpen {
+		&[data-tree-toggle="open"] {
 			&:before {
-				content: '\f106';
+				@include fa('\f106', true);
 			}
 		}
 	}
 
-	/*  tree_list-isOpen
+	/*
 	----------------------------------------------------------------------*/
-	& > &_list {
-		margin-left: 0;
-	}
-	& > &_list,
-	&_list-isOpen {
+	& > #{$this}_list {
 		& > #{$this}_item {
-			opacity: 1;
-			& > #{$this}_head {
+			margin-left: 0;
+			border-top: 1px solid #ccc;
+			& > #{$this}_itemHead {
 				& > #{$this}_name {
-					padding: 5px 10px;
-					line-height: $lineHeight;
-				}
-				& > #{$this}_toggle {
-					margin: 5px 0 0 10px;
-					height: 20px;
-					line-height: 20px;
+					padding: 10px 0;
 				}
 			}
 		}
-	}
-}
+		& > :first-child {
+			border-top: none;
+		}
 
-@media screen and (max-width: $breakpoint-sp){
-	.tree {
-		$this: &;
-		&_list {
-		}
-		&_item {
-		}
-		&_head {
-		}
-		&_name {
-		}
-		&_toggle {
-		}
 	}
 }

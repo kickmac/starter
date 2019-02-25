@@ -6,28 +6,52 @@
 /*
 /*レスポンシブ用　表示/非表示
 
-.(sp/tab/pc)-onlyで.(sp/tab/pc)でのみ表示
+.only-(sp/tab/pc)で.(sp/tab/pc)でのみ表示
 
-.(sp/tab/pc)-hiddenで.(sp/tab/pc)でのみ非表示
+.hidden-(sp/tab/pc)で.(sp/tab/pc)でのみ非表示
 
-つまり.sp-onlyでtab/pcは非表示に、.pc-onlyでtab/spは非表示に、
+つまり.only-spでtab/pcは非表示に、.only-pcでtab/spは非表示に、
 
 Markup:
 
 Styleguide #{$guideNum}
 ============================================================*/
+.hidden {
+	display: none !important;
+}
+.UA-pc {
+	.only-uaSp {
+		display: none !important;
+	}
+}
+.UA-sp {
+	.only-uaPc {
+		display: none !important;
+	}
+}
+.only-print {
+	display: none !important;
+}
 @media screen and (max-width: $breakpoint-sp) {
-	.sp-hidden,
-	.pc-only,
-	.tab-only {
+	.hidden-sp,
+	.only-pc,
+	.only-tab,
+	.only-print {
 		display: none !important;
 	}
 }
 
 @media screen and (min-width: $breakpoint-sp + 1) {
-	.pc-hidden,
-	.tab-only,
-	.sp-only {
+	.hidden-pc,
+	.only-tab,
+	.only-sp,
+	.only-print {
+		display: none !important;
+	}
+}
+
+@media print {
+	.hidden-print {
 		display: none !important;
 	}
 }

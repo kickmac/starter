@@ -10,10 +10,12 @@ pankuzu
 
 Markup:
 <nav class="pankuzu">
-	<ul class="pankuzu_list">
-		<li class="pankuzu_item"><a href="/">トップ</a></li>
-		<li class="pankuzu_item">メッセージ</li>
-	</ul>
+	<div class="pankuzu_inner">
+		<ul class="pankuzu_list">
+			<li class="pankuzu_item"><a href="/">トップ</a></li>
+			<li class="pankuzu_item">メッセージ</li>
+		</ul>
+	</div>
 </nav><!-- /.pankuzu -->
 
 Styleguide #{$guideNum}
@@ -23,6 +25,11 @@ Styleguide #{$guideNum}
 	margin: 20px 0 0;
 	& > :first-child {
 		margin-top: 0;
+	}
+	&_inner {
+		& > :first-child {
+			margin-top: 0;
+		}
 	}
 	&_list {
 		margin: 0;
@@ -39,10 +46,6 @@ Styleguide #{$guideNum}
 		letter-spacing: normal;
 		font-size: rem(12px, pc);
 		& > a {
-			text-decoration: underline;
-			&:hover {
-				text-decoration: none;
-			}
 		}
 		&:before {
 			content: '　>　';
@@ -53,6 +56,8 @@ Styleguide #{$guideNum}
 @media screen and (max-width: $breakpoint-sp){
 	.pankuzu {
 		$this: &;
+		&_inner {
+		}
 		&_list {
 		}
 		&_item {

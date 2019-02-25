@@ -2,7 +2,10 @@
 @import './_iconFontMixin';
 @import './_svgSpriteMixin';
 @import './_plugins/_magic';
-@import '_font-awesome/_font-awesome';
+@import './_font-awesome/solid';
+@import './_font-awesome/regular';
+@import './_font-awesome/brands';
+@import './_font-awesome/fontawesome';
 
 @import "_default";
 
@@ -39,7 +42,10 @@ Styleguide 4.
 $guideNum: '4.1'; @import './_parts/_font';
 $guideNum: '4.2'; @import './_parts/_color';
 $guideNum: '4.3'; @import './_parts/_iconTxt';
-$guideNum: '4.4'; @import './_parts/_headLine1';
+$guideNum: '4.4.1'; @import './_parts/_headLine1';
+$guideNum: '4.4.2'; @import './_parts/_headLine2';
+$guideNum: '4.4.3'; @import './_parts/_headLine3';
+$guideNum: '4.4.4'; @import './_parts/_headLine4';
 $guideNum: '4.5'; @import './_parts/_btn';
 $guideNum: '4.6'; @import './_parts/_btns';
 $guideNum: '4.7'; @import './_parts/_youtube';
@@ -86,9 +92,10 @@ $guideNum: '7.4'; @import './_js/_imgModalGallery';
 $guideNum: '7.5'; @import './_js/_contentsModal';
 $guideNum: '7.6'; @import './_js/_cuntomDialog';
 $guideNum: '7.8'; @import './_js/_objectFitPolyfil';
+$guideNum: '7.9'; @import './_js/_tree';
 
 
-@import "_page";
+// @import "./_pages/";
 
 //js plugin
 @import "_plugins/_lightgallery";

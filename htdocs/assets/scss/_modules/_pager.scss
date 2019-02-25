@@ -10,13 +10,17 @@ pager
 
 Markup:
 <nav class="pager">
-	<ul class="pager_list">
-		<li class="pager_prev"><a href=""><span>前の10件</span></a></li>
-		<li class="pager_item"><a href="">1</a></li>
-		<li class="pager_item pager_item-active"><a href="">2</a></li>
-		<li class="pager_item"><a href="">3</a></li>
-		<li class="pager_next"><a href=""><span>次の10件</span></a></li>
-	</ul>
+	<div class="pager_inner">
+		<ul class="pager_list">
+			<li class="pager_prev"><a href=""><span>前の10件</span></a></li>
+			<li class="pager_dot">…</li>
+			<li class="pager_item"><a href="">1</a></li>
+			<li class="pager_item pager_item-active"><a href="">2</a></li>
+			<li class="pager_item"><a href="">3</a></li>
+			<li class="pager_dot">…</li>
+			<li class="pager_next"><a href=""><span>次の10件</span></a></li>
+		</ul>
+	</div>
 </nav><!-- /.pager -->
 
 Styleguide #{$guideNum}
@@ -24,6 +28,8 @@ Styleguide #{$guideNum}
 .pager {
 	$this: &;
 	margin: 20px 0 0;
+	&_inner {
+	}
 	&_list {
 		margin: 0;
 		display: flex;
@@ -52,6 +58,9 @@ Styleguide #{$guideNum}
 			}
 		}
 	}
+	&_dot {
+		margin: 0 10px;
+	}
 	&_item {
 		margin: 0 10px;
 		& > a {
@@ -77,35 +86,58 @@ Styleguide #{$guideNum}
 @media screen and (max-width: $breakpoint-sp){
 	.pager {
 		$this: &;
+		&_inner {
+		}
 		&_list {
+			position: relative;
+			padding: 0 40px;
+			width: 100%;
+			flex-wrap: wrap;
+			-webkit-flex-wrap: wrap;
+			flex-direction: row;
+			margin: -10px 0 0;
 		}
 		&_prev {
-			margin-right: 10px;
+			margin: 0;
+			position: absolute;
+			top: calc(50% + 5px);
+			left: 0;
+			transform: translateY(-50%);
 			& > a {
 				display: block;
 				width: 30px;
 				height: 30px;
 				line-height: 30px;
 				text-align: center;
+				margin: 0;
 				& > span {
 					display: none;
 				}
 			}
 		}
 		&_next {
-			margin-left: 10px;
+			margin: 0;
+			position: absolute;
+			top: calc(50% + 5px);
+			right: 0;
+			transform: translateY(-50%);
 			& > a {
 				display: block;
 				width: 30px;
 				height: 30px;
 				line-height: 30px;
 				text-align: center;
+				margin: 0;
 				& > span {
 					display: none;
 				}
 			}
 		}
+		&_dot {
+			display: none;
+		}
 		&_item {
+			margin: 10px 5px 0;
 			& > a {
 				width: 30px;
 				height: 30px;

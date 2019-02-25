@@ -7,20 +7,75 @@
 タブ
 
 tab
-$$$.tab
-$$$.tab.show.call($(this))
+$$$.tab.init.call($('[data-tab]'));
+$$$.tab.init.call($('.tab'), {
+	beforeInit: function(){
+		console.log('before init');
+	},
+	afterInit: function(){
+		console.log('after init');
+	},
+	beforeChange: function(){
+		console.log('before change');
+	},
+	afterChange: function(){
+		console.log('after change');
+	},
+	btns: '.tab_btn',
+	contents: '.tab_content',
+});
 
 Markup:
-<div data-tab>
-	<a href="javascript: void(0);" data-tab-item="0">tab1</a>
-	<a href="javascript: void(0);" data-tab-item="1">tab2</a>
-	<div data-tab-content="0">
-		<p>111111111</p>
+<div data-tab data-tab-root="1">
+	<a href="javascript: void(0);" data-tab-btn>default1</a>
+	<a href="javascript: void(0);" data-tab-btn>default2</a>
+	<div data-tab-content>
+		<p>default1default1default1default1default1</p>
 	</div>
-	<div data-tab-content="1">
-		<p>22222222222</p>
+	<div data-tab-content>
+		<p>default2default2default2default2default2</p>
 	</div>
 </div>
+<hr>
+<div class="tab">
+	<a href="javascript: void(0);" class="tab_btn">advanced1</a>
+	<a href="javascript: void(0);" class="tab_btn">advanced2</a>
+	<div class="tab_content">
+		<p>advanced1advanced1advanced1advanced1advanced1advanced1advanced1advanced1advanced1advanced1advanced1advanced1advanced1</p>
+	</div>
+	<div class="tab_content">
+		<p>advanced2advanced2advanced2advanced2advanced2advanced2advanced2advanced2advanced2advanced2advanced2advanced2</p>
+	</div>
+</div>
+<hr>
+<div class="tab" data-tab-root="b">
+	<a href="javascript: void(0);" class="tab_btn" data-tab-btn="a">advancedA</a>
+	<a href="javascript: void(0);" class="tab_btn" data-tab-btn="b">advancedB</a>
+	<div class="tab_content" data-tab-content="a">
+		<p>advancedA</p>
+	</div>
+	<div class="tab_content" data-tab-content="b">
+		<p>advancedB</p>
+	</div>
+</div>
+<script>
+	$$$.tab.init.call($('.tab'), {
+		beforeInit: function(){
+			console.log('before init');
+		},
+		afterInit: function(){
+			console.log('after init');
+		},
+		beforeChange: function(){
+			console.log('before change');
+		},
+		afterChange: function(){
+			console.log('after change');
+		},
+		btns: '.tab_btn',
+		contents: '.tab_content',
+	});
+</script>
 
 data-tab
 data-tab-item
@@ -31,8 +86,8 @@ data-tab-content-active
 Styleguide #{$guideNum}
 ============================================================*/
 [data-tab] {}
-[data-tab-item] {}
-[data-tab-item-active] {}
+[data-tab-btn] {}
+[data-tab-btn-active] {}
 [data-tab-content] {
 	height: 0;
 	opacity: 0;
