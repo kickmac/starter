@@ -37,7 +37,6 @@ $$$.dialog = (function() {
 		$$$.anim.enter.call($('.customDialog'), function(){
 			_pause().then(
 				function(id){
-					console.log('test');
 					if (options.btns[id].callback) {
 						_close(options.btns[id].callback);
 					} else {
