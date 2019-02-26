@@ -3,12 +3,20 @@ var $$$ = $$$ || {};
 * amin
 *************************************************************************************/
 $$$.anim = (function(){
-	var _enter = function(){
+	var _enter = function(cb){
 		var _$this = $(this);
 		var _name = $(this).data('anim');
 
 		if (_$this.data('anim-flag')) { return false }
 		_$this.off(' transitionend webkitTransitionEnd')
+
+		_$this.on(' transitionend webkitTransitionEnd',function(e){
+			if (e.target ===  _$this[0]) {
+				// _$this.removeClass(_name + '-enter-active ' + _name + '-enter ' +  _name + '-enter-to ' + _name + '-leave-active ' + _name + '-leave ' +  _name + '-leave-to');
+				_$this.data('anim-flag', false);
+				if(cb){cb();}
+			}
+		});
 
 		_$this.data('anim-flag', true);
 		_$this.removeClass(_name + '-leave-active ' + _name + '-leave ' +  _name + '-leave-to').addClass(_name + '-enter-active ' + _name + '-enter ');
@@ -22,14 +30,18 @@ $$$.anim = (function(){
 		var _$this = $(this);
 		var _name = $(this).data('anim');
 
-		if (!_$this.data('anim-flag')) { return false }
-		_$this.off(' transitionend webkitTransitionEnd')
-		_$this.on(' transitionend webkitTransitionEnd',function(e){
-			_$this.removeClass(_name + '-enter-active ' + _name + '-enter ' +  _name + '-enter-to ' + _name + '-leave-active ' + _name + '-leave ' +  _name + '-leave-to');
-			_$this.data('anim-flag', false);
-			if(cb){cb();}
+		if (_$this.data('anim-flag')) { return false }
+		_$this.off('transitionend webkitTransitionEnd')
+
+		_$this.on('transitionend webkitTransitionEnd',function(e){
+			if (e.target ===  _$this[0]) {
+				_$this.removeClass(_name + '-enter-active ' + _name + '-enter ' +  _name + '-enter-to ' + _name + '-leave-active ' + _name + '-leave ' +  _name + '-leave-to');
+				_$this.data('anim-flag', false);
+				if(cb){cb();}
+			}
 		});
 
+		_$this.data('anim-flag', true);
 		_$this.removeClass(_name + '-enter-active ' + _name + '-enter ' +  _name + '-enter-to').addClass(_name + '-leave-active ' + _name + '-leave ');
 		setTimeout(function(){
 			_$this.removeClass(_name + '-leave').addClass(_name + '-leave-to');
