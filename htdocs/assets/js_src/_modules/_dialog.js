@@ -31,35 +31,40 @@ $$$.dialog = (function() {
 			}
 			_btns = '<ul class="customDialog_btns">' + _btns + '</ul>';
 		}
-		var _contents = '<div class="customDialog_txt">' + options.txt + '</div>';
+		var _contents = '<div class="customDialog_txt">' + options.txt + '</div>' + _btns;
 		$('.customDialog_inner').append(_contents);
 
-		$$$.anim.enter.call($('.customDialog'))
-
-		_pause().then(
-			function(id){
-				if (options.btns[id].action) {options.btns[id].action()}
-
-				if (options.btns[id].callback) {
-					_close(options.btns[id].callback);
-				} else {
+		$$$.anim.enter.call($('.customDialog'), function(){
+			_pause().then(
+				function(id){
+					console.log('test');
+					if (options.btns[id].callback) {
+						_close(options.btns[id].callback);
+					} else {
+						_close();
+					}
+				},
+				function(){
 					_close();
 				}
-			},
-			function(){
-				_close();
-			}
-		);
+			);
+
+		})
+
 
 	}
 
 	var _close = function(cb){
 		if (cb) {
-			$$$.anim.leave.call($('.customDialog'), cb)
+			$$$.anim.leave.call($('.customDialog'), function(){
+				cb()
+				$(document).off('.click', '.customDialog_btn > a');
+			})
 		} else {
-			$$$.anim.leave.call($('.customDialog'))
+			$$$.anim.leave.call($('.customDialog'), function(){
+				$(document).off('.click', '.customDialog_btn > a');
+			})
 		}
-		$(document).off('.click', '.customDialog_btn > a');
 	}
 
 

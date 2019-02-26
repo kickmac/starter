@@ -37,7 +37,8 @@ setTimeout(function(){
 }, 3000)
 
 Markup:
-<div class="customDialog">
+<p><a href="javascript: void(0);" class="dialogOpen">open</a></p>
+<div class="customDialog" data-anim="customDialog">
 	<div class="customDialog_overlay"></div>
 	<div class="customDialog_inner">
 		<p class="customDialog_txt">ダイアログの内容</p>
@@ -47,6 +48,24 @@ Markup:
 		</ul>
 	</div>
 </div>
+<script>
+$(document).on('click', '.dialogOpen', function(){
+	$$$.dialog.open({
+		txt: 'aaaa',
+		btns: [{
+			name: 'ok',
+			callback: function(){
+				alert('ok')
+			}
+		}, {
+			name: 'cancel',
+			callback: function(){
+				alert('cancel')
+			}
+		}]
+	})
+})
+</script>
 
 Styleguide #{$guideNum}
 ============================================================*/
@@ -89,6 +108,7 @@ Styleguide #{$guideNum}
 		max-height: 80%;
 		overflow-y: auto;
 		-webkit-overflow-scrolling: touch;
+		transition: top .4s;
 		& > :first-child {
 			margin-top: 0;
 		}
@@ -130,11 +150,17 @@ Styleguide #{$guideNum}
 		&:hover {
 			opacity: 0;
 		}
+		#{$this}_inner {
+			top: 55%;
+		}
 	}
 	&-enter-to {
 		opacity: 1;
 		&:hover {
 			opacity: 1;
+		}
+		#{$this}_inner {
+			top: 50%;
 		}
 	}
 
@@ -146,11 +172,17 @@ Styleguide #{$guideNum}
 		&:hover {
 			opacity: 1;
 		}
+		#{$this}_inner {
+			top: 50%;
+		}
 	}
 	&-leave-to {
 		opacity: 0;
 		&:hover {
 			opacity: 0;
+		}
+		#{$this}_inner {
+			top: 40%;
 		}
 	}
 }
