@@ -3,21 +3,21 @@ var $$$ = $$$ || {};
 * tree
 *************************************************************************************/
 $$$.tree = (function() {
-	var _init = function(op = {
-		root: null,
-		list: '[data-tree-list]',
-		item: '[data-tree-item]',
-		toggleBtn: '[data-tree-toggle]',
+	var _init = function(op) {
+		return $(this).each(function(index, el) {
+			var _options = {
+				root: null,
+				list: '[data-tree-list]',
+				item: '[data-tree-item]',
+				toggleBtn: '[data-tree-toggle]',
 
-		beforeInit: null,
-		afterInit: null,
-		beforeOpen: null,
-		afterOpen: null,
-		beforeClose: null,
-		afterClose: null,
-	}) {
-		$(this).each(function(index, el) {
-			var _options = {}
+				beforeInit: null,
+				afterInit: null,
+				beforeOpen: null,
+				afterOpen: null,
+				beforeClose: null,
+				afterClose: null,
+			}
 			$.extend(_options, op);
 
 			_options.root = $(this);
@@ -49,6 +49,8 @@ $$$.tree = (function() {
 					toggleBtn: _options.toggleBtn,
 				})
 			}
+
+			$(this)[0].treeOptions = _options;
 
 		});
 	}

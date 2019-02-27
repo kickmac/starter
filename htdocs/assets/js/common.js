@@ -7314,27 +7314,25 @@ var $$$ = $$$ || {};
 * acc
 *************************************************************************************/
 $$$.acc = function () {
-    var _init = function _init() {
-        var op = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-            root: null,
-            content: '[data-acc-content]',
-            toggleBtn: '[data-acc-btn]',
-            openBtn: '[data-acc-open-btn]',
-            closeBtn: '[data-acc-close-btn]',
+    var _init = function _init(op) {
+        return $(this).each(function (index, el) {
 
-            beforeInit: null,
-            afterInit: null,
-            beforeResize: null,
-            afterResize: null,
-            beforeOpen: null,
-            afterOpen: null,
-            beforeClose: null,
-            afterClose: null
-        };
+            var _options = {
+                root: null,
+                content: '[data-acc-content]',
+                toggleBtn: '[data-acc-btn]',
+                openBtn: '[data-acc-open-btn]',
+                closeBtn: '[data-acc-close-btn]',
 
-        $(this).each(function (index, el) {
-
-            var _options = {};
+                beforeInit: null,
+                afterInit: null,
+                beforeResize: null,
+                afterResize: null,
+                beforeOpen: null,
+                afterOpen: null,
+                beforeClose: null,
+                afterClose: null
+            };
             $.extend(_options, op);
 
             _options.root = $(this);
@@ -7384,6 +7382,14 @@ $$$.acc = function () {
                     closeBtn: _options.closeBtn
                 });
             }
+
+            $(this)[0].accOptions = _options;
+        });
+    };
+
+    var _reset = function _reset() {
+        $(this).each(function (index, el) {
+            _set($(this)[0].accOptions);
         });
     };
 
@@ -7499,7 +7505,8 @@ $$$.acc = function () {
     };
 
     return {
-        init: _init
+        init: _init,
+        reset: _reset
     };
 }();
 
@@ -7566,7 +7573,7 @@ var $$$ = $$$ || {};
 * amin
 *************************************************************************************/
 $$$.anim = function () {
-    var _enter = function _enter() {
+    var _enter = function _enter(cb) {
         var _$this = $(this);
         var _name = $(this).data('anim');
 
@@ -7574,6 +7581,16 @@ $$$.anim = function () {
             return false;
         }
         _$this.off(' transitionend webkitTransitionEnd');
+
+        _$this.on(' transitionend webkitTransitionEnd', function (e) {
+            if (e.target === _$this[0]) {
+                // _$this.removeClass(_name + '-enter-active ' + _name + '-enter ' +  _name + '-enter-to ' + _name + '-leave-active ' + _name + '-leave ' +  _name + '-leave-to');
+                _$this.data('anim-flag', false);
+                if (cb) {
+                    cb();
+                }
+            }
+        });
 
         _$this.data('anim-flag', true);
         _$this.removeClass(_name + '-leave-active ' + _name + '-leave ' + _name + '-leave-to').addClass(_name + '-enter-active ' + _name + '-enter ');
@@ -7587,18 +7604,22 @@ $$$.anim = function () {
         var _$this = $(this);
         var _name = $(this).data('anim');
 
-        if (!_$this.data('anim-flag')) {
+        if (_$this.data('anim-flag')) {
             return false;
         }
-        _$this.off(' transitionend webkitTransitionEnd');
-        _$this.on(' transitionend webkitTransitionEnd', function (e) {
-            _$this.removeClass(_name + '-enter-active ' + _name + '-enter ' + _name + '-enter-to ' + _name + '-leave-active ' + _name + '-leave ' + _name + '-leave-to');
-            _$this.data('anim-flag', false);
-            if (cb) {
-                cb();
+        _$this.off('transitionend webkitTransitionEnd');
+
+        _$this.on('transitionend webkitTransitionEnd', function (e) {
+            if (e.target === _$this[0]) {
+                _$this.removeClass(_name + '-enter-active ' + _name + '-enter ' + _name + '-enter-to ' + _name + '-leave-active ' + _name + '-leave ' + _name + '-leave-to');
+                _$this.data('anim-flag', false);
+                if (cb) {
+                    cb();
+                }
             }
         });
 
+        _$this.data('anim-flag', true);
         _$this.removeClass(_name + '-enter-active ' + _name + '-enter ' + _name + '-enter-to').addClass(_name + '-leave-active ' + _name + '-leave ');
         setTimeout(function () {
             _$this.removeClass(_name + '-leave').addClass(_name + '-leave-to');
@@ -7787,33 +7808,33 @@ $$$.dialog = function () {
             }
             _btns = '<ul class="customDialog_btns">' + _btns + '</ul>';
         }
-        var _contents = '<div class="customDialog_txt">' + options.txt + '</div>';
+        var _contents = '<div class="customDialog_txt">' + options.txt + '</div>' + _btns;
         $('.customDialog_inner').append(_contents);
 
-        $$$.anim.enter.call($('.customDialog'));
-
-        _pause().then(function (id) {
-            if (options.btns[id].action) {
-                options.btns[id].action();
-            }
-
-            if (options.btns[id].callback) {
-                _close(options.btns[id].callback);
-            } else {
+        $$$.anim.enter.call($('.customDialog'), function () {
+            _pause().then(function (id) {
+                if (options.btns[id].callback) {
+                    _close(options.btns[id].callback);
+                } else {
+                    _close();
+                }
+            }, function () {
                 _close();
-            }
-        }, function () {
-            _close();
+            });
         });
     };
 
     var _close = function _close(cb) {
         if (cb) {
-            $$$.anim.leave.call($('.customDialog'), cb);
+            $$$.anim.leave.call($('.customDialog'), function () {
+                cb();
+                $(document).off('.click', '.customDialog_btn > a');
+            });
         } else {
-            $$$.anim.leave.call($('.customDialog'));
+            $$$.anim.leave.call($('.customDialog'), function () {
+                $(document).off('.click', '.customDialog_btn > a');
+            });
         }
-        $(document).off('.click', '.customDialog_btn > a');
     };
 
     return {
@@ -8440,19 +8461,17 @@ var $$$ = $$$ || {};
 * tab
 *************************************************************************************/
 $$$.tab = function () {
-    var _init = function _init() {
-        var op = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-            btns: '[data-tab-btn]',
-            contents: '[data-tab-content]',
+    var _init = function _init(op) {
+        return $(this).each(function (index, el) {
+            var _options = {
+                btns: '[data-tab-btn]',
+                contents: '[data-tab-content]',
 
-            beforeInit: null,
-            afterInit: null,
-            beforeChange: null,
-            afterChange: null
-        };
-
-        $(this).each(function (index, el) {
-            var _options = {};
+                beforeInit: null,
+                afterInit: null,
+                beforeChange: null,
+                afterChange: null
+            };
             $.extend(_options, op);
             _options.root = $(this);
             _options.btns = $(this).find(_options.btns);
@@ -8490,6 +8509,8 @@ $$$.tab = function () {
                     btns: _options.btns
                 });
             }
+
+            $(this)[0].taboptions = _options;
         });
     };
 
@@ -8541,23 +8562,21 @@ var $$$ = $$$ || {};
 * tree
 *************************************************************************************/
 $$$.tree = function () {
-    var _init = function _init() {
-        var op = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-            root: null,
-            list: '[data-tree-list]',
-            item: '[data-tree-item]',
-            toggleBtn: '[data-tree-toggle]',
+    var _init = function _init(op) {
+        return $(this).each(function (index, el) {
+            var _options = {
+                root: null,
+                list: '[data-tree-list]',
+                item: '[data-tree-item]',
+                toggleBtn: '[data-tree-toggle]',
 
-            beforeInit: null,
-            afterInit: null,
-            beforeOpen: null,
-            afterOpen: null,
-            beforeClose: null,
-            afterClose: null
-        };
-
-        $(this).each(function (index, el) {
-            var _options = {};
+                beforeInit: null,
+                afterInit: null,
+                beforeOpen: null,
+                afterOpen: null,
+                beforeClose: null,
+                afterClose: null
+            };
             $.extend(_options, op);
 
             _options.root = $(this);
@@ -8587,6 +8606,8 @@ $$$.tree = function () {
                     toggleBtn: _options.toggleBtn
                 });
             }
+
+            $(this)[0].treeOptions = _options;
         });
     };
     var _open = function _open(_options) {
@@ -8785,6 +8806,285 @@ $$$.windowInfo = function () {
         size: _size
     };
 }();
+var $$$ = $$$ || {};
+/*************************************************************************************
+* sticky
+*************************************************************************************/
+$$$.sticky = function () {
+    var _init = function _init(op) {
+        $$$.windowInfo.init();
+        return $(this).each(function (index, el) {
+            var _options = {
+                mode: 'top',
+                content: null,
+                container: '[data-sticky-container]',
+                placeholder: '[data-sticky-placeholder]',
+                adjust: {
+                    top: 0,
+                    bottom: 0
+                },
+                beforeInit: null,
+                afterInit: null,
+                beforeStartLock: null,
+                afterStartLock: null,
+                beforeSticky: null,
+                afterSticky: null,
+                beforeEndLock: null,
+                afterendLock: null,
+                contentInfo: {
+                    size: {
+                        width: 0,
+                        height: 0
+                    },
+                    offset: {
+                        top: 0,
+                        left: 0,
+                        bottom: 0,
+                        right: 0
+                    }
+                },
+                containerInfo: {
+                    size: {
+                        width: 0,
+                        height: 0
+                    },
+                    offset: {
+                        top: 0,
+                        left: 0,
+                        bottom: 0,
+                        right: 0
+                    }
+                }
+            };
+            $.extend(true, _options, op);
+
+            if (_options.beforeInit) {
+                _options.beforeInit();
+            }
+
+            _options.content = $(this);
+            _options.container = $(this).closest(_options.container)[0] ? $(this).closest(_options.container) : $(this).parent();
+            _options.placeholder = _options.content.wrap('<div data-sticky-placeholder />').parent('[data-sticky-placeholder]');
+
+            _options.content.attr('data-sticky-content', '');
+            _options.container.attr('data-sticky-container', '');
+
+            _set(_options);
+
+            _judge(_options);
+            $(window).on('scroll', function (event) {
+                event.preventDefault();
+                _judge(_options);
+            });
+
+            $(window).on('resizeend', function (event) {
+                event.preventDefault();
+                _set(_options);
+            });
+
+            if (_options.afterInit) {
+                _options.afterInit({
+                    mode: _options.mode,
+                    content: _options.content,
+                    container: _options.container,
+                    placeholder: _options.placeholder,
+                    adjust: _options.adjust,
+                    contentInfo: _options.contentInfo,
+                    containerInfo: _options.containerInfo
+                });
+            }
+
+            $(this)[0].stickyOptions = _options;
+        });
+    };
+
+    var _set = function _set(_options) {
+        _options.content.removeAttr('style').attr('data-sticky-content', '');
+        _options.placeholder.removeAttr('style');
+
+        _options.containerInfo.size.width = _options.container.outerWidth();
+        _options.containerInfo.size.height = _options.container.outerHeight();
+        _options.containerInfo.offset.top = _options.container.offset().top;
+        _options.containerInfo.offset.left = _options.container.offset().left;
+        _options.containerInfo.offset.bottom = _options.containerInfo.offset.top + _options.containerInfo.size.height;
+        _options.containerInfo.offset.right = _options.containerInfo.offset.left + _options.containerInfo.size.width;
+
+        _options.contentInfo.size.width = _options.content.outerWidth();
+        _options.contentInfo.size.height = _options.content.outerHeight();
+        _options.contentInfo.offset.top = _options.content.offset().top - _options.containerInfo.offset.top;
+        _options.contentInfo.offset.left = _options.content.offset().left - _options.containerInfo.offset.left;
+        _options.contentInfo.offset.bottom = _options.contentInfo.offset.top + _options.contentInfo.size.height;
+        _options.contentInfo.offset.right = _options.contentInfo.offset.left + _options.contentInfo.size.width;
+
+        _options.content.outerWidth(_options.contentInfo.size.width);
+        _options.placeholder.outerHeight(_options.contentInfo.size.height);
+    };
+
+    var _reset = function _reset() {
+        $(this).each(function (index, el) {
+            _set($(this)[0].stickyOptions);
+        });
+    };
+
+    var _sticky = function _sticky(_options) {
+        if (_options.content.attr('data-sticky-content') === 'sticky') {
+            return false;
+        }
+
+        if (_options.beforeSticky) {
+            _options.beforeSticky({
+                mode: _options.mode,
+                content: _options.content,
+                container: _options.container,
+                placeholder: _options.placeholder,
+                adjust: _options.adjust,
+                contentInfo: _options.contentInfo,
+                containerInfo: _options.containerInfo
+            });
+        }
+
+        _options.content.css({
+            position: 'fixed',
+            top: function () {
+                if (_options.mode === 'top') {
+                    return _options.adjust.top;
+                } else {
+                    return 'auto';
+                }
+            }(),
+            bottom: function () {
+                if (_options.mode === 'top') {
+                    return 'auto';
+                } else {
+                    return _options.adjust.bottom;
+                }
+            }()
+        }).attr('data-sticky-content', 'sticky');
+
+        if (_options.afterSticky) {
+            _options.afterSticky({
+                mode: _options.mode,
+                content: _options.content,
+                container: _options.container,
+                placeholder: _options.placeholder,
+                adjust: _options.adjust,
+                contentInfo: _options.contentInfo,
+                containerInfo: _options.containerInfo
+            });
+        }
+    };
+
+    var _startLock = function _startLock(_options) {
+        if (_options.content.attr('data-sticky-content') === 'startLock') {
+            return false;
+        }
+
+        if (_options.beforeStartLock) {
+            _options.beforeStartLock({
+                mode: _options.mode,
+                content: _options.content,
+                container: _options.container,
+                placeholder: _options.placeholder,
+                adjust: _options.adjust,
+                contentInfo: _options.contentInfo,
+                containerInfo: _options.containerInfo
+            });
+        }
+
+        _options.content.css({
+            position: 'relative',
+            top: 'auto',
+            bottom: 'auto'
+        }).attr('data-sticky-content', 'startLock');
+
+        if (_options.afterStartLock) {
+            _options.afterStartLock({
+                mode: _options.mode,
+                content: _options.content,
+                container: _options.container,
+                placeholder: _options.placeholder,
+                adjust: _options.adjust,
+                contentInfo: _options.contentInfo,
+                containerInfo: _options.containerInfo
+            });
+        }
+    };
+
+    var _endLock = function _endLock(_options) {
+        if (_options.content.attr('data-sticky-content') === 'endLock') {
+            return false;
+        }
+
+        if (_options.beforeEndLock) {
+            _options.beforeEndLock({
+                mode: _options.mode,
+                content: _options.content,
+                container: _options.container,
+                placeholder: _options.placeholder,
+                adjust: _options.adjust,
+                contentInfo: _options.contentInfo,
+                containerInfo: _options.containerInfo
+            });
+        }
+
+        _options.content.css({
+            position: 'absolute',
+            top: function () {
+                if (_options.mode === 'top') {
+                    return 'auto';
+                } else {
+                    return _options.adjust.top;
+                }
+            }(),
+            bottom: function () {
+                if (_options.mode === 'top') {
+                    return _options.adjust.bottom;
+                } else {
+                    return 'auto';
+                }
+            }()
+        }).attr('data-sticky-content', 'endLock');
+
+        if (_options.afterEndLock) {
+            _options.afterEndLock({
+                mode: _options.mode,
+                content: _options.content,
+                container: _options.container,
+                placeholder: _options.placeholder,
+                adjust: _options.adjust,
+                contentInfo: _options.contentInfo,
+                containerInfo: _options.containerInfo
+            });
+        }
+    };
+
+    var _judge = function _judge(_options) {
+        if (_options.mode === 'top') {
+            if ($$$.windowInfo.sc.top <= _options.contentInfo.offset.top + _options.containerInfo.offset.top - _options.adjust.top) {
+                _startLock(_options);
+            } else if ($$$.windowInfo.sc.top > _options.containerInfo.offset.bottom - _options.contentInfo.size.height - _options.adjust.bottom) {
+                _endLock(_options);
+            } else {
+                _sticky(_options);
+            }
+        } else {
+
+            if ($$$.windowInfo.sc.bottom >= _options.contentInfo.offset.bottom + _options.containerInfo.offset.top + _options.adjust.bottom) {
+                _startLock(_options);
+            } else if ($$$.windowInfo.sc.bottom < _options.containerInfo.offset.top + _options.contentInfo.size.height + _options.adjust.bottom) {
+                _endLock(_options);
+            } else {
+                _sticky(_options);
+            }
+        }
+    };
+
+    return {
+        init: _init,
+        reset: _reset
+    };
+}();
+
 /*
 * @requires _plugins/_jquery-3.3.1.min.js
 * @requires _plugins/_jquery.easing.1.3.js
@@ -8816,6 +9116,7 @@ $$$.windowInfo = function () {
 * @requires ./_modules/_vhAdjust.js
 * @requires ./_modules/_viewport.js
 * @requires ./_modules/_windowInfo.js
+* @requires ./_modules/_sticky.js
 */
 
 $(function () {
@@ -8934,16 +9235,6 @@ $(function () {
 });
 
 /*************************************************************************************
-* window load
-*************************************************************************************/
-$(window).on('load', function (event) {
-    $$$.anchorJump.init();
-    $$$.acc.init.call($('[data-acc]'));
-    $$$.tab.init.call($('[data-tab]'));
-    $$$.tree.init.call($('[data-tree]'));
-});
-
-/*************************************************************************************
 * window resize
 *************************************************************************************/
 $(window).on('load resizeend', function (event) {
@@ -8959,6 +9250,82 @@ $(window).on('load resizeendHeight', function (event) {
 });
 $(window).on('resize', function (event) {
     $$$.vhAdjust.init();
+});
+
+/*************************************************************************************
+* window load
+*************************************************************************************/
+$(window).on('load', function (event) {
+    $$$.anchorJump.init();
+    $$$.acc.init.call($('[data-acc]'));
+    $$$.tab.init.call($('[data-tab]'));
+    $$$.tree.init.call($('[data-tree]'));
+    $$$.sticky.init.call($('[data-sticky]'));
+    $$$.sticky.init.call($('.footer'), {
+        mode: 'bottom',
+        adjust: {
+            top: 100,
+            bottom: 10
+        },
+        beforeInit: function beforeInit() {
+            console.log('beforeInit');
+        },
+        afterInit: function afterInit() {
+            console.log('afterInit');
+        },
+        beforeStartLock: function beforeStartLock() {
+            console.log('beforeStartLock');
+        },
+        afterStartLock: function afterStartLock() {
+            console.log('afterStartLock');
+        },
+        beforeEndLock: function beforeEndLock() {
+            console.log('beforeEndLock');
+        },
+        afterEndLock: function afterEndLock() {
+            console.log('afterEndLock');
+        },
+        beforeSticky: function beforeSticky() {
+            console.log('beforeSticky');
+        },
+        afterSticky: function afterSticky() {
+            console.log('afterSticky');
+        }
+    });
+    $$$.sticky.init.call($('.header'), {
+        adjust: {
+            top: 100,
+            bottom: 10
+        },
+        beforeInit: function beforeInit() {
+            console.log('beforeInit');
+        },
+        afterInit: function afterInit() {
+            console.log('afterInit');
+        },
+        beforeStartLock: function beforeStartLock() {
+            console.log('beforeStartLock');
+        },
+        afterStartLock: function afterStartLock() {
+            console.log('afterStartLock');
+        },
+        beforeEndLock: function beforeEndLock() {
+            console.log('beforeEndLock');
+        },
+        afterEndLock: function afterEndLock() {
+            console.log('afterEndLock');
+        },
+        beforeSticky: function beforeSticky() {
+            console.log('beforeSticky');
+        },
+        afterSticky: function afterSticky() {
+            console.log('afterSticky');
+        }
+    });
+    $$$.sticky.init.call($('.sticky_item-2'), {
+        mode: 'bottom',
+        container: '.layout_sideContainer'
+    });
 });
 
 /*************************************************************************************
