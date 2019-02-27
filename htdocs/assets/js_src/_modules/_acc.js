@@ -3,25 +3,25 @@ var $$$ = $$$ || {};
 * acc
 *************************************************************************************/
 $$$.acc = (function() {
-	var _init = function(op = {
-		root: null,
-		content: '[data-acc-content]',
-		toggleBtn: '[data-acc-btn]',
-		openBtn: '[data-acc-open-btn]',
-		closeBtn: '[data-acc-close-btn]',
+	var _init = function(op) {
+		return $(this).each(function(index, el) {
 
-		beforeInit: null,
-		afterInit: null,
-		beforeResize: null,
-		afterResize: null,
-		beforeOpen: null,
-		afterOpen: null,
-		beforeClose: null,
-		afterClose: null,
-	}) {
-		$(this).each(function(index, el) {
+			var _options = {
+				root: null,
+				content: '[data-acc-content]',
+				toggleBtn: '[data-acc-btn]',
+				openBtn: '[data-acc-open-btn]',
+				closeBtn: '[data-acc-close-btn]',
 
-			var _options = {}
+				beforeInit: null,
+				afterInit: null,
+				beforeResize: null,
+				afterResize: null,
+				beforeOpen: null,
+				afterOpen: null,
+				beforeClose: null,
+				afterClose: null,
+			}
 			$.extend(_options, op);
 
 			_options.root = $(this);
@@ -71,9 +71,16 @@ $$$.acc = (function() {
 					closeBtn: _options.closeBtn,
 				})
 			}
+
+			$(this)[0].accOptions = _options;
 		});
 	}
 
+	var _reset = function(){
+		$(this).each(function(index, el) {
+			_set($(this)[0].accOptions)
+		});
+	}
 
 	var _set = function(_options){
 		if (_options.beforeResize) {
@@ -188,5 +195,6 @@ $$$.acc = (function() {
 
 	return {
 		init: _init,
+		reset: _reset,
 	};
 }());

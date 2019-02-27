@@ -3,17 +3,17 @@ var $$$ = $$$ || {};
 * tab
 *************************************************************************************/
 $$$.tab = (function() {
-	var _init = function(op = {
-		btns: '[data-tab-btn]',
-		contents: '[data-tab-content]',
+	var _init = function(op) {
+		return $(this).each(function(index, el) {
+			var _options = {
+				btns: '[data-tab-btn]',
+				contents: '[data-tab-content]',
 
-		beforeInit: null,
-		afterInit: null,
-		beforeChange: null,
-		afterChange: null,
-	}) {
-		$(this).each(function(index, el) {
-			var _options = {}
+				beforeInit: null,
+				afterInit: null,
+				beforeChange: null,
+				afterChange: null,
+			}
 			$.extend(_options, op);
 			_options.root = $(this);
 			_options.btns = $(this).find(_options.btns);
@@ -51,6 +51,8 @@ $$$.tab = (function() {
 					btns: _options.btns,
 				});
 			}
+
+			$(this)[0].taboptions = _options;
 		});
 	}
 

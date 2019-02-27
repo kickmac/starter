@@ -29,6 +29,7 @@
 * @requires ./_modules/_vhAdjust.js
 * @requires ./_modules/_viewport.js
 * @requires ./_modules/_windowInfo.js
+* @requires ./_modules/_sticky.js
 */
 
 
@@ -149,16 +150,6 @@ $(function(){
 })
 
 /*************************************************************************************
-* window load
-*************************************************************************************/
-$(window).on('load', function(event) {
-	$$$.anchorJump.init();
-	$$$.acc.init.call($('[data-acc]'));
-	$$$.tab.init.call($('[data-tab]'));
-	$$$.tree.init.call($('[data-tree]'));
-});
-
-/*************************************************************************************
 * window resize
 *************************************************************************************/
 $(window).on('load resizeend', function(event) {
@@ -174,6 +165,50 @@ $(window).on('load resizeendHeight', function(event) {
 });
 $(window).on('resize', function(event) {
 	$$$.vhAdjust.init();
+});
+
+/*************************************************************************************
+* window load
+*************************************************************************************/
+$(window).on('load', function(event) {
+	$$$.anchorJump.init();
+	$$$.acc.init.call($('[data-acc]'));
+	$$$.tab.init.call($('[data-tab]'));
+	$$$.tree.init.call($('[data-tree]'));
+	$$$.sticky.init.call($('[data-sticky]'));
+	$$$.sticky.init.call($('.footer'), {
+		mode: 'bottom',
+		adjust: {
+			top: 100,
+			bottom: 10,
+		},
+		beforeInit: function(){ console.log('beforeInit'); },
+		afterInit: function(){ console.log('afterInit'); },
+		beforeStartLock: function(){ console.log('beforeStartLock'); },
+		afterStartLock: function(){ console.log('afterStartLock'); },
+		beforeEndLock: function(){ console.log('beforeEndLock'); },
+		afterEndLock: function(){ console.log('afterEndLock'); },
+		beforeSticky: function(){ console.log('beforeSticky'); },
+		afterSticky: function(){ console.log('afterSticky'); },
+	});
+	$$$.sticky.init.call($('.header'), {
+		adjust: {
+			top: 100,
+			bottom: 10,
+		},
+		beforeInit: function(){ console.log('beforeInit'); },
+		afterInit: function(){ console.log('afterInit'); },
+		beforeStartLock: function(){ console.log('beforeStartLock'); },
+		afterStartLock: function(){ console.log('afterStartLock'); },
+		beforeEndLock: function(){ console.log('beforeEndLock'); },
+		afterEndLock: function(){ console.log('afterEndLock'); },
+		beforeSticky: function(){ console.log('beforeSticky'); },
+		afterSticky: function(){ console.log('afterSticky'); },
+	});
+	$$$.sticky.init.call($('.sticky_item-2'), {
+		mode: 'bottom',
+		container: '.layout_sideContainer'
+	});
 });
 
 /*************************************************************************************
