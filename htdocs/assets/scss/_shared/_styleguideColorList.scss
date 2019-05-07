@@ -1,24 +1,20 @@
 // @import '../_config';
-// @import '../_iconFontMixin';
-// @import '../_svgSpriteMixin';
-// @import '../_plugins/_magic';
+// @import '../_iconFonts';
+// @import '../_svgSprite';
+// @import '../_imgSprite';
 
 /*
 色サンプル
 
 styleguideColorList
 
-Markup:
-<ul class="styleguideColorList">
-	<li class="styleguideColorList_item styleguideColorList_item-red"><a href="javascript: void(0);"><span></span></a></li>
-	<li class="styleguideColorList_item styleguideColorList_item-red-light"><a href="javascript: void(0);"><span></span></a></li>
-	<li class="styleguideColorList_item styleguideColorList_item-blue"><a href="javascript: void(0);"><span></span></a></li>
-	<li class="styleguideColorList_item styleguideColorList_item-blue-light"><a href="javascript: void(0);"><span></span></a></li>
-	<li class="styleguideColorList_item styleguideColorList_item-gray"><a href="javascript: void(0);"><span></span></a></li>
-	<li class="styleguideColorList_item styleguideColorList_item-gray-light"><a href="javascript: void(0);"><span></span></a></li>
-	<li class="styleguideColorList_item styleguideColorList_item-gray-border"><a href="javascript: void(0);"><span></span></a></li>
-	<li class="styleguideColorList_item styleguideColorList_item-black"><a href="javascript: void(0);"><span></span></a></li>
-</ul>
+Colors:
+$txtColor: #333
+$red: #f00
+$blue: #00f
+$gray: #888
+$black: #222
+$test: rgba(250, 250, 250, .5)
 
 Styleguide #{$guideNum}
 ============================================================*/
@@ -49,62 +45,6 @@ Styleguide #{$guideNum}
 			}
 			& > span {
 				display: block;
-			}
-		}
-		&-red {
-			& > a {
-				&:before { background: $red; }
-				&:after { content: '$red'; }
-				& > span:before { content: '#{$red}'; }
-			}
-		}
-		&-red-light {
-			& > a {
-				&:before { background: $red-light; }
-				&:after { content: '$red-light'; }
-				& > span:before { content: '#{$red-light}'; }
-			}
-		}
-		&-blue {
-			& > a {
-				&:before { background: $blue; }
-				&:after { content: '$blue'; }
-				& > span:before { content: '#{$blue}'; }
-			}
-		}
-		&-blue-light {
-			& > a {
-				&:before { background: $blue-light; }
-				&:after { content: '$blue-light'; }
-				& > span:before { content: '#{$blue-light}'; }
-			}
-		}
-		&-gray {
-			& > a {
-				&:before { background: $gray; }
-				&:after { content: '$gray'; }
-				& > span:before { content: '#{$gray}'; }
-			}
-		}
-		&-gray-light {
-			& > a {
-				&:before { background: $gray-light; }
-				&:after { content: '$gray-light'; }
-				& > span:before { content: '#{$gray-light}'; }
-			}
-		}
-		&-gray-border {
-			& > a {
-				&:before { background: $gray-border; }
-				&:after { content: '$gray-border'; }
-				& > span:before { content: '#{$gray-border}'; }
-			}
-		}
-		&-black {
-			& > a {
-				&:before { background: $black; }
-				&:after { content: '$black'; }
-				& > span:before { content: '#{$black}'; }
 			}
 		}
 	}

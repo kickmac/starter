@@ -34,21 +34,19 @@ $$$.dialog = (function() {
 		var _contents = '<div class="customDialog_txt">' + options.txt + '</div>' + _btns;
 		$('.customDialog_inner').append(_contents);
 
-		$$$.anim.enter.call($('.customDialog'), function(){
-			_pause().then(
-				function(id){
-					if (options.btns[id].callback) {
-						_close(options.btns[id].callback);
-					} else {
-						_close();
-					}
-				},
-				function(){
+		_pause().then(
+			function(id){
+				if (options.btns[id].callback) {
+					_close(options.btns[id].callback);
+				} else {
 					_close();
 				}
-			);
-
-		})
+			},
+			function(){
+				_close();
+			}
+		);
+		$$$.anim.enter.call($('.customDialog'))
 
 
 	}

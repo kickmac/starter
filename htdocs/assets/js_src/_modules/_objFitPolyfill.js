@@ -49,9 +49,15 @@ $$$.objFitPolyfill = (function() {
 
 	var _cover = function(_size){
 		if (_size.natural.ratio < _size.assigned.ratio) {
-			$(this).height('100%')
+			$(this).css({
+				width: 'auto',
+				height: '100%',
+			})
 		} else {
-			$(this).width('100%')
+			$(this).css({
+				width: '100%',
+				height: 'auto',
+			})
 		}
 	}
 

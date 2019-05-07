@@ -1,0 +1,57 @@
+@import './_config';
+@import './_imgSprite';
+
+/*
+imgスプライト
+
+@include imgSprite(アイコン名変数);
+
+Markup:
+<ul class="stlg-SpriteList">
+<? images.forEach(function(img) { ?><li class="stlg-SpriteList_item stlg-SpriteList_item-<?=img.name?>"><a href="javascript: void(0);"><span>$<?=img.name?></span></a></li><? }); ?>
+</ul>
+
+Styleguide 2.3
+============================================================*/
+.stlg-SpriteList {
+	margin: -10px 0 0 -10px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	&_item {
+		flex-basis: calc(10% - 10px);
+		margin: 10px 0 0 10px;
+		border: 1px solid #ddd;
+		border-radius: 6px;
+		display: block;
+		& > a {
+			display: block;
+			width: 100%;
+			height: 100%;
+			padding: 10px;
+			text-align: center;
+			text-decoration: none;
+			color: inherit;
+			&:before {
+				content: '';
+				display: inline-block;
+				vertical-align: middle;
+				letter-spacing: normal;
+			}
+		}
+		span {
+			display: block;
+			margin: 5px 0 0;
+		}
+
+		<? images.forEach(function(img) { ?>
+		&-<?=img.name?> {
+			& > a {
+				&:before {
+					@include imgSprite($<?= img.name ?>, 100);
+				}
+			}
+		}
+		<? }); ?>
+	}
+}

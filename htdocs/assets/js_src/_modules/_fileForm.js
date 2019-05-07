@@ -5,6 +5,7 @@ var $$$ = $$$ || {};
 $$$.fileForm = (function() {
 	var _parent;
 	var _option;
+	var _$dom;
 
 	var _init = function(){
 
@@ -35,10 +36,10 @@ $$$.fileForm = (function() {
 			return false
 		};
 
-		var _$dom = _parent.find('.fileForm_item-template').clone().removeClass('fileForm_item-template');
+		_$dom = _parent.find('.fileForm_item-template').clone().removeClass('fileForm_item-template');
 		$(_$dom.find('[type="file"]')).on('change', function(event) {
 
-			_preUpload(_$dom.find('[type="file"]')[0].files[0], _option.src);
+			_preUpload(_$dom.find('[type="file"]')[0].files[0], _option.src, _$dom);
 
 			$(this).off('change')
 
@@ -56,11 +57,12 @@ $$$.fileForm = (function() {
 
 
 		for (var i = 0, l = files.length; i < l; i++) {
-			_preUpload(files[i], _option.src);
+			_$dom = _parent.find('.fileForm_item-template').clone().removeClass('fileForm_item-template');
+			_preUpload(files[i], _option.src, _$dom);
 		}
 	}
 
-	var _preUpload = function(file, src){
+	var _preUpload = function(file, src, _$dom){
 		if(_typeError(file) || _sizeError(file)) {
 			return false
 		}
@@ -69,7 +71,7 @@ $$$.fileForm = (function() {
 
 		$.ajax({
 			url: src,
-			type: 'GET',
+			type: 'POST',
 			contentType: false,
 			processData: false,
 			data: _fd,
@@ -77,7 +79,6 @@ $$$.fileForm = (function() {
 			rsync:true
 		})
 		.done(function(res) {
-			var _$dom = _parent.find('.fileForm_item-template').clone().removeClass('fileForm_item-template');
 			_$dom.find('[name*="selected"]').val(res.path)
 			_$dom.find('[name*="original_name"]').val(res.name)
 			_$dom.find('.fileForm_name').text(res.name);
@@ -136,7 +137,7 @@ $$$.fileForm = (function() {
 			txt: '削除しますか？',
 			btns: [{
 				name: 'はい',
-				action:function(){
+				callback:function(){
 					_$this.closest('.fileForm_item').remove();
 				},
 			},{

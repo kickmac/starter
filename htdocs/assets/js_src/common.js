@@ -176,39 +176,6 @@ $(window).on('load', function(event) {
 	$$$.tab.init.call($('[data-tab]'));
 	$$$.tree.init.call($('[data-tree]'));
 	$$$.sticky.init.call($('[data-sticky]'));
-	$$$.sticky.init.call($('.footer'), {
-		mode: 'bottom',
-		adjust: {
-			top: 100,
-			bottom: 10,
-		},
-		beforeInit: function(){ console.log('beforeInit'); },
-		afterInit: function(){ console.log('afterInit'); },
-		beforeStartLock: function(){ console.log('beforeStartLock'); },
-		afterStartLock: function(){ console.log('afterStartLock'); },
-		beforeEndLock: function(){ console.log('beforeEndLock'); },
-		afterEndLock: function(){ console.log('afterEndLock'); },
-		beforeSticky: function(){ console.log('beforeSticky'); },
-		afterSticky: function(){ console.log('afterSticky'); },
-	});
-	$$$.sticky.init.call($('.header'), {
-		adjust: {
-			top: 100,
-			bottom: 10,
-		},
-		beforeInit: function(){ console.log('beforeInit'); },
-		afterInit: function(){ console.log('afterInit'); },
-		beforeStartLock: function(){ console.log('beforeStartLock'); },
-		afterStartLock: function(){ console.log('afterStartLock'); },
-		beforeEndLock: function(){ console.log('beforeEndLock'); },
-		afterEndLock: function(){ console.log('afterEndLock'); },
-		beforeSticky: function(){ console.log('beforeSticky'); },
-		afterSticky: function(){ console.log('afterSticky'); },
-	});
-	$$$.sticky.init.call($('.sticky_item-2'), {
-		mode: 'bottom',
-		container: '.layout_sideContainer'
-	});
 });
 
 /*************************************************************************************

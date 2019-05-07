@@ -13,7 +13,7 @@ $$$.anim = (function(){
 		_$this.on(' transitionend webkitTransitionEnd',function(e){
 			if (e.target ===  _$this[0]) {
 				// _$this.removeClass(_name + '-enter-active ' + _name + '-enter ' +  _name + '-enter-to ' + _name + '-leave-active ' + _name + '-leave ' +  _name + '-leave-to');
-				_$this.data('anim-flag', false);
+				// _$this.data('anim-flag', false);
 				if(cb){cb();}
 			}
 		});
@@ -30,7 +30,7 @@ $$$.anim = (function(){
 		var _$this = $(this);
 		var _name = $(this).data('anim');
 
-		if (_$this.data('anim-flag')) { return false }
+		if (!_$this.data('anim-flag')) { return false }
 		_$this.off('transitionend webkitTransitionEnd')
 
 		_$this.on('transitionend webkitTransitionEnd',function(e){
