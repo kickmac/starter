@@ -147,6 +147,7 @@ $$$.acc = (function() {
 			})
 		}
 
+		_txtSwitch(_options)
 		_options.root.attr('data-acc-root', 'open');
 		_options.content.css({
 			maxHeight: _options.content.data('acc-max-h')
@@ -179,10 +180,20 @@ $$$.acc = (function() {
 			})
 		}
 
+		_txtSwitch(_options)
 		_options.root.attr('data-acc-root', '');
 		_options.content.css({
 			maxHeight: 0
 		})
+	}
+
+	var _txtSwitch = function(_options){
+		var _$targets = _options.root.find('[data-acc-btn-txt]');
+		_$targets.each(function(index, el) {
+			var _cache = $(this).text();
+			$(this).text($(this).attr('data-acc-btn-txt'));
+			$(this).attr('data-acc-btn-txt', _cache)
+		});
 	}
 
 	var _toggle = function(_options){

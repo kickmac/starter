@@ -36,7 +36,7 @@ $black: #222;
 
 //  font
 //----------------------------------------------------------------------
-$fa-font-path: "../fonts/font-awesome";
+$fa-font-path: "/assets/fonts/font-awesome";
 $fa-font-size-base: map-get($font-size, 'pc');
 $fa-fw-width: (20em / 16);
 
