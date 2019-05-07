@@ -1,7 +1,14 @@
 @import './_config';
-@import './_iconFontMixin';
-@import './_svgSpriteMixin';
-@import './_plugins/_magic';
+
+//mqpackerの順番制御用
+@media screen and (min-width: $breakpoint-sp + 1) { .mqDummy {width: auto;} }
+@media screen and (min-width: $breakpoint-sp) { .mqDummy {width: auto;} }
+@media screen and (max-width: $breakpoint-sp) { .mqDummy {width: auto;} }
+
+
+@import './_iconFonts';
+@import './_svgSprite';
+@import './_imgSprite';
 @import './_font-awesome/_solid';
 @import './_font-awesome/_regular';
 @import './_font-awesome/_brands';

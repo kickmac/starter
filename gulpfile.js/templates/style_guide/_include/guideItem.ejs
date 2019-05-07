@@ -1,0 +1,83 @@
+					<div data-v-366bf07a id="anc<?= data.referenceURI ?>" class="stlg-styleguideItem">
+						<div data-v-366bf07a class="stlg-styleguideItem_header"><?= data.referenceNumber ?>：<?= data.header ?></div>
+
+						<!-- info -->
+						<div data-v-366bf07a class="stlg-guideInfo">
+							<? if (data.description.length > 0) { -?>
+							<div data-v-366bf07a class="stlg-guideInfo_description">
+								<?- data.description ?>
+							</div>
+							<? } -?>
+
+							<? if (data.modifiers.length > 0) { -?>
+							<ul data-v-366bf07a class="stlg-guideInfo_modifires">
+								<? for (var i = 0; i < data.modifiers.length; i++) { -?>
+								<li data-v-366bf07a class="stlg-guideInfo_modifire"><?= data.modifiers[i].name ?> - <?= data.modifiers[i].description ?></li>
+								<? } -?>
+							</ul>
+							<? } -?>
+						</div>
+						<!-- /info -->
+
+						<!-- guideViews -->
+						<? if (data.colors.length > 0 || data.markup.length > 0) { -?>
+						<div data-v-366bf07a class="stlg-guideViews">
+
+							<!-- guideColors -->
+							<? if (data.colors.length > 0) { -?>
+							<div data-v-366bf07a class="stlg-guideColors">
+								<div data-v-366bf07a class="stlg-guideColors_list">
+									<? for (var i = 0; i < data.colors.length; i++) { -?>
+									<div data-v-366bf07a class="stlg-guideColors_item">
+										<a data-v-366bf07a href="javascript: void(0);">
+											<div data-v-366bf07a class="stlg-guideColors_sample" style="background: <?= data.colors[i].color ?>;"></div>
+											<? if (data.colors[i].name) { -?>
+												<p data-v-366bf07a class="stlg-guideColors_name"><?= data.colors[i].name ?></p>
+												<p data-v-366bf07a class="stlg-guideColors_code"><?= data.colors[i].color ?></p>
+											<? } else { -?>
+												<p data-v-366bf07a class="stlg-guideColors_name"><?= data.colors[i].color ?></p>
+											<? } -?>
+										</a>
+									</div>
+									<? } -?>
+								</div>
+							</div>
+							<? } -?>
+							<!-- /guideColors -->
+
+							<!-- guideView -->
+							<? if (data.markup.length > 0) { -?>
+							<div data-v-366bf07a class="stlg-guideView">
+								<p data-v-366bf07a class="stlg-guideView_label">default</p>
+								<div data-v-366bf07a class="stlg-guideView_body"><?- data.markup ?></div>
+							</div>
+
+							<? for (var i = 0; i < data.modifiers.length; i++) { -?>
+								<div data-v-366bf07a class="stlg-guideView">
+									<p data-v-366bf07a class="stlg-guideView_label"><?- data.modifiers[i].name ?></p>
+									<div data-v-366bf07a class="stlg-guideView_body"><?- data.markup.replace(/\{\$modifiers\}/gm, data.modifiers[i].className) ?></div>
+								</div>
+							<? } -?>
+							<? } -?>
+							<!-- /guideView -->
+						</div>
+						<? } -?>
+						<!-- /guideViews -->
+
+						<!-- guideSource & guideToolbar -->
+						<? if (data.markup.length > 0) { -?>
+						<div data-v-366bf07a class="stlg-guideSource">
+							<pre data-v-366bf07a><?= data.markup ?></pre>
+						</div>
+
+						<div data-v-366bf07a class="stlg-guideToolbar">
+							<ul data-v-366bf07a class="stlg-guideToolbar_btns">
+								<li data-v-366bf07a class="stlg-guideToolbar_btn stlg-guideToolbar_btn-view"><a data-v-366bf07a href="javascript: void(0);">View Source</a></li>
+								<li data-v-366bf07a class="stlg-guideToolbar_btn stlg-guideToolbar_btn-copy"><a data-v-366bf07a href="javascript: void(0);">Copy Source</a></li>
+							</ul>
+						</div>
+						<? } -?>
+						<!-- /guideSource & guideToolbar -->
+
+
+					</div>
