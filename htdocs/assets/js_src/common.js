@@ -139,7 +139,7 @@ $(function(){
 		event.preventDefault();
 		$$$.contentsModal.open.call($(this))
 	});
-	$(document).on('click', '.contentsModal_close, .contentsModal_overlay', function(event) {
+	$(document).on('click', '.contentsModal_close, .contentsModal_overlay:not(.contentsModal_overlay-noClose)', function(event) {
 		event.preventDefault();
 		$$$.contentsModal.close.call($(this))
 	});
