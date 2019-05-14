@@ -21,6 +21,10 @@ $$$.contentsModal = (function() {
 		var _url = $(this).attr('href');
 		var _options = $(this).data('modal-contents')
 
+		if (_options.noClose) {
+			_$target.find('.contentsModal_overlay').addClass('contentsModal_overlay-noClose')
+		}
+
 		_killScroll();
 		$$$.anim.enter.call(_$target)
 		$$$.anim.enter.call(_$target.find('.contentsModal_overlay'))
@@ -39,6 +43,7 @@ $$$.contentsModal = (function() {
 	var _close = function(){
 		var _$target = $(this).closest('.contentsModal_item');
 		$$$.anim.leave.call(_$target.find('.contentsModal_overlay'))
+		$$$.anim.leave.call(_$target.find('.contentsModal_contents'))
 		$$$.anim.leave.call(_$target, function(){
 			_$target.remove();
 			if (!$('.contentsModal_item')[0]) {
@@ -53,16 +58,24 @@ $$$.contentsModal = (function() {
 		})
 		.done(function(data) {
 			$target.find('.contentsModal_body').append(data);
-		})
-		.fail(function() {
-			$target.find('.contentsModal_body').append('<p>読み込みエラー</p>');
-		})
-		.always(function() {
 			$$$.imagesLoadListener.listen($target, function(){
 				$$$.anim.enter.call($target.find('.contentsModal_contents'))
 				$$$.anim.leave.call($target.find('.contentsModal_loading'))
 				_replace();
 			})
+		})
+		.fail(function() {
+			_close.call($target)
+			$$$.dialog.open({
+				title: 'エラー',
+				txt: '<p class="tCenter">読み込みエラー</p>',
+				btns: [{
+					name: 'OK',
+					// class: 'btn',
+				}]
+			})
+		})
+		.always(function() {
 		});
 	}
 	var _html = function(url, $target, options) {
