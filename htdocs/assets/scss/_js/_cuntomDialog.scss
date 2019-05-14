@@ -7,12 +7,17 @@
 /*
 カスタムダイアログ
 
+autoCloseがfalseの場合は自前で$$$.dialog.close()する必要あり
 $$$.dialog.open({
+	title: '<h1 class="headLine1">title</h1>',
 	txt: '<p class="tCenter">aaaaaaa</p>',
 	btns: [{
 		name: 'ok',
+		class: 'btn btn-blue',
+		autoClose: true,
 		action: function(){
-			alert('ok')
+			alert('ok');
+			$$$.dialog.close();
 		},
 		callback: function(){
 			alert('after ok')
@@ -52,17 +57,26 @@ Markup:
 <script>
 $(document).on('click', '.dialogOpen', function(){
 	$$$.dialog.open({
-		txt: 'aaaa',
+		title: '<h1 class="headLine1">title</h1>',
+		txt: '<p class="tCenter">aaaaaaa</p>',
 		btns: [{
 			name: 'ok',
-			callback: function(){
+			class: 'btn btn-blue',
+			action: function(){
 				alert('ok')
-			}
-		}, {
-			name: 'cancel',
+			},
 			callback: function(){
+				alert('after ok')
+			},
+		},
+		{
+			name: 'cancel',
+			action: function(){
 				alert('cancel')
-			}
+			},
+			callback: function(){
+				alert('after cancel')
+			},
 		}]
 	})
 })
@@ -124,21 +138,17 @@ Styleguide #{$guideNum}
 		justify-content: center;
 		margin: 20px 10px 0;
 	}
-	&_btn {
+	&_btnItem {
 		margin: 0 10px;
 		min-width: 200px;
-		& > a {
-			display: block;
-			text-align: center;
-			text-decoration: none;
-			color: inherit;
-			border: 1px solid $gray-border;
-			padding: 5px 10px;
-		}
-		&-cancel {
-		}
-		&-ok {
-		}
+	}
+	&_btn {
+		display: block;
+		text-align: center;
+		text-decoration: none;
+		color: inherit;
+		border: 1px solid $gray-border;
+		padding: 5px 10px;
 	}
 
 	/*

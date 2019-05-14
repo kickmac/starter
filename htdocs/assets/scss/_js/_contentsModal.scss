@@ -10,7 +10,8 @@
 contentsModal
 lightGalleryのスタイルに合わせてある
 $$$.contentsModal.open.call($(this));
-<a href="パス" data-modal-contents>オープン</a>
+data-modal-contents='{"noClose": true}'でoverlayクリックでクローズしない
+<a href="パス" data-modal-contents='{"noClose": true}'>オープン</a>
 
 Markup:
 <div class="contentsModal">
@@ -85,6 +86,10 @@ Styleguide #{$guideNum}
 		height: 100vh;
 		background: $overlayBg;
 		transition: opacity .4s;
+		&-noClose {
+			cursor: default;
+		}
+
 		&-enter-active {
 			display: block;
 		}
@@ -148,7 +153,6 @@ Styleguide #{$guideNum}
 		top: 50%;
 		left: 50%;
 		background: #fff;
-		transition: all .4s;
 		overflow-y: auto;
 		-webkit-overflow-scrolling: touch;
 		max-height: calc(100% - 67px);
@@ -156,8 +160,9 @@ Styleguide #{$guideNum}
 		max-width: $page-width;
 		padding: 20px;
 		display: none;
+		opacity: 0;
 		z-index: 2200;
-		transition: opacity .4s;
+		transition: opacity .4s, top .4s;
 		& > :first-child {
 			margin-top: 0;
 		}
@@ -165,9 +170,11 @@ Styleguide #{$guideNum}
 			display: block;
 		}
 		&-enter {
+			top: 55%;
 			opacity: 0;
 		}
 		&-enter-to {
+			top: 50%;
 			opacity: 1;
 		}
 
@@ -175,9 +182,11 @@ Styleguide #{$guideNum}
 			display: block;
 		}
 		&-leave {
+			top: 50%;
 			opacity: 1;
 		}
 		&-leave-to {
+			top: 40%;
 			opacity: 0;
 		}
 	}
