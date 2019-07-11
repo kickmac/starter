@@ -12,6 +12,7 @@ fileForm
 Markup:
 <div class="fileForm" data-option='{
 	"src": "pre upload path 必須",
+	"method": "GET || POST",
 	"maxQty": 3,
 	"maxQtyError": "3個以上選択できません",
 	"type": ["png", "jpg"],
