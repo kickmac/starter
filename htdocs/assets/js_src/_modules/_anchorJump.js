@@ -1,22 +1,20 @@
-var $$$ = $$$ || {};
+const $ = require('jquery')
 /*************************************************************************************
 * anchorJump
 *************************************************************************************/
-$$$.anchorJump = (function() {
-	var _hash = location.hash
-	var _adjust = 0;
+const _hash = location.hash
+let _adjust = 0;
 
-	var _jump = function(args) {
-		if (_hash) {
-			if ($$$.pcsp.getMode() === 'sp') {
-				_adjust = 63 + 10;
-			} else {
-				_adjust = 0;
-			}
-			$(window).scrollTop($(_hash).offset().top - _adjust);
+const _init = function(args) {
+	if (_hash) {
+		if ($$$.pcsp.getMode() === 'sp') {
+			_adjust = 63 + 10;
+		} else {
+			_adjust = 0;
 		}
+		$(window).scrollTop($(_hash).offset().top - _adjust);
 	}
-	return {
-		init: _jump,
-	};
-}());
+}
+module.exports = {
+	init: _init,
+};
