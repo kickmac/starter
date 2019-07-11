@@ -39,7 +39,7 @@ $$$.fileForm = (function() {
 		_$dom = _parent.find('.fileForm_item-template').clone().removeClass('fileForm_item-template');
 		$(_$dom.find('[type="file"]')).on('change', function(event) {
 
-			_preUpload(_$dom.find('[type="file"]')[0].files[0], _option.src, _$dom);
+			_preUpload(_$dom.find('[type="file"]')[0].files[0], _option, _$dom);
 
 			$(this).off('change')
 
@@ -58,20 +58,19 @@ $$$.fileForm = (function() {
 
 		for (var i = 0, l = files.length; i < l; i++) {
 			_$dom = _parent.find('.fileForm_item-template').clone().removeClass('fileForm_item-template');
-			_preUpload(files[i], _option.src, _$dom);
+			_preUpload(files[i], _option, _$dom);
 		}
 	}
 
-	var _preUpload = function(file, src, _$dom){
+	var _preUpload = function(file, _option, _$dom){
 		if(_typeError(file) || _sizeError(file)) {
 			return false
 		}
 		var _fd = new FormData();
 		_fd.append('file', file)
-
 		$.ajax({
-			url: src,
-			type: 'POST',
+			url: _option.src,
+			type: _option.method,
 			contentType: false,
 			processData: false,
 			data: _fd,
@@ -86,6 +85,9 @@ $$$.fileForm = (function() {
 				_$dom.find('.fileForm_name').attr('href', res.path)
 			}
 			_parent.find('.fileForm_list').append(_$dom);
+			if (_parent.find('.fileForm_item').not('.fileForm_item-template').length > 0) {
+				_parent.find('.fileForm_btn > span').addClass('hidden')
+			}
 		})
 		.fail(function() {
 			// console.log("error");
@@ -98,9 +100,11 @@ $$$.fileForm = (function() {
 	var _qtyError = function(files){
 		if (_option.maxQty && _parent.find('.fileForm_item').not('.fileForm_item-template').length + files.length > _option.maxQty) {
 			$$$.dialog.open({
-				txt: _option.maxQtyError,
+				title: 'エラー',
+				txt: '<p class="tCenter">' + _option.maxQtyError + '</p>',
 				btns: [{
-					name: 'OK'
+					name: 'OK',
+					class: 'btn btn-blue',
 				}]
 			})
 			return true;
@@ -110,9 +114,11 @@ $$$.fileForm = (function() {
 	var _typeError = function(file){
 		if (_option.type && _option.type.length > 0 && _option.type.indexOf(file.name.toLowerCase().split('.').pop()) < 0) {
 			$$$.dialog.open({
-				txt: _option.typeError,
+				title: 'エラー',
+				txt: '<p class="tCenter">' + _option.typeError + '</p>',
 				btns: [{
-					name: 'OK'
+					name: 'OK',
+					class: 'btn btn-blue',
 				}]
 			})
 			return true;
@@ -122,9 +128,11 @@ $$$.fileForm = (function() {
 	var _sizeError = function(file){
 		if (_option.maxSize && _option.maxSize > 0 && file.size > _option.maxSize) {
 			$$$.dialog.open({
-				txt: _option.maxSizeError,
+				title: 'エラー',
+				txt: '<p class="tCenter">' + _option.maxSizeError + '</p>',
 				btns: [{
-					name: 'OK'
+					name: 'OK',
+					class: 'btn btn-blue',
 				}]
 			})
 			return true;
@@ -134,14 +142,19 @@ $$$.fileForm = (function() {
 	var _remove = function(){
 		var _$this = $(this)
 		$$$.dialog.open({
-			txt: '削除しますか？',
+			txt: '<p class="tCenter">削除しますか？</p>',
 			btns: [{
 				name: 'はい',
+				class: 'btn btn-blue',
 				callback:function(){
 					_$this.closest('.fileForm_item').remove();
+					if (_parent.find('.fileForm_item').not('.fileForm_item-template').length === 0) {
+						_parent.find('.fileForm_btn > span').removeClass('hidden')
+					}
 				},
 			},{
 				name: 'いいえ',
+				class: 'btn btn-gray',
 			}]
 		});
 	}

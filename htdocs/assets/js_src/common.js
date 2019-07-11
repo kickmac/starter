@@ -30,6 +30,7 @@
 * @requires ./_modules/_viewport.js
 * @requires ./_modules/_windowInfo.js
 * @requires ./_modules/_sticky.js
+* @requires ./_modules/_ajaxMore.js
 */
 
 
@@ -45,6 +46,7 @@ $(function(){
 	$('[data-agree-target]:checked').each(function (index, el) {
 		$$$.agree.change.call($(this));
 	});
+	$$$.ajaxMore.init($('[data-ajax-more]'))
 
 	/*************************************************************************************
 	* クリックイベント
