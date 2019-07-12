@@ -8,7 +8,6 @@ const $$$ = global.$$$ = {}
 * プラグインrequire
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
 require('jquery.easing')
-require('es6-promise/auto');
 require('jquery-match-height');
 require('lightgallery');
 require('lg-zoom');
@@ -147,7 +146,6 @@ $(document).on('click', '.fileForm_del', function(event) {
 $(document).on('change', '[data-disabled-target]', function(event) {
 	event.preventDefault();
 	$$$.disabledToggle.change.call($(this))
-	console.log('test');
 });
 
 /*************************************************************************************

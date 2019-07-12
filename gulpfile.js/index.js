@@ -39,7 +39,7 @@ gulp.task('watch', done => {
 			queue: true,
 			usePolling: false,
 			ignoreInitial: true,
-		}, gulp.task('js'));
+		}, gulp.task('jsMin'));
 
 		gulp.watch(config.iconFont.src, {
 			queue: true,
@@ -114,7 +114,7 @@ gulp.task('bsInit', done => {
 			{
 				route: '/_api/js',
 				handle: function (req, res, next) {
-					gulp.task('js')();
+					gulp.task('jsMin')();
 					return next();
 				}
 			},
@@ -170,7 +170,7 @@ gulp.task('default', gulp.series(
 		'makeSvgSprite',
 		'makeImgSprite',
 		'html',
-		'js',
+		'jsMin',
 	),
 	'css',
 	'bsInit',
