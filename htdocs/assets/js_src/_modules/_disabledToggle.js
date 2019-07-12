@@ -3,29 +3,34 @@ const $ = require('jquery');
 * disabledToggle
 *************************************************************************************/
 const _init = function(){
-	$('[data-disabled-target]:checked').each(function (index, el) {
-		$$$.disabledToggle.change.call($(this));
+	$('[data-disabled-target]:checked, select[data-disabled-target]').each(function (index, el) {
+		_change.call($(this));
 	});
 }
 
 const _change = function (args) {
 	const _$target = $(this).data('disabled-target');
-
-	if ($(this).data('disabled-condition')) {
-		if (!$(this).data('disabled-condition')) {
-			$('[data-disabled="' + _$target + '"]').removeAttr('disabled');
+	if ($(this).data('disabled-condition') !== undefined || $(this).children('option[data-disabled-condition]')[0]) {
+		if ($(this).data('disabled-condition') || $(this).children('option:selected').data('disabled-condition')) {
+			_disabled(_$target)
 		} else {
-			$('[data-disabled="' + _$target + '"]').attr('disabled', 'disabled');
+			_abled(_$target)
 		}
 	} else {
 		if ($(this).prop('checked')) {
-			$('[data-disabled="' + _$target + '"]').removeAttr('disabled');
+			_abled(_$target)
 		} else {
-			$('[data-disabled="' + _$target + '"]').attr('disabled', 'disabled');
+			_disabled(_$target)
 		}
 	}
-
 };
+
+const _disabled = _$target => {
+	$('[data-disabled="' + _$target + '"]').attr('disabled', 'disabled');
+}
+const _abled = _$target => {
+	$('[data-disabled="' + _$target + '"]').removeAttr('disabled');
+}
 
 module.exports = {
 	init: _init,
