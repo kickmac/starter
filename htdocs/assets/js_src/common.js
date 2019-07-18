@@ -9,6 +9,7 @@ const $$$ = global.$$$ = {}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
 require('jquery.easing')
 require('jquery-match-height');
+const Promise = global.Promise = require('es6-promise').Promise;
 require('lightgallery');
 require('lg-zoom');
 require('lg-fullscreen');
