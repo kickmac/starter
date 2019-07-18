@@ -56,7 +56,7 @@ const _init = function(op) {
 			_close(_options)
 		});
 
-		$(window).on('resizeend, pcsp.changed', function(event) {
+		$(window).on('resizeend pcsp.changed', function(event) {
 			event.preventDefault();
 			_set(_options);
 		});
