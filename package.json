@@ -32,6 +32,7 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "es6-promise": "^4.2.8",
     "jquery-match-height": "^0.7.2",
     "jquery.easing": "^1.4.1",

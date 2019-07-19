@@ -7,6 +7,7 @@ const $$$ = global.$$$ = {}
 /*━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 * プラグインrequire
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+require('babel-polyfill');
 require('jquery.easing')
 require('jquery-match-height');
 const Promise = global.Promise = require('es6-promise').Promise;
