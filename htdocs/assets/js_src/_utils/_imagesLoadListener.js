@@ -16,11 +16,11 @@ const _listen = function(elem, cb){
 
 		_img.onload = function(){
 			_counter++;
-			_judge(_counter, i, cb)
+			_judge(_counter, l, cb)
 		}
 		_img.onerror = function(){
 			_counter++;
-			_judge(_counter, i, cb)
+			_judge(_counter, l, cb)
 		}
 		_img.src = _imgs.eq(i).attr('src');
 	}

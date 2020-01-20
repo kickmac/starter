@@ -2,7 +2,7 @@
 * $ and $$$ 外出し
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
 const $ = global.$ = global.jQuery = require('jquery');
-const $$$ = global.$$$ = {}
+const $$$ = global.$$$ = $$$ || {}
 
 /*━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 * プラグインrequire
@@ -90,6 +90,9 @@ $(window).on('resizeend', function(event) {
 	$$$.viewport.update();
 	$$$.vhAdjust.update();
 	$$$.objFitPolyfill.update();
+	$$$.contentsModal.replace();
+	$$$.dialog.replace();
+	$$$.sticky.reset.call($('[data-sticky]'));
 });
 
 /*************************************************************************************
@@ -98,6 +101,8 @@ $(window).on('resizeend', function(event) {
 $(window).on('resizeendHeight', function(event) {
 	$$$.vhAdjust.update();
 	$$$.objFitPolyfill.update();
+	$$$.contentsModal.replace();
+	$$$.dialog.replace();
 });
 
 /*************************************************************************************
@@ -117,9 +122,8 @@ $(window).on('scroll', function(event) {
 * click event
 *************************************************************************************/
 //smoothScroll
-$(document).on('click', '[href^="#"]', function(event) {
-	event.preventDefault();
-	$$$.smoothScroll.scroll.call($(this))
+$(document).on('click', '[href*="#"]', function(event) {
+	$$$.smoothScroll.scroll.call($(this), event)
 });
 
 //overlay
@@ -166,7 +170,7 @@ $('[data-modal]').lightGallery({
 
 //modal-gallery
 $('[data-modal-gallerys]').lightGallery({
-	selector: $(this).find('[data-modal-gallery]'),
+	selector: '[data-modal-gallery]',
 	download: false,
 	counter: true,
 	zoom: true,

@@ -1,4 +1,5 @@
 const $ = require('jquery');
+const viewport = require('../_modules/_viewport');
 /*************************************************************************************
 * resizeend(幅のみ)
 *************************************************************************************/
@@ -24,6 +25,7 @@ const _judge = function(){
 		setTimeout(_judge, _delta);
 	} else {
 		_timeout = false;
+		viewport.init();
 		if (_ww !== $(window).width()) {
 			$(window).trigger('resizeend');
 		}

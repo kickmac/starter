@@ -55,31 +55,33 @@ Markup:
 	</div>
 </div>
 <script>
-$(document).on('click', '.dialogOpen', function(){
-	$$$.dialog.open({
-		title: '<h1 class="headLine1">title</h1>',
-		txt: '<p class="tCenter">aaaaaaa</p>',
-		btns: [{
-			name: 'ok',
-			class: 'btn btn-blue',
-			action: function(){
-				alert('ok')
+$jq(function() {
+	$jq(document).on('click', '.dialogOpen', function(){
+		$$$.dialog.open({
+			title: '<h1 class="headLine1">title</h1>',
+			txt: '<p class="tCenter">aaaaaaa</p>',
+			btns: [{
+				name: 'ok',
+				class: 'btn btn-blue',
+				action: function(){
+					alert('ok')
+				},
+				callback: function(){
+					alert('after ok')
+				},
 			},
-			callback: function(){
-				alert('after ok')
-			},
-		},
-		{
-			name: 'cancel',
-			action: function(){
-				alert('cancel')
-			},
-			callback: function(){
-				alert('after cancel')
-			},
-		}]
+			{
+				name: 'cancel',
+				action: function(){
+					alert('cancel')
+				},
+				callback: function(){
+					alert('after cancel')
+				},
+			}]
+		})
 	})
-})
+});
 </script>
 
 Styleguide #{$guideNum}
@@ -113,7 +115,7 @@ Styleguide #{$guideNum}
 		position: fixed;
 		top: 50%;
 		left: 50%;
-		transform: translate(-50%, -50%);
+		// transform: translate(-50%, -50%);
 		background: #fff;
 		padding: 20px;
 		border: 1px solid $gray-border;
@@ -128,7 +130,10 @@ Styleguide #{$guideNum}
 			margin-top: 0;
 		}
 	}
+	&_title {
+	}
 	&_txt {
+		margin: 20px 0 0;
 		& > :first-child {
 			margin-top: 0;
 		}
@@ -229,6 +234,7 @@ Styleguide #{$guideNum}
 		&_inner {
 			max-width: 100%;
 			min-width: 80%;
+			padding: 20px 10px;
 		}
 		&_txt {
 		}
@@ -239,9 +245,11 @@ Styleguide #{$guideNum}
 				margin-top: 0;
 			}
 		}
-		&_btn {
+		&_btnItem {
 			margin: 15px 0 0;
 			width: auto;
+		}
+		&_btn {
 			&-cancel {
 			}
 			&-ok {

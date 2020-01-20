@@ -13,8 +13,8 @@ $<?= item.name ?>: (
 	$ratio: $width / nth($code, 1);
 	background-image: url(<?= path ?>);
 	background-repeat: no-repeat;
-	background-size: $totalWidth * $ratio + px $totalHeight * $ratio + px;
-	background-position: nth($code, 3) * $ratio + px nth($code, 4) * $ratio + px;
-	width: nth($code, 1)*$ratio + px;
-	height: nth($code, 2)*$ratio + px;
+	background-size: round($totalWidth * $ratio) + px round($totalHeight * $ratio) + px;
+	background-position: round(nth($code, 3) * $ratio) + px round(nth($code, 4) * $ratio) + px;
+	width: round(nth($code, 1)*$ratio) + px;
+	height: round(nth($code, 2)*$ratio) + px;
 }

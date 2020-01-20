@@ -15,8 +15,11 @@ let js;
 
 gulp.task('js', done => {
 	return js = browserify({
-		entries: [ config.js.src + '/common.js' ]
-	})
+			entries: [ config.js.src + '/common.js' ],
+			paths: [
+				`${process.cwd()}/node_modules`,
+			]
+		})
 		.transform('babelify', {presets: ['@babel/env']})
 		.bundle()
 		.pipe(source('common.js'))
@@ -24,25 +27,13 @@ gulp.task('js', done => {
 		// .pipe(uglify())
 		.pipe(bs.stream())
 
-	// return js = gulp.src( config.js.src + '/common.js' )
-	// 	.pipe(resolveDependencies ({
-	// 		pattern: /\* @requires [\s-]*(.*\.js)/g
-	// 	}))
-	// 	.pipe(concat('common.js'))
-	// 	.pipe(babel({
-	// 		presets: ['@babel/env']
-	// 	}))
-	// 	// .pipe(uglify())
-	// 	.pipe(gulp.dest(config.js.dest))
-	// 	.pipe(bs.stream())
-	// // done();
 })
 
 
 
 
 gulp.task('jsMin', gulp.series('js', done => {
-	return gulp.src( config.js.dest + '/**/*.js' )
+	return gulp.src( config.js.dest + '/common.js' )
 		.pipe(uglify())
 		.pipe(gulp.dest(config.js.dest))
 	// done();

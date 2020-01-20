@@ -60,6 +60,7 @@ Markup:
 	</div>
 </div>
 <script>
+$jq(function() {
 	$$$.tab.init.call($('.tab'), {
 		beforeInit: function(){
 			console.log('before init');
@@ -76,6 +77,7 @@ Markup:
 		btns: '.tab_btn',
 		contents: '.tab_content',
 	});
+});
 </script>
 
 data-tab

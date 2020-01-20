@@ -36,9 +36,14 @@ Styleguide #{$guideNum}
 	}
 	&_btn {
 		margin: 20px auto 0;
-		@for $i from 1 through 12 {
+		@for $i from 1 through 13 {
 			&-#{$i}-12 {
 				width: calc(99.9%/12 * #{$i});
+			}
+		}
+		@for $i from 1 through 11 {
+			&-#{$i}-10 {
+				width: calc(99.9%/10 * #{$i});
 			}
 		}
 	}
@@ -64,9 +69,14 @@ Styleguide #{$guideNum}
 		}
 		#{$this}_btn {
 			margin: 20px 0 0 20px;
-			@for $i from 1 through 12 {
+			@for $i from 1 through 13 {
 				&-#{$i}-12 {
 					width: calc(99.9%/12 * #{$i} - 20px);
+				}
+			}
+			@for $i from 1 through 11 {
+				&-#{$i}-10 {
+					width: calc(99.9%/10 * #{$i} - 20px);
 				}
 			}
 		}
@@ -95,9 +105,14 @@ Styleguide #{$guideNum}
 		}
 		&-hr {
 			#{$this}_btn {
-				@for $i from 1 through 12 {
+				@for $i from 1 through 13 {
 					&-#{$i}-12pc {
 						width: calc(99.9%/12 * #{$i} - 20px);
+					}
+				}
+				@for $i from 1 through 11 {
+					&-#{$i}-10pc {
+						width: calc(99.9%/10 * #{$i} - 20px);
 					}
 				}
 			}
@@ -115,9 +130,14 @@ Styleguide #{$guideNum}
 			}
 			#{$this}_btn {
 				margin: 10px 0 0 10px;
-				@for $i from 1 through 12 {
+				@for $i from 1 through 13 {
 					&-#{$i}-12sp {
 						width: calc(99.9%/12 * #{$i} - 10px);
+					}
+				}
+				@for $i from 1 through 11 {
+					&-#{$i}-10sp {
+						width: calc(99.9%/10 * #{$i} - 10px);
 					}
 				}
 			}

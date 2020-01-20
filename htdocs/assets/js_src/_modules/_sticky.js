@@ -1,11 +1,16 @@
 const $ = require('jquery');
+const $$$ = {}
+
+$$$.windowInfo = require('./_windowInfo');
 /*************************************************************************************
 * sticky
 *************************************************************************************/
 const _init = function(op) {
 	$$$.windowInfo.init();
 	return $(this).each(function(index, el) {
-		let _options = {
+		const _$this = $(this);
+
+		_$this[0].stickyOptions = {
 			mode: 'top',
 			content: null,
 			container: '[data-sticky-container]',
@@ -47,46 +52,45 @@ const _init = function(op) {
 				}
 			}
 		};
-		$.extend(true, _options, op);
 
-		if (_options.beforeInit) {
-			_options.beforeInit()
+		$.extend(true, _$this[0].stickyOptions, op);
+
+		if (_$this[0].stickyOptions.beforeInit) {
+			_$this[0].stickyOptions.beforeInit()
 		}
 
 
-		_options.content = $(this);
-		_options.container = $(this).closest(_options.container)[0] ?  $(this).closest(_options.container) : $(this).parent();
-		_options.placeholder = _options.content.wrap('<div data-sticky-placeholder />').parent('[data-sticky-placeholder]')
+		_$this[0].stickyOptions.content = $(this);
+		_$this[0].stickyOptions.container = $(this).closest(_$this[0].stickyOptions.container)[0] ?  $(this).closest(_$this[0].stickyOptions.container) : $(this).parent();
+		_$this[0].stickyOptions.placeholder = _$this[0].stickyOptions.content.wrap('<div data-sticky-placeholder />').parent('[data-sticky-placeholder]')
 
-		_options.content.attr('data-sticky-content', '')
-		_options.container.attr('data-sticky-container', '')
+		_$this[0].stickyOptions.content.attr('data-sticky-content', '')
+		_$this[0].stickyOptions.container.attr('data-sticky-container', '')
 
-		_set(_options)
+		_set(_$this[0].stickyOptions)
 
-		_judge(_options)
+		_judge(_$this[0].stickyOptions)
+
 		$(window).on('scroll', function(event) {
 			event.preventDefault();
-			_judge(_options)
+			if(!_$this[0].stickyOptions){ return false };
+			_judge(_$this[0].stickyOptions)
+			_leftScroll(_$this[0].stickyOptions)
 		});
 
-		$(window).on('resizeend', function(event) {
-			event.preventDefault();
-			_set(_options)
-		});
-
-		if (_options.afterInit) {
-			_options.afterInit({
-				mode: _options.mode,
-				content: _options.content,
-				container: _options.container,
-				placeholder: _options.placeholder,
-				adjust: _options.adjust,
-				contentInfo: _options.contentInfo,
-				containerInfo:  _options.containerInfo,
+		if (_$this[0].stickyOptions.afterInit) {
+			_$this[0].stickyOptions.afterInit({
+				mode: _$this[0].stickyOptions.mode,
+				content: _$this[0].stickyOptions.content,
+				container: _$this[0].stickyOptions.container,
+				placeholder: _$this[0].stickyOptions.placeholder,
+				adjust: _$this[0].stickyOptions.adjust,
+				contentInfo: _$this[0].stickyOptions.contentInfo,
+				containerInfo:  _$this[0].stickyOptions.containerInfo,
 			})
 		}
 
-		$(this)[0].stickyOptions = _options
+		_$this[0].stickyOptions = _$this[0].stickyOptions
 	});
 }
 
@@ -115,7 +119,17 @@ const _set = function(_options){
 const _reset = function(){
 	$(this).each(function(index, el) {
 		_set($(this)[0].stickyOptions)
+		_judge($(this)[0].stickyOptions);
+		_leftScroll($(this)[0].stickyOptions)
 	});
+}
+
+const _leftScroll = function(_options) {
+	if (_options.content.attr('data-sticky-content') === 'startLock' || _options.content.attr('data-sticky-content') === 'endLock') { return false }
+
+	_options.content.css({
+		left: _options.containerInfo.offset.left - $$$.windowInfo.sc.left,
+	})
 }
 
 const _sticky = function(_options){
@@ -149,6 +163,7 @@ const _sticky = function(_options){
 				return _options.adjust.bottom
 			}
 		}()),
+		// left: _options.contentInfo.offset.left - $$$.windowInfo.sc.left,
 	}).attr('data-sticky-content', 'sticky')
 
 	if (_options.afterSticky) {
@@ -180,10 +195,35 @@ const _startLock = function(_options){
 	}
 
 	_options.content.css({
-		position: 'relative',
-		top: 'auto',
-		bottom: 'auto',
+		position: (function(){
+			if (_options.mode === 'top') {
+				return 'relative'
+			} else {
+				return 'absolute'
+			}
+		}()),
+		top: (function(){
+			if (_options.mode === 'top') {
+				return 0
+			} else {
+				return 'auto'
+			}
+		}()),
+		bottom: (function(){
+			if (_options.mode === 'top') {
+				return 'auto'
+			} else {
+				return 0
+			}
+		}()),
+		left: 'auto',
 	}).attr('data-sticky-content', 'startLock')
+	// _options.content.css({
+	// 	position: 'relative',
+	// 	top: 'auto',
+	// 	bottom: 'auto',
+	// 	left: 'auto'
+	// })
 
 	if (_options.afterStartLock) {
 		_options.afterStartLock({
@@ -230,6 +270,7 @@ const _endLock = function(_options){
 				return 'auto'
 			}
 		}()),
+		left: 'auto',
 	}).attr('data-sticky-content', 'endLock')
 
 	if (_options.afterEndLock) {
@@ -249,7 +290,7 @@ const _judge = function(_options){
 	if (_options.mode === 'top') {
 		if($$$.windowInfo.sc.top <= _options.contentInfo.offset.top + _options.containerInfo.offset.top - _options.adjust.top) {
 			_startLock(_options)
-		} else if ($$$.windowInfo.sc.top > _options.containerInfo.offset.bottom - _options.contentInfo.size.height - _options.adjust.bottom) {
+		} else if (_options.containerInfo.offset.bottom < $$$.windowInfo.sc.top + _options.contentInfo.size.height + _options.adjust.bottom + _options.adjust.top) {
 			_endLock(_options)
 		} else {
 			_sticky(_options)
@@ -257,7 +298,7 @@ const _judge = function(_options){
 
 	} else {
 
-		if ($$$.windowInfo.sc.bottom >= _options.contentInfo.offset.bottom + _options.containerInfo.offset.top +  _options.adjust.bottom) {
+		if ($$$.windowInfo.sc.bottom >= _options.containerInfo.offset.bottom +  _options.adjust.bottom) {
 			_startLock(_options)
 		} else if($$$.windowInfo.sc.bottom < _options.containerInfo.offset.top + _options.contentInfo.size.height + _options.adjust.bottom) {
 			_endLock(_options)
@@ -268,8 +309,16 @@ const _judge = function(_options){
 	}
 }
 
+const _destroy = function(){
+	if (!$(this)[0].stickyOptions) { return false }
+	$(this)[0].stickyOptions.container.removeAttr('data-sticky-container')
+	$(this)[0].stickyOptions.content.removeAttr('style data-sticky-content').unwrap();
+	$(this)[0].stickyOptions = null;
+}
+
 module.exports = {
 	init: _init,
 	reset: _reset,
+	destroy: _destroy,
 };
 
