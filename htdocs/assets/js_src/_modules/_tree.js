@@ -32,7 +32,14 @@ const _init = function(op) {
 		_options.root.attr('data-tree-root', '')
 		_options.list.attr('data-tree-list', '');
 		_options.item.attr('data-tree-item', '');
-		_options.toggleBtn.attr('data-tree-toggle', '');
+		_options.toggleBtn.each(function(index, el) {
+			if ($(this).attr('data-tree-toggle')) {
+				$(this).attr('data-tree-toggle', 'open');
+				_open.call(this, _options)
+			} else {
+				$(this).attr('data-tree-toggle', '');
+			}
+		});
 
 
 		$(_options.toggleBtn).on('click', function(event) {

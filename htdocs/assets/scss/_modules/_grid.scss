@@ -51,9 +51,14 @@ Styleguide #{$guideNum}
 	&_col {
 		margin: 0 0 0 $gutter-h;
 		flex-basis: auto;
-		@for $i from 1 to 12 {
+		@for $i from 1 to 13 {
 			&-#{$i}-12 {
-				width: calc(100%/12 * #{$i} - #{$gutter-h});
+				width: calc(99.9%/12 * #{$i} - #{$gutter-h});
+			}
+		}
+		@for $i from 1 to 11 {
+			&-#{$i}-10 {
+				width: calc(99.9%/10 * #{$i} - #{$gutter-h});
 			}
 		}
 	}
@@ -65,9 +70,14 @@ Styleguide #{$guideNum}
 		$gutter-v: 20px;
 		&_col {
 			margin: 0 0 0 $gutter-h;
-			@for $i from 1 to 12 {
+			@for $i from 1 to 13 {
 				&-#{$i}-12pc {
-					width: calc(100%/12 * #{$i} - #{$gutter-h});
+					width: calc(99.9%/12 * #{$i} - #{$gutter-h});
+				}
+			}
+			@for $i from 1 to 11 {
+				&-#{$i}-10pc {
+					width: calc(99.9%/10 * #{$i} - #{$gutter-h});
 				}
 			}
 		}
@@ -81,9 +91,14 @@ Styleguide #{$guideNum}
 		margin: 0 0 0 $gutter-h*-1;
 		&_col {
 			margin: 0 0 0 $gutter-h;
-			@for $i from 1 to 12 {
+			@for $i from 1 to 13 {
 				&-#{$i}-12sp {
-					width: calc(100%/12 * #{$i} - #{$gutter-h});
+					width: calc(99.9%/12 * #{$i} - #{$gutter-h});
+				}
+			}
+			@for $i from 1 to 11 {
+				&-#{$i}-10sp {
+					width: calc(99.9%/10 * #{$i} - #{$gutter-h});
 				}
 			}
 		}

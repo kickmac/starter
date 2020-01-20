@@ -1,5 +1,5 @@
-$totalWidth: <?= meta.width ?>;
-$totalHeight: <?= meta.height ?>;
+$imgTotalWidth: <?= meta.width ?>;
+$imgTotalHeight: <?= meta.height ?>;
 
 <? images.forEach(function(item){ ?>
 $<?= item.name ?>: (
@@ -10,11 +10,11 @@ $<?= item.name ?>: (
 );<? }) ?>
 
 @mixin imgSprite($code, $width: nth($code, 1)) {
-	$ratio: $width / nth($code, 1);
+	$imgRatio: $width / nth($code, 1);
 	background-image: url(<?= meta.path ?>);
 	background-repeat: no-repeat;
-	background-size: $totalWidth * $ratio + px $totalHeight * $ratio + px;
-	background-position: nth($code, 3) * $ratio * -1 + px nth($code, 4) * $ratio * -1 + px;
-	width: nth($code, 1)*$ratio + px;
-	height: nth($code, 2)*$ratio + px;
+	background-size: $imgTotalWidth * $imgRatio + px $imgTotalHeight * $imgRatio + px;
+	background-position: nth($code, 3) * $imgRatio * -1 + px nth($code, 4) * $imgRatio * -1 + px;
+	width: nth($code, 1)*$imgRatio + px;
+	height: nth($code, 2)*$imgRatio + px;
 }

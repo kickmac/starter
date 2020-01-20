@@ -78,7 +78,11 @@ Styleguide #{$guideNum}
 		$this: &;
 		overflow-x: auto;
 		-webkit-overflow-scrolling: touch;
+		background: linear-gradient(to left, rgba(255, 255, 255, 0), white 15px) 0 0/50px 100%, linear-gradient(to left, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.15)) 0 0/30px 100%, linear-gradient(to right, rgba(255, 255, 255, 0), white 15px) right/50px 100%, linear-gradient(to right, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.15)) right/30px 100%;
+		background-repeat: no-repeat;
+		background-attachment: local, scroll, local, scroll;
 		& > table {
+			min-width: 100%;
 			width: auto;
 			white-space: nowrap;
 		}

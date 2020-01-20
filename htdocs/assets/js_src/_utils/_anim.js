@@ -23,6 +23,10 @@ const _leave = function(cb){
 	const _$this = $(this);
 	const _name = $(this).data('anim');
 
+	if (!_$this.hasClass(_name + '-enter-active')) {
+		return false
+	}
+
 	_$this.off(' transitionend webkitTransitionEnd')
 	_$this.on(' transitionend webkitTransitionEnd', function(e){
 		if (e.target ===  _$this[0]) {

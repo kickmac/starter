@@ -8760,16 +8760,18 @@ Markup:
 	</ul><!-- /.tree_list -->
 </div><!-- /.tree -->
 <script>
-	$$$.tree.init.call($('.tree'), {
-		list: '.tree_list',
-		item: '.tree_item',
-		toggleBtn: '.tree_toggle',
-		beforeInit: function(el){ console.log('beforeInit', el); },
-		afterInit: function(el){ console.log('afterInit', el); },
-		beforeOpen: function(el){ console.log('beforeOpen', el); },
-		afterOpen: function(el){ console.log('afterOpen', el); },
-		beforeClose: function(el){ console.log('beforeClose', el); },
-		afterClose: function(el){ console.log('afterClose', el); },
+	$jq(function() {
+		$$$.tree.init.call($jq('.tree'), {
+			list: '.tree_list',
+			item: '.tree_item',
+			toggleBtn: '.tree_toggle',
+			beforeInit: function(el){ console.log('beforeInit', el); },
+			afterInit: function(el){ console.log('afterInit', el); },
+			beforeOpen: function(el){ console.log('beforeOpen', el); },
+			afterOpen: function(el){ console.log('afterOpen', el); },
+			beforeClose: function(el){ console.log('beforeClose', el); },
+			afterClose: function(el){ console.log('afterClose', el); },
+		});
 	});
 </script>
 

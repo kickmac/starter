@@ -68,6 +68,7 @@ Markup:
 	</dd>
 </dl>
 <script>
+$jq(function() {
 $$$.acc.init.call($('.acc'), {
 	content: '.acc_content',
 	toggleBtn: '.acc_btn',
@@ -97,6 +98,7 @@ $$$.acc.init.call($('.acc'), {
 	afterClose: function(elems){
 		console.log('close callbacke')
 	},
+});
 });
 </script>
 

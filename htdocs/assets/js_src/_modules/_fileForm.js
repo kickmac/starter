@@ -110,17 +110,23 @@ const _qtyError = function(files){
 	}
 }
 
+
 const _typeError = function(file){
-	if (_option.type && _option.type.length > 0 && _option.type.indexOf(file.name.toLowerCase().split('.').pop()) < 0) {
-		dialog.open({
-			title: 'エラー',
-			txt: '<p class="tCenter">' + _option.typeError + '</p>',
-			btns: [{
-				name: 'OK',
-				class: 'btn btn-blue',
-			}]
+	if (_option.type && _option.type.length > 0) {
+		_option.type = _option.type.map(function(a){
+			return a.toLowerCase()
 		})
-		return true;
+		if (_option.type.indexOf(file.name.toLowerCase().split('.').pop()) < 0) {
+			dialog.open({
+				title: 'エラー',
+				txt: '<p class="tCenter">' + _option.typeError + '</p>',
+				btns: [{
+					name: 'OK',
+					class: 'btn btn-blue',
+				}]
+			})
+			return true;
+		}
 	}
 }
 

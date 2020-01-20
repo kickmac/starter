@@ -41,7 +41,8 @@ const _open = function(options){
 	}
 	const _contents = `${_title}<div class="customDialog_txt">${options.txt}</div>${_btns}`;
 	$('.customDialog_inner').append(_contents);
-	anim.enter.call($('.customDialog'))
+	anim.enter.call($('.customDialog'));
+	_replace();
 
 	_pause().then(
 		function(id){
@@ -82,8 +83,17 @@ const _close = function(cb){
 	}
 }
 
+const _replace = function(){
+	const _$t = $('.customDialog_inner')
+	_$t.css({
+		marginTop: _$t.outerHeight() / -2,
+		marginLeft: _$t.outerWidth() / -2,
+	})
+}
+
 
 module.exports = {
 	open: _open,
-	close: _close
+	close: _close,
+	replace: _replace,
 };

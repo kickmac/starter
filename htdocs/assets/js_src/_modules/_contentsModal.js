@@ -66,12 +66,16 @@ const _ajax = function(url, $target, options) {
 		})
 	})
 	.fail(function() {
-		_close.call($target)
+		// _close.call($target)
+		$target.remove();
 		$$$.dialog.open({
 			title: 'エラー',
 			txt: '<p class="tCenter">読み込みエラー</p>',
 			btns: [{
 				name: 'OK',
+				action: function(){
+					_revivalScroll()
+				}
 				// class: 'btn',
 			}]
 		})
@@ -109,16 +113,16 @@ const _contentsScroll = function(e){
 	}
 }
 const _killScroll = function(){
-	$('html, body').css({
-		overflowY: 'hidden'
-	});
+	// $('html, body').css({
+	// 	overflowY: 'hidden'
+	// });
 	$('.contentsModal_overlay').on('scroll wheel touchmove', _noScroll);
 	$('.contentsModal_contents').on('scroll wheel touchmove', _contentsScroll);
 }
 const _revivalScroll = function(e){
-	$('html, body').css({
-		overflowY: 'inherit'
-	});
+	// $('html, body').css({
+	// 	overflowY: 'inherit'
+	// });
 	$('.contentsModal_overlay').off('scroll wheel touchmove', _noScroll);
 	$('.contentsModal_contents').off('scroll wheel touchmove', _contentsScroll);
 }
