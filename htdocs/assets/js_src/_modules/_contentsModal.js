@@ -9,12 +9,21 @@ const _onImgLoad = function(callback){
 	imagesLoadListener.listen($('.contentsModal'), callback)
 }
 const _listTemplate = '<div class="contentsModal"><div class="contentsModal_list"></div></div>';
-const _itemTemplate = '<div class="contentsModal_item" data-anim="contentsModal_item"><a href="javascript: void(0);" class="contentsModal_overlay" data-anim="contentsModal_overlay"></a><div class="contentsModal_toolBar"><a href="javascript: void(0);" class="contentsModal_close"></a></div><div class="contentsModal_contents" data-anim="contentsModal_contents"><div class="contentsModal_body"></div></div><div class="contentsModal_loading" data-anim="contentsModal_loading"></div></div>';
+const _itemTemplate = `
+<div class="contentsModal_item" data-anim="contentsModal_item">
+	<a href="javascript: void(0);" class="contentsModal_overlay" data-anim="contentsModal_overlay"></a>
+	<div class="contentsModal_toolBar"><a href="javascript: void(0);" class="contentsModalclose"></a></div>
+	<div class="contentsModal_contents" data-anim="contentsModal_contents">
+		<div class="contentsModal_body"></div>
+	</div>
+	<div class="contentsModal_loading" data-anim="contentsModal_loading"></div>
+</div>
+`;
 const _init = function(args) {
 	$('body').append(_listTemplate);
 }
 
-const _open = function() {
+const open = function() {
 	if (!$('.contentsModal')[0]) { _init() }
 	$('.contentsModal_list').append(_itemTemplate)
 	const _$target = $('.contentsModal_list').find('.contentsModal_item').last()
@@ -41,7 +50,7 @@ const _open = function() {
 	}
 }
 
-const _close = function(){
+const close = function(){
 	const _$target = $(this).closest('.contentsModal_item');
 	anim.leave.call(_$target.find('.contentsModal_overlay'))
 	anim.leave.call(_$target.find('.contentsModal_contents'))
@@ -62,11 +71,10 @@ const _ajax = function(url, $target, options) {
 		imagesLoadListener.listen($target, function(){
 			anim.enter.call($target.find('.contentsModal_contents'))
 			anim.leave.call($target.find('.contentsModal_loading'))
-			_replace();
+			replace();
 		})
 	})
 	.fail(function() {
-		// _close.call($target)
 		$target.remove();
 		$$$.dialog.open({
 			title: 'エラー',
@@ -83,12 +91,13 @@ const _ajax = function(url, $target, options) {
 	.always(function() {
 	});
 }
+
 const _html = function(url, $target, options) {
 	$target.find('.contentsModal_body').append($(url).clone());
 	imagesLoadListener.listen($target, function(){
 		anim.enter.call($target.find('.contentsModal_contents'))
 		anim.leave.call($target.find('.contentsModal_loading'))
-		_replace();
+		replace();
 	})
 }
 
@@ -97,6 +106,7 @@ const _noScroll = function(e){
 	e.stopPropagation();
 	return false;
 }
+
 const _contentsScroll = function(e){
 	if ($(this).scrollTop() === 0) {
 		$(this).scrollTop(1);
@@ -112,23 +122,20 @@ const _contentsScroll = function(e){
 		e.stopPropagation();
 	}
 }
+
 const _killScroll = function(){
-	// $('html, body').css({
-	// 	overflowY: 'hidden'
-	// });
 	$('.contentsModal_overlay').on('scroll wheel touchmove', _noScroll);
 	$('.contentsModal_contents').on('scroll wheel touchmove', _contentsScroll);
 }
+
 const _revivalScroll = function(e){
-	// $('html, body').css({
-	// 	overflowY: 'inherit'
-	// });
 	$('.contentsModal_overlay').off('scroll wheel touchmove', _noScroll);
 	$('.contentsModal_contents').off('scroll wheel touchmove', _contentsScroll);
 }
-const _replace = function(){
+
+const replace = function(){
 	const _$target = $('.contentsModal_contents');
-	if ($$$.pcsp.getMode() === 'pc') {
+	if ($$$.pcsp.mode === 'pc') {
 		_$target.each(function(index, el) {
 			$(this).css({
 				marginTop: $(this).outerHeight() / -2 + $(this).closest('.contentsModal_item').find('.contentsModal_toolBar').outerHeight() / 2,
@@ -147,7 +154,7 @@ const _replace = function(){
 
 
 module.exports = {
-	open: _open,
-	close: _close,
-	replace: _replace,
+	open,
+	close,
+	replace,
 };

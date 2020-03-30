@@ -2,11 +2,11 @@ const $ = require('jquery')
 /*************************************************************************************
 * objFitPolyfill
 *************************************************************************************/
-const _init = function() {
+const init = function() {
 	_set()
 }
 
-const _update = function(){
+const update = function(){
 	$('[data-object-fit]').removeAttr('style').unwrap('.js-objectFitPolyfil');
 	_set()
 }
@@ -115,6 +115,6 @@ const _rePosition = function(_size){
 }
 
 module.exports = {
-	init: _init,
-	update: _update,
+	init,
+	update,
 };

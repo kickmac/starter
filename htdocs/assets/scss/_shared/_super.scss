@@ -93,7 +93,7 @@ Styleguide #{$guideNum}
 		width: #{$i*10}px !important;
 	}
 	.w#{$i}p {
-		width: #{$i}% !important;
+		width: #{$i + '%'} !important;
 	}
 	.w#{$i}e {
 		width: #{$i*.1}em !important;
@@ -176,7 +176,7 @@ Styleguide #{$guideNum}
 			width: #{$i*10}px !important;
 		}
 		.w#{$i}p-sp {
-			width: #{$i}% !important;
+			width: #{$i + '%'} !important;
 		}
 		.w#{$i}e-sp {
 			width: #{$i*.1}em !important;
@@ -261,7 +261,7 @@ Styleguide #{$guideNum}
 			width: #{$i*10}px !important;
 		}
 		.w#{$i}p-pc {
-			width: #{$i}% !important;
+			width: #{$i + '%'} !important;
 		}
 		.w#{$i}e-pc {
 			width: #{$i*.1}em !important;

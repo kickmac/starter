@@ -1,0 +1,14 @@
+$imgTotalWidth: 0;
+$imgTotalHeight: 0;
+
+
+
+@mixin imgSprite($code, $width: nth($code, 1)) {
+	$imgRatio: $width / nth($code, 1);
+	background-image: url(/assets/images/sprite.png);
+	background-repeat: no-repeat;
+	background-size: $imgTotalWidth * $imgRatio + px $imgTotalHeight * $imgRatio + px;
+	background-position: nth($code, 3) * $imgRatio * -1 + px nth($code, 4) * $imgRatio * -1 + px;
+	width: nth($code, 1)*$imgRatio + px;
+	height: nth($code, 2)*$imgRatio + px;
+}

@@ -1,16 +1,15 @@
 const $ = require('jquery')
-const $$$ = {}
 
-$$$.pcsp = require('./_pcsp');
+const pcsp = require('./_pcsp');
 /*************************************************************************************
 * anchorJump
 *************************************************************************************/
 const _hash = location.hash
 let _adjust = 0;
 
-const _init = function(args) {
+const init = function(args) {
 	if (_hash) {
-		if ($$$.pcsp.getMode() === 'sp') {
+		if (pcsp.mode === 'sp') {
 			_adjust = 63 + 10;
 		} else {
 			_adjust = 0;
@@ -19,5 +18,5 @@ const _init = function(args) {
 	}
 }
 module.exports = {
-	init: _init,
+	init,
 };

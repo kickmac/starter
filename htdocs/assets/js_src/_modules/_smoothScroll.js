@@ -1,8 +1,6 @@
 const $ = require('jquery')
 require('jquery.easing')
-const $$$ = {}
-
-$$$.pcsp = require('./_pcsp');
+const pcsp = require('./_pcsp');
 
 /*************************************************************************************
 * スムーズスクロール
@@ -27,7 +25,7 @@ const _getOffset = function(){
 	} else {
 		_top = $(_hash).offset().top;
 	}
-	if ($$$.pcsp.getMode() === 'sp') {
+	if (pcsp.mode === 'sp') {
 		_adjust = 75 + 10;
 	} else {
 		_adjust = 20;
@@ -39,7 +37,7 @@ const _getOffset = function(){
 		return false
 	}
 }
-const _scroll = function(e){
+const scroll = function(e){
 	var $self = this;
 	var _offset = _getOffset.call($self);
 
@@ -62,5 +60,5 @@ const _stopScroll = function(){
 }
 
 module.exports = {
-	scroll: _scroll,
+	scroll,
 };

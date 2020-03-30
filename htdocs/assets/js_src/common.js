@@ -10,7 +10,6 @@ const $$$ = global.$$$ = $$$ || {}
 require('babel-polyfill');
 require('jquery.easing')
 require('jquery-match-height');
-const Promise = global.Promise = require('es6-promise').Promise;
 require('lightgallery');
 require('lg-zoom');
 require('lg-fullscreen');
@@ -20,7 +19,7 @@ require('slick-carousel');
 /*━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 * require utils
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
-// $$$.anim = require('./_utils/_anim');
+$$$.anim = require('./_utils/_anim');
 
 /*━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 * require module
@@ -31,7 +30,6 @@ $$$.viewport = require('./_modules/_viewport');
 $$$.vhAdjust = require('./_modules/_vhAdjust');
 $$$.windowInfo = require('./_modules/_windowInfo');
 $$$.resizeend = require('./_modules/_resizeend');
-$$$.resizeendHeight = require('./_modules/_resizeendHeight');
 $$$.smoothScroll = require('./_modules/_smoothScroll');
 $$$.anchorJump = require('./_modules/_anchorJump');
 $$$.objFitPolyfill = require('./_modules/_objFitPolyfill');
@@ -40,6 +38,7 @@ $$$.loading = require('./_modules/_loading');
 $$$.overlay = require('./_modules/_overlay');
 $$$.contentsModal = require('./_modules/_contentsModal');
 $$$.disabledToggle = require('./_modules/_disabledToggle');
+$$$.displayToggle = require('./_modules/_displayToggle');
 $$$.acc = require('./_modules/_acc');
 $$$.tab = require('./_modules/_tab');
 $$$.tree = require('./_modules/_tree');
@@ -57,8 +56,6 @@ $$$.viewport.init(1220, 767);
 $$$.vhAdjust.init();
 $$$.windowInfo.init();
 $$$.resizeend.init();
-$$$.resizeendHeight.init();
-$$$.disabledToggle.init();
 $$$.fileForm.init();
 
 
@@ -73,6 +70,8 @@ $(window).on('load', function(event) {
 	$$$.tree.init.call($('[data-tree]'));
 	$$$.sticky.init.call($('[data-sticky]'));
 	$$$.ajaxMore.init.call($('[data-ajax-more]'))
+	$$$.disabledToggle.init.call('[data-disabled-target]');
+	$$$.displayToggle.init.call('[data-display-target]');
 });
 
 /*************************************************************************************
@@ -84,9 +83,15 @@ $(window).on('resize', function(event) {
 });
 
 /*************************************************************************************
-* window resizeend
+* window resizeend.any
 *************************************************************************************/
-$(window).on('resizeend', function(event) {
+$(window).on('resizeend.any', function(event) {
+});
+
+/*************************************************************************************
+* window resizeend.width
+*************************************************************************************/
+$(window).on('resizeend.width', function(event) {
 	$$$.viewport.update();
 	$$$.vhAdjust.update();
 	$$$.objFitPolyfill.update();
@@ -96,9 +101,9 @@ $(window).on('resizeend', function(event) {
 });
 
 /*************************************************************************************
-* window resizeendHeight
+* window resizeend.height
 *************************************************************************************/
-$(window).on('resizeendHeight', function(event) {
+$(window).on('resizeend.height', function(event) {
 	$$$.vhAdjust.update();
 	$$$.objFitPolyfill.update();
 	$$$.contentsModal.replace();
@@ -108,7 +113,8 @@ $(window).on('resizeendHeight', function(event) {
 /*************************************************************************************
 * window pcsp.changed
 *************************************************************************************/
-$(window).on('pcsp.changed', function(event) {
+$(window).on('pcsp.changed', function(event, mode) {
+	// console.log(event, mode);
 });
 
 /*************************************************************************************
@@ -122,12 +128,12 @@ $(window).on('scroll', function(event) {
 * click event
 *************************************************************************************/
 //smoothScroll
-$(document).on('click', '[href*="#"]', function(event) {
+$(document).on('click', '[href*="#"]:not([data-modal-contents])', function(event) {
 	$$$.smoothScroll.scroll.call($(this), event)
 });
 
 //overlay
-$(document).on('click', '.overlay', function(event) {
+$(document).on('click.overlay', '.overlay', function(event) {
 	event.preventDefault();
 	$$$.overlay.close();
 });
@@ -152,6 +158,12 @@ $(document).on('click', '.fileForm_del', function(event) {
 $(document).on('change', '[data-disabled-target]', function(event) {
 	event.preventDefault();
 	$$$.disabledToggle.change.call($(this))
+});
+
+//displayToggle
+$(document).on('change', '[data-display-target]', function(event) {
+	event.preventDefault();
+	$$$.displayToggle.change.call($(this))
 });
 
 /*************************************************************************************

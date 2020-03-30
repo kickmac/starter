@@ -2,7 +2,7 @@ const $ = require('jquery');
 /*************************************************************************************
 * 画像preload
 *************************************************************************************/
-const _listen = function(elem, cb){
+const listen = function(elem, cb){
 	const _imgs = elem.find('img');
 	let _counter = 0;
 
@@ -32,5 +32,5 @@ const _judge = function(a, b, cb){
 }
 
 module.exports = {
-	listen: _listen,
+	listen,
 }
