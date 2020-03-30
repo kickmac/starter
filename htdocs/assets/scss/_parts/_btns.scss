@@ -102,6 +102,17 @@ Styleguide #{$guideNum}
 	.btns {
 		$this: &;
 		&_btn {
+			margin: 20px auto 0;
+			@for $i from 1 through 13 {
+				&-#{$i}-12pc {
+					width: calc(99.9%/12 * #{$i});
+				}
+			}
+			@for $i from 1 through 11 {
+				&-#{$i}-10pc {
+					width: calc(99.9%/10 * #{$i});
+				}
+			}
 		}
 		&-hr {
 			#{$this}_btn {
@@ -124,6 +135,19 @@ Styleguide #{$guideNum}
 	.btns {
 		$this: &;
 		&_list {}
+		&_btn {
+			margin: 20px auto 0;
+			@for $i from 1 through 13 {
+				&-#{$i}-12sp {
+					width: calc(99.9%/12 * #{$i});
+				}
+			}
+			@for $i from 1 through 11 {
+				&-#{$i}-10sp {
+					width: calc(99.9%/10 * #{$i});
+				}
+			}
+		}
 		&-hr {
 			#{$this}_list {
 				margin: -10px 0 0 -10px;

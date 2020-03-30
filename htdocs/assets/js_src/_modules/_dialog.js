@@ -1,17 +1,19 @@
 const $ = require('jquery');
 const anim = require('../_utils/_anim');
+
 /*************************************************************************************
 * dialog
 *************************************************************************************/
-const _init = function(){
+const init = function(){
 	$('body').append(
-		'<div class="customDialog" data-anim="customDialog">\
-			<div class="customDialog_overlay"></div>\
-			<div class="customDialog_inner">\
-			</div>\
-		</div>'
+		`<div class="customDialog" data-anim="customDialog">
+			<div class="customDialog_overlay"></div>
+			<div class="customDialog_inner">
+			</div>
+		</div>`
 	);
 }
+
 const _pause = function(){
 	$(document).off('click', '.customDialog_btnItem > [data-btn-id]')
 	return new Promise(function(resolve, reject){
@@ -21,8 +23,9 @@ const _pause = function(){
 		});
 	})
 }
-const _open = function(options){
-	if (!$('.customDialog')[0]) { _init(); }
+
+const open = function(options){
+	if (!$('.customDialog')[0]) { init(); }
 
 	$('.customDialog_inner').html('');
 	let _btns = '';
@@ -41,8 +44,10 @@ const _open = function(options){
 	}
 	const _contents = `${_title}<div class="customDialog_txt">${options.txt}</div>${_btns}`;
 	$('.customDialog_inner').append(_contents);
+
+	_killScroll();
 	anim.enter.call($('.customDialog'));
-	_replace();
+	replace();
 
 	_pause().then(
 		function(id){
@@ -56,21 +61,19 @@ const _open = function(options){
 				}
 			} else {
 				if (options.btns[id].callback) {
-					_close(options.btns[id].callback);
+					close(options.btns[id].callback);
 				} else {
-					_close();
+					close();
 				}
 			}
 		},
 		function(){
-			_close();
+			close();
 		}
 	);
-
-
 }
 
-const _close = function(cb){
+const close = function(cb){
 	if (cb) {
 		anim.leave.call($('.customDialog'), function(){
 			cb()
@@ -81,9 +84,45 @@ const _close = function(cb){
 			$(document).off('.click', '.customDialog_btnItem > [data-btn-id]');
 		})
 	}
+	if (!$('.customDialog')[0]) {
+		_revivalScroll();
+	}
 }
 
-const _replace = function(){
+const _noScroll = function(e){
+	e.preventDefault();
+	e.stopPropagation();
+	return false;
+}
+
+const _contentsScroll = function(e){
+	if ($(this).scrollTop() === 0) {
+		$(this).scrollTop(1);
+		e.preventDefault();
+		e.stopPropagation();
+		return false;
+	} else if($(this).scrollTop() + $(this).outerHeight() === $(this)[0].scrollHeight) {
+		$(this).scrollTop($(this).scrollTop() - 1)
+		e.preventDefault();
+		e.stopPropagation();
+		return false;
+	} else {
+		e.stopPropagation();
+	}
+}
+
+const _killScroll = function(){
+	$('.customDialog_overlay').on('scroll wheel touchmove', _noScroll);
+	$('.customDialog_inner').on('scroll wheel touchmove', _contentsScroll);
+}
+
+const _revivalScroll = function(e){
+	$('.customDialog_overlay').off('scroll wheel touchmove', _noScroll);
+	$('.customDialog_inner').off('scroll wheel touchmove', _contentsScroll);
+}
+
+
+const replace = function(){
 	const _$t = $('.customDialog_inner')
 	_$t.css({
 		marginTop: _$t.outerHeight() / -2,
@@ -93,7 +132,7 @@ const _replace = function(){
 
 
 module.exports = {
-	open: _open,
-	close: _close,
-	replace: _replace,
+	open,
+	close,
+	replace,
 };

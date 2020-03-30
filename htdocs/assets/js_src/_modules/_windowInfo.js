@@ -3,19 +3,19 @@ const $ = require('jquery');
 * windowInfo
 *************************************************************************************/
 
-const _updateScroll = function(){
+const updateScroll = function(){
 	_sc.top = $(window).scrollTop();
 	_sc.bottom = _sc.top + _size.h;
 	_sc.left = $(window).scrollLeft();
 }
-const _updateSize = function(){
+const updateSize = function(){
 	_size.w = $(window).innerWidth();
 	_size.h = $(window).innerHeight();
 }
 
-const _init = function(){
-	_updateScroll();
-	_updateSize();
+const init = function(){
+	updateScroll();
+	updateSize();
 };
 
 let _size = {
@@ -29,9 +29,13 @@ let _sc = {
 }
 
 module.exports = {
-	init: _init,
-	updateScroll: _updateScroll,
-	updateSize: _updateSize,
-	sc: _sc,
-	size: _size,
+	init,
+	updateScroll,
+	updateSize,
+	get sc(){
+		return _sc
+	},
+	get size(){
+		return _size
+	},
 }

@@ -3,13 +3,13 @@ const dialog = require('./_dialog');
 /*************************************************************************************
 * loading
 *************************************************************************************/
-const _open = function(options){
+const open = function(options){
 	dialog.open({
 		txt: options.txt
 	})
 }
 
-const _close = function(cb){
+const close = function(cb){
 	dialog.close(function(){
 		if (cb) {
 			cb();
@@ -17,8 +17,7 @@ const _close = function(cb){
 	})
 }
 
-
 module.exports = {
-	open: _open,
-	close: _close
+	open: open,
+	close: close
 };
