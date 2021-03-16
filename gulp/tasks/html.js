@@ -1,55 +1,40 @@
-const gulp = require("gulp");
-const config = require(process.cwd() + "/gulp/configs/config");
-const bs = require("browser-sync");
+const argv = require('minimist')(process.argv.slice(2));
+const DEV = !!argv.dev
 
-const ejs = require("gulp-ejs");
-const ejsConfig = require(process.cwd() + "/gulp/configs/ejs_config")(config);
-const rename = require("gulp-rename");
-const beautify = require("gulp-html-beautify");
+const siteName = require(`${process.cwd()}/package.json`).siteName;
+const dirs = require(`${process.cwd()}/gulp/configs/dirs`);
+const ejsConfig = require(`${process.cwd()}/gulp/configs/ejs`);
 
-/*--------------------------------------------------------------------------------------
-*  html
---------------------------------------------------------------------------------------*/
-const html = () => {
-	return gulp
-		.src(config.html.src, {
-			since: gulp.lastRun("html")
+const chalk = require('chalk');
+const gulp = require('gulp');
+const ejs = require('gulp-ejs');
+const beautify = require('gulp-html-beautify');
+const rename = require('gulp-rename');
+const bs = require('browser-sync');
+
+
+const ejs2Html = () => {
+	return new Promise((resolve, reject) => {
+		gulp.src([`**/*.ejs`, `!_**/*.ejs`, `!**/_*.ejs`], {
+			cwd: dirs.html.src,
 		})
-		.pipe(
-			ejs(ejsConfig.data, ejsConfig.options).on("error", (err) => {
-				console.log(err);
-				reject();
-			})
-		)
-		.pipe(
-			rename({
-				extname: ".html"
-			})
-		)
-		.pipe(
-			beautify({
-				eol: "\n",
-				indent_level: 0,
-				indent_with_tabs: true,
-				preserve_newlines: true,
-				max_preserve_newlines: 2,
-				jslint_happy: true,
-				space_after_anon_function: true,
-				brace_style: "end-expand",
-				keep_array_indentation: true,
-				keep_function_indentation: true,
-				space_before_conditional: true,
-				break_chained_methods: true,
-				eval_code: false,
-				unescape_strings: false,
-				wrap_line_length: 0,
-				wrap_attributes: "auto",
-				wrap_attributes_indent_size: 4,
-				end_with_newline: false,
-			})
-		)
-		.pipe(gulp.dest(config.html.dest))
-		.pipe(bs.stream());
-};
+			.pipe(
+				ejs({siteName: siteName}, ejsConfig.options)
+					.on('error', err => {
+						console.log(`
+${chalk.white.bgRed.bold('EJS コンパイルエラー')}
+${chalk.green(err)}`);
 
-module.exports = html;
+						reject();
+					})
+			)
+			.pipe(beautify(ejsConfig.beautify))
+			.pipe( rename({ extname: '.html' }) )
+			.pipe( gulp.dest(dirs.html.dist) )
+			.pipe(bs.stream());
+
+		resolve()
+	})
+}
+
+module.exports = ejs2Html;

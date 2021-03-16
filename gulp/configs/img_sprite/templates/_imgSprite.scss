@@ -1,0 +1,20 @@
+$imgTotalWidth: <?= properties.width ?>;
+$imgTotalHeight: <?= properties.height ?>;
+
+<? Object.keys(coordinates).forEach(function(item){ ?>
+$imgSprite-<?= coordinates[item].name ?>: (
+	<?= coordinates[item].width ?>,
+	<?= coordinates[item].height ?>,
+	<?= coordinates[item].x ?>,
+	<?= coordinates[item].y ?>
+);<? }) ?>
+
+@mixin imgSprite($code, $width: nth($code, 1)) {
+	$imgRatio: $width / nth($code, 1);
+	background-image: url(<?=imgPath?>);
+	background-repeat: no-repeat;
+	background-size: $imgTotalWidth * $imgRatio + px $imgTotalHeight * $imgRatio + px;
+	background-position: nth($code, 3) * $imgRatio * -1 + px nth($code, 4) * $imgRatio * -1 + px;
+	width: nth($code, 1)*$imgRatio + px;
+	height: nth($code, 2)*$imgRatio + px;
+}

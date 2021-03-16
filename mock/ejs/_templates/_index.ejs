@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ja">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>ページタイトル｜<?= siteName ?></title>
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+<?- include('/_include/_favicons') ?>
+<?- include('/_include/_html_header') ?>
+</head>
+<body class="pageID-">
+<?- include('/_include/_fbRoot') ?>
+	<div class="wrapper">
+<?- include('/_include/_header', {active: 0}) ?>
+		<div class="contents">
+			<article class="contents_main">
+				<section class="section">
+					<p>main</p>
+				</section><!-- /.section -->
+			</article><!-- /.contents_main -->
+
+			<div class="contents_side">
+				<section class="sideSection">
+					<p>side</p>
+				</section><!-- /.sideSection -->
+			</div><!-- /.contents_side -->
+		</div><!-- /.contents -->
+
+<?- include('/_include/_footer') ?>
+	</div><!-- /.wrapper -->
+	<a href="javascript: void(0);" class="overlay" data-anim="overlay"></a>
+
+<?- include('/_include/_js') ?>
+</body>
+</html>

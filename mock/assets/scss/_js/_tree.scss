@@ -1,0 +1,16 @@
+// @import '../_config';
+// @import '../_iconFonts';
+// @import '../_svgSprite';
+// @import '../_imgSprite';
+
+
+[data-tree-item] [data-tree-list] {
+	overflow: hidden;
+	transition: max-height .4s;
+	max-height: 0;
+}
+[data-tree-item] [data-tree-list="open"] {
+}
+@media screen and (max-width: $breakpoint-sp){
+
+}

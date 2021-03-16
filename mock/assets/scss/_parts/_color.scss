@@ -1,0 +1,27 @@
+// @import '../_config';
+// @import '../_iconFonts';
+// @import '../_svgSprite';
+// @import '../_imgSprite';
+
+
+/*
+.color
+
+フォントカラー
+
+Markup:
+<p class="{$modifiers}">フォントカラー</p>
+
+.color-red - red
+.color-blue - blue
+.color-gray - gray
+.color-black - black
+
+Styleguide #{$guideNum}
+*/
+.color {
+	&-red { color: $red !important; }
+	&-blue { color: $blue !important; }
+	&-gray { color: $gray !important; }
+	&-black { color: $black !important; }
+}

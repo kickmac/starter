@@ -1,0 +1,21 @@
+// @import '../_config';
+// @import '../_iconFonts';
+// @import '../_svgSprite';
+// @import '../_imgSprite';
+
+
+
+.js-objectFitPolyfil {
+	overflow: hidden;
+	position: relative;
+	& > img {
+		position: absolute;
+		max-width: none;
+		max-height: none;
+		width: auto;
+		height: auto;
+	}
+}
+@media screen and (max-width: $breakpoint-sp){
+
+}

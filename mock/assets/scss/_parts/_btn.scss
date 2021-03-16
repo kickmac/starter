@@ -1,0 +1,62 @@
+// @import '../_config';
+// @import '../_iconFonts';
+// @import '../_svgSprite';
+// @import '../_imgSprite';
+
+
+/*
+btn
+
+ボタン
+
+Markup:
+<div class="btns btns-hr">
+	<ul class="btns_list">
+		<li class="btns_item btns_item-4-12"><a href="" class="btn {$modifiers}">ボタン</a></li>
+		<li class="btns_item btns_item-4-12"><button class="btn {$modifiers}">ボタン</button></li>
+	</ul>
+</div><!-- /.btns -->
+
+.btn-red - $red
+.btn-redLight - $redLight
+.btn-blue - $blue
+.btn-blueLight - $blueLight
+.btn-gray - $gray
+.btn-grayLight - $grayLight
+.btn-gray-border - $gray-border
+
+Styleguide #{$guideNum}
+*/
+.btn {
+	$this: &;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	padding: 10px;
+	background: $gray-light;
+	text-decoration: none;
+	cursor: pointer;
+	color: inherit;
+	border: 1px solid transparent;
+	transition: all .4s;
+
+	&[disabled] {
+		opacity: .6 !important;
+		cursor: default !important;
+	}
+
+}
+@media screen and (min-width: $breakpoint-sp +1){
+	.btn {
+		&:hover {
+		}
+	}
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.btn {
+		$this: &;
+	}
+}

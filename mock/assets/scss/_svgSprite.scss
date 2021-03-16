@@ -1,0 +1,38 @@
+$totalWidth: 2048;
+$totalHeight: 2048;
+
+
+$svgSprite-fr: (
+	512,
+	512,
+	0,
+	0
+);
+$svgSprite-ja: (
+	512,
+	512,
+	-512,
+	-512
+);
+$svgSprite-uk: (
+	512,
+	512,
+	-1024,
+	-1024
+);
+$svgSprite-us: (
+	512,
+	512,
+	-1536,
+	-1536
+);
+
+@mixin svgSprite($code, $width: 100) {
+	$ratio: $width / nth($code, 1);
+	background-image: url(/assets/images/sprite.svg);
+	background-repeat: no-repeat;
+	background-size: round($totalWidth * $ratio) + px round($totalHeight * $ratio) + px;
+	background-position: round(nth($code, 3) * $ratio) + px round(nth($code, 4) * $ratio) + px;
+	width: round(nth($code, 1)*$ratio) + px;
+	height: round(nth($code, 2)*$ratio) + px;
+}

@@ -1,0 +1,106 @@
+// @import '../_config';
+// @import '../_iconFonts';
+// @import '../_svgSprite';
+// @import '../_imgSprite';
+
+
+/*
+grid
+
+グリッド
+
+grid_col-分子-分母（12/12まで）
+
+Markup:
+<div class="grid {$modifiers}">
+	<div class="grid_col grid_col-4-12pc grid_col-6-12sp">PC:4/12  SP:6/12</div><!-- /.grid_col -->
+	<div class="grid_col grid_col-4-12pc grid_col-6-12sp">PC:4/12  SP:6/12</div><!-- /.grid_col -->
+	<div class="grid_col grid_col-4-12pc grid_col-12-12sp">PC:4/12  SP:12/12</div><!-- /.grid_col -->
+	<div class="grid_col grid_col-3-12">PC:3/12  SP:3/12</div><!-- /.grid_col -->
+	<div class="grid_col grid_col-3-12">PC:3/12  SP:3/12</div><!-- /.grid_col -->
+	<div class="grid_col grid_col-3-12">PC:3/12  SP:3/12</div><!-- /.grid_col -->
+</div><!-- /.grid -->
+
+grid-left - left
+grid-center - center
+grid-right - right
+
+Styleguide #{$guideNum}
+*/
+.grid {
+	$this: &;
+	$gutter-h: 20px;
+	$gutter-v: 20px;
+	display: flex;
+	display: -webkit-flex;
+	flex-wrap: wrap;
+	-webkit-flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: stretch;
+	margin: 0 0 0 $gutter-h*-1;
+	&-left {
+		justify-content: flex-start;
+	}
+	&-center {
+		justify-content: center;
+	}
+	&-right {
+		justify-content: flex-end;
+	}
+	&_col {
+		margin: 0 0 0 $gutter-h;
+		flex-basis: auto;
+		@for $i from 1 to 13 {
+			&-#{$i}-12 {
+				width: calc(99.9%/12 * #{$i} - #{$gutter-h});
+			}
+		}
+		@for $i from 1 to 11 {
+			&-#{$i}-10 {
+				width: calc(99.9%/10 * #{$i} - #{$gutter-h});
+			}
+		}
+	}
+}
+@media screen and (min-width: $breakpoint-sp + 1){
+	.grid {
+		$this: &;
+		$gutter-h: 20px;
+		$gutter-v: 20px;
+		&_col {
+			margin: 0 0 0 $gutter-h;
+			@for $i from 1 to 13 {
+				&-#{$i}-12pc {
+					width: calc(99.9%/12 * #{$i} - #{$gutter-h});
+				}
+			}
+			@for $i from 1 to 11 {
+				&-#{$i}-10pc {
+					width: calc(99.9%/10 * #{$i} - #{$gutter-h});
+				}
+			}
+		}
+	}
+}
+@media screen and (max-width: $breakpoint-sp){
+	.grid {
+		$this: &;
+		$gutter-h: 20px;
+		$gutter-v: 20px;
+		margin: 0 0 0 $gutter-h*-1;
+		&_col {
+			margin: 0 0 0 $gutter-h;
+			@for $i from 1 to 13 {
+				&-#{$i}-12sp {
+					width: calc(99.9%/12 * #{$i} - #{$gutter-h});
+				}
+			}
+			@for $i from 1 to 11 {
+				&-#{$i}-10sp {
+					width: calc(99.9%/10 * #{$i} - #{$gutter-h});
+				}
+			}
+		}
+	}
+}

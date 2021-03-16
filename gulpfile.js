@@ -1,92 +1,102 @@
+const argv = require('minimist')(process.argv.slice(2));
+const DEV = !!argv.dev
+
+const dirs = require(`${process.cwd()}/gulp/configs/dirs`);
+
+const gulp = require('gulp')
 const cFonts = require("cfonts");
-const gulp = require("gulp");
-const config = require(`${process.cwd()}/gulp/configs/config`);
 const bs = require("browser-sync");
 
-/*-------------------------------------------------------------------------------------
-* load tasks
--------------------------------------------------------------------------------------*/
-const html = require(`${process.cwd()}/gulp/tasks/html`);
-const css = require(`${process.cwd()}/gulp/tasks/css`);
-const js = require(`${process.cwd()}/gulp/tasks/js`);
-const iconFont = require(`${process.cwd()}/gulp/tasks/icon_font`);
-const imgSprite = require(`${process.cwd()}/gulp/tasks/img_sprite`);
-const svgSprite = require(`${process.cwd()}/gulp/tasks/svg_sprite`);
-const pageList = require(`${process.cwd()}/gulp/tasks/page_list`);
+const html = require('./gulp/tasks/html');
+const css = require('./gulp/tasks/css');
+const js = require('./gulp/tasks/js');
+const imgSprite = require('./gulp/tasks/imgSprite');
+const svgSprite = require('./gulp/tasks/svgSprite');
+const iconFont = require('./gulp/tasks/iconFont');
+const favicon = require('./gulp/tasks/favicon');
+const pageList = require('./gulp/tasks/pageList');
 
-/*-------------------------------------------------------------------------------------
-* watch
--------------------------------------------------------------------------------------*/
-const watch = () => {
+const networkDir = false;
+const proxyUrl = 'https://shift-jp.net';
+
+
+
+const watcher = () => {
+	if(!networkDir) {
+		gulp.watch(
+			[`${dirs.html.src}/**/*.ejs`, `!${dirs.html.src}/_**/*.ejs`, `!${dirs.html.src}/**/_*.ejs`],
+			{
+				queue: true,
+				usePolling: networkDir,
+				ignoreInitial: true
+			},
+			gulp.task('html')
+		);
+	}
+
 	gulp.watch(
-		config.html.src, {
+		[`${dirs.css.src}/**/*.scss`],
+		{
 			queue: true,
-			usePolling: false,
+			usePolling: networkDir,
 			ignoreInitial: true
 		},
-		gulp.task("html")
+		gulp.task('css')
 	);
 
 	gulp.watch(
-		config.css.src, {
+		[`${dirs.js.src}/**/*.js`],
+		{
 			queue: true,
-			usePolling: false,
+			usePolling: networkDir,
 			ignoreInitial: true
 		},
-		gulp.task("css")
+		gulp.task('js')
 	);
 
 	gulp.watch(
-		config.js.srcDir, {
+		[`${dirs.imgSprite.src}/**/*`, `!${dirs.imgSprite.src}/**/_*`],
+		{
 			queue: true,
-			usePolling: false,
+			usePolling: networkDir,
 			ignoreInitial: true
 		},
-		gulp.task("jsMin")
+		gulp.task('imgSprite')
 	);
 
 	gulp.watch(
-		config.iconFont.src, {
+		[`${dirs.svgSprite.src}/**/*.svg`, `!${dirs.svgSprite.src}/**/_*.svg`],
+		{
 			queue: true,
-			usePolling: false,
+			usePolling: networkDir,
 			ignoreInitial: true
 		},
-		gulp.task("iconFont")
+		gulp.task('svgSprite')
 	);
 
 	gulp.watch(
-		config.svgSprite.src, {
+		[`${dirs.iconFont.src}/**/*.svg`, `!${dirs.iconFont.src}/_**/*.svg`, `!${dirs.iconFont.src}/**/_*.svg`],
+		{
 			queue: true,
-			usePolling: false,
+			usePolling: networkDir,
 			ignoreInitial: true
 		},
-		gulp.task("svgSprite")
-	);
-
-	gulp.watch(
-		config.imgSprite.src, {
-			queue: true,
-			usePolling: false,
-			ignoreInitial: true
-		},
-		gulp.task("imgSprite")
+		gulp.task('iconFont')
 	);
 }
 
-/*-------------------------------------------------------------------------------------
-* bsInit
--------------------------------------------------------------------------------------*/
+
 const bsInit = () => {
 	return new Promise((resolve, reject) => {
 		bs.init({
-				logLevel: "silent",
+				logLevel: 'silent',
 				logFileChanges: false,
 				logConnections: true,
 				notify: true,
-				server: {
-					baseDir: config.dest
-				}
-				// proxy: './htdocs/',
+				server: !networkDir ? {
+					baseDir: dirs.base
+				} : false,
+				proxy: networkDir ? proxyUrl : false,
 			},
 			() => {
 				cFonts.say("LET'S CODING", {
@@ -101,11 +111,10 @@ const bsInit = () => {
 	});
 }
 
-/*-------------------------------------------------------------------------------------
-* defaultTask
--------------------------------------------------------------------------------------*/
+
+
 const defaultTask = gulp.series(
-	pre = () => {
+	start = () => {
 		return new Promise((resolve, reject) => {
 			cFonts.say("GULP START!!", {
 				font: "chrome",
@@ -117,48 +126,33 @@ const defaultTask = gulp.series(
 		})
 	},
 	gulp.parallel(
-		html,
-		css,
-		js.jsMin,
-		iconFont,
-		imgSprite,
-		svgSprite
+		(()=>{
+			let _list = [
+				js,
+				iconFont,
+				imgSprite,
+				svgSprite
+			]
+			if(!networkDir) {
+				_list = [html, ..._list]
+			}
+			return _list;
+		})()
 	),
+	css,
 	bsInit,
-	watch
+	watcher
 )
 
-const test = done => {
-	const text = 'Always after me lucky charms.';
-	const canvas = Canvas.create().reset().hideCursor();
 
-for (let y = 0; y < process.stdout.rows; y++) canvas.moveTo(0, y).write('E'.repeat(process.stdout.columns));
 
-canvas.moveTo(process.stdout.columns / 2, process.stdout.rows / 2).flush();
 
-setTimeout(() => canvas.eraseToStart().flush(), 1000);
-setTimeout(() => canvas.eraseToEnd().flush(), 2000);
-setTimeout(() => canvas.eraseToUp().flush(), 3000);
-setTimeout(() => canvas.eraseToDown().flush(), 4000);
-setTimeout(() => canvas.eraseScreen().flush().showCursor(), 5000);
-
-	done();
-}
-
-/*-------------------------------------------------------------------------------------
-* task export
--------------------------------------------------------------------------------------*/
-module.exports = {
-	test,
-	default: defaultTask,
-	html,
-	css,
-	js: js.js,
-	jsMin: js.jsMin,
-	iconFont,
-	imgSprite,
-	svgSprite,
-	pageList,
-	watch,
-	bsInit
-};
+exports.default = defaultTask
+exports.html = html;
+exports.css = css;
+exports.js = js;
+exports.imgSprite = imgSprite;
+exports.svgSprite = svgSprite;
+exports.iconFont = iconFont;
+exports.favicon = favicon;
+exports.pageList = pageList;
