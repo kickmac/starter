@@ -1,0 +1,356 @@
+// @import '../_config';
+// @import '../_iconFonts';
+// @import '../_svgSprite';
+// @import '../_imgSprite';
+
+/*
+treeMenu
+
+ツリーメニュー
+
+Markup:
+<div class="treeMenu" data-tree>
+	<ul class="treeMenu_list" data-tree-list>
+		<li class="treeMenu_item" data-tree-item>
+			<div class="treeMenu_itemHead">
+				<a href="" class="treeMenu_name">111111111111111111</a>
+				<a href="javascript: void(0);" class="treeMenu_toggle" data-tree-toggle></a>
+			</div>
+			<ul class="treeMenu_list" data-tree-list>
+				<li class="treeMenu_item" data-tree-item>
+					<div class="treeMenu_itemHead">
+						<a href="" class="treeMenu_name">222222222222222222</a>
+						<a href="javascript: void(0);" class="treeMenu_toggle" data-tree-toggle></a>
+					</div>
+					<ul class="treeMenu_list" data-tree-list>
+						<li class="treeMenu_item" data-tree-item>
+							<div class="treeMenu_itemHead">
+								<a href="" class="treeMenu_name">33333333333333333333</a>
+								<a href="javascript: void(0);" class="treeMenu_toggle" data-tree-toggle></a>
+							</div>
+							<ul class="treeMenu_list" data-tree-list>
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name" data-tree-current>444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+							</ul><!-- /.tree_list -->
+						</li><!-- /.tree_item -->
+						<li class="treeMenu_item" data-tree-item>
+							<div class="treeMenu_itemHead">
+								<a href="" class="treeMenu_name">33333333333333333333</a>
+								<a href="javascript: void(0);" class="treeMenu_toggle" data-tree-toggle></a>
+							</div>
+							<ul class="treeMenu_list" data-tree-list>
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+							</ul><!-- /.tree_list -->
+						</li><!-- /.tree_item -->
+					</ul><!-- /.tree_list -->
+				</li><!-- /.tree_item -->
+				<li class="treeMenu_item" data-tree-item>
+					<div class="treeMenu_itemHead">
+						<a href="" class="treeMenu_name">222222222222222222</a>
+						<a href="javascript: void(0);" class="treeMenu_toggle" data-tree-toggle></a>
+					</div>
+					<ul class="treeMenu_list" data-tree-list>
+						<li class="treeMenu_item" data-tree-item>
+							<div class="treeMenu_itemHead">
+								<a href="" class="treeMenu_name">33333333333333333333</a>
+								<a href="javascript: void(0);" class="treeMenu_toggle" data-tree-toggle></a>
+							</div>
+							<ul class="treeMenu_list" data-tree-list>
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+							</ul><!-- /.tree_list -->
+						</li><!-- /.tree_item -->
+						<li class="treeMenu_item" data-tree-item>
+							<div class="treeMenu_itemHead">
+								<a href="" class="treeMenu_name">33333333333333333333</a>
+								<a href="javascript: void(0);" class="treeMenu_toggle" data-tree-toggle></a>
+							</div>
+							<ul class="treeMenu_list" data-tree-list>
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+							</ul><!-- /.tree_list -->
+						</li><!-- /.tree_item -->
+					</ul><!-- /.tree_list -->
+				</li><!-- /.tree_item -->
+			</ul><!-- /.tree_list -->
+		</li><!-- /.tree_item -->
+		<li class="treeMenu_item" data-tree-item>
+			<div class="treeMenu_itemHead">
+				<a href="" class="treeMenu_name">111111111111111111</a>
+				<a href="javascript: void(0);" class="treeMenu_toggle" data-tree-toggle></a>
+			</div>
+			<ul class="treeMenu_list" data-tree-list>
+				<li class="treeMenu_item" data-tree-item>
+					<div class="treeMenu_itemHead">
+						<a href="" class="treeMenu_name">222222222222222222</a>
+						<a href="javascript: void(0);" class="treeMenu_toggle" data-tree-toggle></a>
+					</div>
+					<ul class="treeMenu_list" data-tree-list>
+						<li class="treeMenu_item" data-tree-item>
+							<div class="treeMenu_itemHead">
+								<a href="" class="treeMenu_name">33333333333333333333</a>
+								<a href="javascript: void(0);" class="treeMenu_toggle" data-tree-toggle></a>
+							</div>
+							<ul class="treeMenu_list" data-tree-list>
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+							</ul><!-- /.tree_list -->
+						</li><!-- /.tree_item -->
+						<li class="treeMenu_item" data-tree-item>
+							<div class="treeMenu_itemHead">
+								<a href="" class="treeMenu_name">33333333333333333333</a>
+								<a href="javascript: void(0);" class="treeMenu_toggle" data-tree-toggle></a>
+							</div>
+							<ul class="treeMenu_list" data-tree-list>
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+							</ul><!-- /.tree_list -->
+						</li><!-- /.tree_item -->
+					</ul><!-- /.tree_list -->
+				</li><!-- /.tree_item -->
+				<li class="treeMenu_item" data-tree-item>
+					<div class="treeMenu_itemHead">
+						<a href="" class="treeMenu_name">222222222222222222</a>
+						<a href="javascript: void(0);" class="treeMenu_toggle" data-tree-toggle></a>
+					</div>
+					<ul class="treeMenu_list" data-tree-list>
+						<li class="treeMenu_item" data-tree-item>
+							<div class="treeMenu_itemHead">
+								<a href="" class="treeMenu_name">33333333333333333333</a>
+								<a href="javascript: void(0);" class="treeMenu_toggle" data-tree-toggle></a>
+							</div>
+							<ul class="treeMenu_list" data-tree-list>
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+							</ul><!-- /.tree_list -->
+						</li><!-- /.tree_item -->
+						<li class="treeMenu_item" data-tree-item>
+							<div class="treeMenu_itemHead">
+								<a href="" class="treeMenu_name">33333333333333333333</a>
+								<a href="javascript: void(0);" class="treeMenu_toggle" data-tree-toggle></a>
+							</div>
+							<ul class="treeMenu_list" data-tree-list>
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+								<li class="treeMenu_item" data-tree-item>
+									<div class="treeMenu_itemHead">
+										<a href="" class="treeMenu_name">444444444444444444444444</a>
+									</div>
+								</li><!-- /.tree_item -->
+							</ul><!-- /.tree_list -->
+						</li><!-- /.tree_item -->
+					</ul><!-- /.tree_list -->
+				</li><!-- /.tree_item -->
+			</ul><!-- /.tree_list -->
+		</li><!-- /.tree_item -->
+	</ul><!-- /.tree_list -->
+</div><!-- /.tree -->
+
+Styleguide #{$guideNum}
+*/
+
+.treeMenu {
+	$this: &;
+	&_list {
+		margin: 0 0 0 14px;
+	}
+	&_item {
+	}
+	&_itemHead {
+		display: flex;
+		display: -webkit-flex;
+		align-items: center;
+	}
+	&_check {
+		flex-grow: 1;
+		flex-shrink: 1;
+		margin: 0 auto 0 0;
+		padding: 5px 0;
+		& > .customInput {
+			width: 100%;
+		}
+	}
+	&_name {
+		flex-grow: 1;
+		flex-shrink: 1;
+		margin: 0 auto 0 0;
+		padding: 5px 0 5px 14px;
+		text-indent: -14px;
+		text-decoration: none;
+		&:before {
+			content: '';
+			display: inline-block;
+			vertical-align: middle;
+			letter-spacing: normal;
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 3px 0 3px 6px;
+			border-color: transparent transparent transparent $black;
+			margin-right: 8px;
+		}
+		&[data-tree-current] {
+			color: $red;
+			font-weight: bold;
+		}
+	}
+	&_toggle {
+		flex-grow: 0;
+		flex-shrink: 0;
+		margin: 0 0 0 10px;
+		width: 20px;
+		height: 20px;
+		border-radius: 4px;
+		background: $black;
+		position: relative;
+		&:before,
+		&:after {
+			content: '';
+			width: 12px;
+			height: 2px;
+			background: #fff;
+			margin: -1px 0 0 -6px;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transition: all .4s;
+		}
+		&:after {
+			transform: rotate(90deg);
+		}
+		&[data-tree-toggle="open"] {
+			&:after {
+				transform: rotate(0);
+				// opacity: 0;
+			}
+		}
+	}
+
+	//  第一階層
+	//----------------------------------------------------------------------
+	& > #{$this}_list {
+		margin-left: 0;
+		& > #{$this}_item {
+			#{$this}_itemHead {
+				#{$this}_name {}
+				#{$this}_toggle {}
+			}
+		}
+	}
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.treeMenu {
+		$this: &;
+		&_list {
+		}
+		&_item {
+		}
+		&_itemHead {
+		}
+		&_name {
+		}
+		&_toggle {
+		}
+	}
+}

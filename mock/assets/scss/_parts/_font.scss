@@ -1,0 +1,132 @@
+// @import '../_config';
+// @import '../_iconFonts';
+// @import '../_svgSprite';
+// @import '../_imgSprite';
+
+
+/*
+.font
+
+フォントサイズ
+
+.font-l 1～5
+.font-s 1～5
+最後にPcってついたらPCのみ
+最後にSpってついたらSPのみ
+
+Markup:
+<p class="{$modifiers}">フォントサイズ</p>
+
+.font-lllll - lllll
+.font-llll - llll
+.font-lll - lll
+.font-ll - ll
+.font-l - l
+.font-s - s
+.font-ss - ss
+.font-sss - sss
+.font-ssss - ssss
+.font-sssss - sssss
+
+Styleguide #{$guideNum}
+*/
+.font {
+	&-lllll {
+		font-size: rem(map-get($font-size, 'pc') + 10, pc);
+	}
+	&-llll {
+		font-size: rem(map-get($font-size, 'pc') + 8, pc);
+	}
+	&-lll {
+		font-size: rem(map-get($font-size, 'pc') + 6, pc);
+	}
+	&-ll {
+		font-size: rem(map-get($font-size, 'pc') + 4, pc);
+	}
+	&-l {
+		font-size: rem(map-get($font-size, 'pc') + 2, pc);
+	}
+	&-s {
+		font-size: rem(map-get($font-size, 'pc') - 2, pc);
+	}
+	&-ss {
+		font-size: rem(map-get($font-size, 'pc') - 3, pc);
+	}
+	&-sss {
+		font-size: rem(map-get($font-size, 'pc') - 4, pc);
+	}
+	&-ssss {
+		font-size: rem(map-get($font-size, 'pc') - 5, pc);
+	}
+	&-sssss {
+		font-size: rem(map-get($font-size, 'pc') - 6, pc);
+	}
+}
+@media screen and (min-width: $breakpoint-sp + 1){
+	.font {
+		&-lllllPc {
+			font-size: rem(map-get($font-size, 'pc') + 10, pc);
+		}
+		&-llllPc {
+			font-size: rem(map-get($font-size, 'pc') + 8, pc);
+		}
+		&-lllPc {
+			font-size: rem(map-get($font-size, 'pc') + 6, pc);
+		}
+		&-llPc {
+			font-size: rem(map-get($font-size, 'pc') + 4, pc);
+		}
+		&-lPc {
+			font-size: rem(map-get($font-size, 'pc') + 2, pc);
+		}
+		&-sPc {
+			font-size: rem(map-get($font-size, 'pc') - 2, pc);
+		}
+		&-ssPc {
+			font-size: rem(map-get($font-size, 'pc') - 3, pc);
+		}
+		&-sssPc {
+			font-size: rem(map-get($font-size, 'pc') - 4, pc);
+		}
+		&-ssssPc {
+			font-size: rem(map-get($font-size, 'pc') - 5, pc);
+		}
+		&-sssssPc {
+			font-size: rem(map-get($font-size, 'pc') - 6, pc);
+		}
+	}
+}
+@media screen and (max-width: $breakpoint-sp){
+	.font {
+		&-lllllSp {
+			font-size: rem(map-get($font-size, 'sp') + 10, sp);
+		}
+		&-llllSp {
+			font-size: rem(map-get($font-size, 'sp') + 8, sp);
+		}
+		&-lllSp {
+			font-size: rem(map-get($font-size, 'sp') + 6, sp);
+		}
+		&-llSp {
+			font-size: rem(map-get($font-size, 'sp') + 4, sp);
+		}
+		&-lSp {
+			font-size: rem(map-get($font-size, 'sp') + 2, sp);
+		}
+		&-sSp {
+			font-size: rem(map-get($font-size, 'sp') - 2, sp);
+		}
+		&-ssSp {
+			font-size: rem(map-get($font-size, 'sp') - 3, sp);
+		}
+		&-sssSp {
+			font-size: rem(map-get($font-size, 'sp') - 4, sp);
+		}
+		&-ssssSp {
+			font-size: rem(map-get($font-size, 'sp') - 5, sp);
+		}
+		&-sssssSp {
+			font-size: rem(map-get($font-size, 'sp') - 6, sp);
+		}
+	}
+}

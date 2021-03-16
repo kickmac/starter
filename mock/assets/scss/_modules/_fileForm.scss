@@ -1,0 +1,164 @@
+// @import '../_config';
+// @import '../_iconFonts';
+// @import '../_svgSprite';
+// @import '../_imgSprite';
+
+
+/*
+ファイルのアップロード
+
+fileForm
+
+Markup:
+<div class="fileForm" data-option='{
+	"src": "pre upload path 必須",
+	"method": "GET || POST",
+	"maxQty": 3,
+	"maxQtyError": "3個以上選択できません",
+	"type": ["png", "jpg"],
+	"typeError": "png、jpg以外選択できません",
+	"maxSize": 2097152,
+	"maxSizeError": "2M以上のファイルは選択できません"
+}'>
+	<p class="fileForm_btn"><a href="javascript: void(0);" class="btn btn-s btn-gray">ファイルを選択</a></p>
+	<p class="fileForm_ddComment">※ドラッグ&amp;ドロップでファイル選択可能です。</p>
+	<div class="fileForm_dropArea">
+		<p class="fileForm_dropTxt">ここにドラッグ&amp;ドロップ</p>
+	</div>
+	<ul class="fileForm_list">
+		<li class="fileForm_item fileForm_item-template">
+			<a href="javascript: void(0);" class="fileForm_del">×</a><a href="" class="fileForm_name">選択されていません</a>
+			<div class="fileForm_comment"><input type="text" name="" id=""></div>
+			<input type="file" name="file[]" id="">
+			<input type="hidden" name="selected[]" id="">
+			<input type="hidden" name="original_name[]" id="">
+		</li>
+	</ul>
+</div><!-- /.fileForm -->
+
+Styleguide #{$guideNum}
+*/
+.fileForm {
+	$this: &;
+	margin: 20px 0 0;
+	width: 100%;
+	& > :first-child {
+		margin-top: 0;
+	}
+	&_btn {
+		margin: 0;
+		width: 154px;
+	}
+	&_ddComment {
+		padding-left: 1em;
+		text-indent: -1em;
+		margin: 10px 0 0;
+	}
+	&_dropArea {
+		width: 100%;
+		margin: 5px 0 0;
+		background: #eee;
+		padding: 30px 20px;
+		position: relative;
+		border: 2px dashed transparent;
+		transition: all .4s;
+		&-isDragOver {
+			border-color: $gray-border;
+		}
+		& > :first-child {
+			margin-top: 0;
+		}
+	}
+	&_dropTxt {
+		text-align: center;
+		margin: 0;
+		opacity: .6;
+	}
+
+
+	&_list {
+		margin: 0;
+		& > :first-child {
+			margin-top: 0;
+		}
+	}
+	&_item {
+		margin: 10px 0 0;
+		display: flex;
+		display: -webkit-flex;
+		align-items: center;
+		font-weight: bold;
+		position: relative;
+		overflow: hidden;
+		word-break: break-all;
+		[type="file"] {
+			position: absolute;
+			top: -100%;
+			opacity: 0;
+		}
+		&-template {
+			display: none;
+		}
+	}
+	&_name {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		text-decoration: none;
+		color: inherit;
+	}
+	&_del {
+		flex-grow: 0;
+		flex-shrink: 0;
+		display: block;
+		text-decoration: none;
+		color: #fff;
+		text-align: center;
+		width: 27px;
+		height: 27px;
+		line-height: 27px;
+		font-size: 24px;
+		background: $gray;
+		margin-right: 8px;
+		// align-self: flex-start;
+		font-weight: normal;
+	}
+	&_comment {
+		margin: 0 0 0 8px;
+		flex-grow: 0;
+		flex-shrink: 0;
+		width: 440px;
+	}
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.fileForm {
+		$this: &;
+		&_btn {
+		}
+		&_list {
+		}
+		&_item {
+			flex-wrap: wrap;
+			-webkit-flex-wrap: wrap;
+			flex-direction: row;
+			&-template {
+			}
+			& > span {
+				width: calc(100% - 35px);
+			}
+		}
+		&_del {
+		}
+		&_comment {
+			margin: 5px 0 0;
+			width: 100%;
+		}
+		&_ddComment {
+			display: none;
+		}
+		&_dropArea {
+			display: none;
+		}
+	}
+}

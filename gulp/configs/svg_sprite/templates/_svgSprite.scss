@@ -1,0 +1,20 @@
+$totalWidth: <?= swidth ?>;
+$totalHeight: <?= sheight ?>;
+
+<? svg.forEach(function(item){ ?>
+$svgSprite-<?= item.name ?>: (
+	<?= item.width ?>,
+	<?= item.height ?>,
+	<?= item.positionX ?>,
+	<?= item.positionY ?>
+);<? }) ?>
+
+@mixin svgSprite($code, $width: 100) {
+	$ratio: $width / nth($code, 1);
+	background-image: url(<?= svgPath ?>);
+	background-repeat: no-repeat;
+	background-size: round($totalWidth * $ratio) + px round($totalHeight * $ratio) + px;
+	background-position: round(nth($code, 3) * $ratio) + px round(nth($code, 4) * $ratio) + px;
+	width: round(nth($code, 1)*$ratio) + px;
+	height: round(nth($code, 2)*$ratio) + px;
+}

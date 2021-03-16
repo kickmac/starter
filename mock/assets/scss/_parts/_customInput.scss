@@ -1,0 +1,76 @@
+// @import '../_config';
+// @import '../_iconFonts';
+// @import '../_svgSprite';
+// @import '../_imgSprite';
+
+
+/*
+customInput
+
+カスタムインプット
+
+Markup:
+<label class="customInput"><input type="checkbox" name="" id=""><span class="customInput_inner">ああああああ</span></label><br>
+<label class="customInput"><input type="radio" name="" id=""><span class="customInput_inner">ああああああ</span></label>
+
+Styleguide #{$guideNum}
+*/
+.customInput {
+	$this: &;
+	position: relative;
+	cursor: pointer;
+	vertical-align: bottom;
+	& > [type="checkbox"],
+	& > [type="radio"] {
+		position: absolute;
+		top: 0;
+		left: 0;
+		opacity: 0;
+		visibility: hidden;
+	}
+	&_inner {
+		display: flex;
+		display: -webkit-flex;
+		align-items: center;
+		justify-content: flex-start;
+		&:before {
+			flex-grow: 0;
+			flex-shrink: 0;
+			@include icons('');
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+			width: 20px;
+			height: 20px;
+			border: 1px solid $gray-border;
+			border-radius: 2px;
+			margin-right: .5em;
+			vertical-align: middle;
+			font-size: 12px;
+			line-height: 1;
+		}
+		&-vam {
+			align-items: center;
+		}
+	}
+	& > [type="radio"] + #{$this}_inner:before {
+		border-radius: 50%;
+	}
+
+	& > [type="checkbox"]:checked + #{$this}_inner:before {
+		content: $icons-check;
+	}
+	& > [type="radio"]:checked + #{$this}_inner:before {
+		background: $black;
+		box-shadow: inset 0 0 0 3px #fff;
+	}
+
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.customInput {
+		$this: &;
+		&_inner {
+		}
+	}
+}

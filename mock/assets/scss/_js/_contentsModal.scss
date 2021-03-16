@@ -1,0 +1,237 @@
+// @import '../_config';
+// @import '../_iconFonts';
+// @import '../_svgSprite';
+// @import '../_imgSprite';
+
+.contentsModal {
+	$this: &;
+	position: relative;
+	&_list {}
+	&_item {
+		position: relative;
+		cursor: default;
+		position: relative;
+		display: none;
+		z-index: 2000;
+		transition: opacity .4s;
+		&-enter-active {
+			display: block;
+		}
+		&-enter {
+			opacity: 0;
+			&:hover {
+				opacity: 0;
+			}
+		}
+		&-enter-to {
+			opacity: 1;
+			&:hover {
+				opacity: 1;
+			}
+		}
+
+		&-leave-active {
+			display: block;
+		}
+		&-leave {
+			opacity: 1;
+			&:hover {
+				opacity: 1;
+			}
+		}
+		&-leave-to {
+			opacity: 0;
+			&:hover {
+				opacity: 0;
+			}
+		}
+	}
+	&_overlay {
+		display: none;
+		text-decoration: none;
+		color: inherit;
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		background: $overlayBg;
+		transition: opacity .4s;
+		&-noClose {
+			cursor: default;
+		}
+
+		&-enter-active {
+			display: block;
+		}
+		&-enter {
+			opacity: 0;
+			&:hover {
+				opacity: 0;
+			}
+		}
+		&-enter-to {
+			opacity: 1;
+			&:hover {
+				opacity: 1;
+			}
+		}
+
+		&-leave-active {
+			display: block;
+		}
+		&-leave {
+			opacity: 1;
+			&:hover {
+				opacity: 1;
+			}
+		}
+		&-leave-to {
+			opacity: 0;
+			&:hover {
+				opacity: 0;
+			}
+		}
+
+	}
+
+	&_close {
+		display: block;
+		text-decoration: none;
+		color: #fff;
+		font-size: 40px;
+		padding: 15px;
+		position: absolute;
+		top: 15px;
+		right: 0;
+		transform: translate(100%, -100%);
+		line-height: 1;
+		&:before {
+			@include icons($icons-close);
+		}
+	}
+	&_contents {
+		position: fixed;
+		top: 55%;
+		left: 50%;
+		background: #fff;
+		width: 80%;
+		max-width: 80%;
+		display: none;
+		opacity: 0;
+		z-index: 2200;
+		transform: translate(-50%, -50%);
+		transition: all .4s;
+		& > :first-child {
+			margin-top: 0;
+		}
+		&-enter-active {
+			display: block;
+		}
+		&-enter {
+			top: 55%;
+			opacity: 0;
+		}
+		&-enter-to {
+			top: 50%;
+			opacity: 1;
+		}
+
+		&-leave-active {
+			display: block;
+		}
+		&-leave {
+			top: 50%;
+			opacity: 1;
+		}
+		&-leave-to {
+			top: 40%;
+			opacity: 0;
+		}
+	}
+	&_body {
+		max-height: calc(100vh - 140px);
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+		padding: 30px;
+		& > :first-child {
+			margin-top: 0;
+		}
+	}
+	&_loading {
+		margin: 0;
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 2100;
+		display: none;
+		transition: opacity .1s;
+		color: #fff;
+		&:before {
+			content: 'loading...';
+			animation: blink .5s infinite alternate;
+		}
+		&-enter-active {
+			display: block;
+		}
+		&-enter {
+			opacity: 0;
+		}
+		&-enter-to {
+			opacity: 1;
+		}
+
+		&-leave-active {
+			display: block;
+		}
+		&-leave {
+			opacity: 1;
+		}
+		&-leave-to {
+			opacity: 0;
+		}
+	}
+}
+@-webkit-keyframes blink {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+@-o-keyframes blink {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+@-moz-keyframes blink {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+@keyframes blink {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.contentsModal {
+		$this: &;
+		&_overlay {
+		}
+		&_close {
+			transform: translate(0, -100%);
+			top: 0;
+			right: -10px;
+			padding: 10px;
+			font-size: 30px;
+		}
+		&_contents {
+			width: 90%;
+			max-width: 90%;
+			transform: translate(-50%, calc(-50% + 20px));
+		}
+		&_body {
+			padding: 20px 10px;
+			max-height: calc(100vh - 90px);
+		}
+	}
+}

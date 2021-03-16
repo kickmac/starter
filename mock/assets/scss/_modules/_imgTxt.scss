@@ -1,0 +1,128 @@
+// @import '../_config';
+// @import '../_iconFonts';
+// @import '../_svgSprite';
+// @import '../_imgSprite';
+
+
+/*
+画像とテキスト
+
+imgTxt
+
+Markup:
+<div class="imgTxt {$modifiers}">
+	<div class="imgTxt_left"><figure><img src="http://satyr.io/300x300/dddddd?text=This+is+Dummy+Image!!!&texture=cross" alt="ダミーイメージ"></figure></div>
+	<div class="imgTxt_body">
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+	</div>
+</div><!-- /.imgTxt -->
+<div class="imgTxt {$modifiers}">
+	<div class="imgTxt_right"><figure><img src="http://satyr.io/300x300/dddddd?text=This+is+Dummy+Image!!!&texture=cross" alt="ダミーイメージ"></figure></div>
+	<div class="imgTxt_body">
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+		<p>ああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
+	</div>
+</div><!-- /.imgTxt -->
+
+.imgTxt-vat - 縦方向上揃え
+.imgTxt-vam - 縦方向中央揃え
+.imgTxt-vat - 縦方向下揃え
+.imgTxt-around - 回り込みあり
+
+Styleguide #{$guideNum}
+*/
+.imgTxt {
+	$this: &;
+	margin: 20px 0 0;
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	&-vat {
+		align-items: flex-start;
+	}
+	&-vam {
+		align-items: center;
+	}
+	&-vab {
+		align-items: flex-end;
+	}
+	&_left {
+		margin: 0 30px 0 0;
+		flex-grow: 0;
+		flex-shrink: 0;
+		order: 0;
+		& > :first-child {
+			margin-top: 0;
+		}
+	}
+	&_right {
+		margin: 0 0 0 30px;
+		flex-grow: 0;
+		flex-shrink: 0;
+		order: 2;
+		& > :first-child {
+			margin-top: 0;
+		}
+	}
+	&-around {
+		overflow: hidden;
+		display: block;
+		#{$this}_right {
+			float: right;
+		}
+		#{$this}_left {
+			float: left;
+		}
+	}
+	&_body {
+		order: 1;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: auto;
+		width: 100%;
+		& > :first-child {
+			margin-top: 0;
+		}
+	}
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.imgTxt {
+		$this: &;
+		display: block;
+		& > :first-child {
+			margin-top: 0;
+		}
+		&_left {
+			margin: 20px 0 0;
+			text-align: center;
+		}
+		&_right {
+			margin: 20px 0 0;
+			text-align: center;
+		}
+		&_body {
+			margin: 20px 0 0;
+			& > :first-child {
+				margin-top: 0;
+			}
+		}
+		&-around {
+			overflow: hidden;
+			display: block;
+			#{$this}_right,
+			#{$this}_left {
+				float: none;
+			}
+		}
+	}
+}

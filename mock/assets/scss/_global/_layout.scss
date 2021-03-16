@@ -1,0 +1,105 @@
+// @import '../_config';
+// @import '../_iconFonts';
+// @import '../_svgSprite';
+// @import '../_imgSprite';
+
+/*
+layout
+
+大枠のレイアウト
+
+Markup:
+{$modifiers}
+
+Styleguide #{$guideNum}
+*/
+
+.wrapper {
+	$this: &;
+	min-height: 100%;
+	& > :first-child {
+		margin-top: 0;
+	}
+}
+
+.contents {
+	$this: &;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: space-between;
+	width: $page-width;
+	margin: 0 auto;
+	& > :first-child {
+		margin-top: 0;
+	}
+	&_main {
+		flex-grow: 0;
+		flex-shrink: 0;
+		width: $main-width;
+		& > :first-child {
+			margin-top: 0;
+		}
+	}
+	&_side {
+		flex-grow: 0;
+		flex-shrink: 0;
+		width: $side-width;
+		& > :first-child {
+			margin-top: 0;
+		}
+	}
+	&-noSide {
+		display: block;
+		#{$this}_side {
+			display: none !important;
+		}
+	}
+}
+
+.section {
+	$this: &;
+	& > :first-child {
+		margin-top: 0;
+	}
+}
+
+.sideSection {
+	$this: &;
+	& > :first-child {
+		margin-top: 0;
+	}
+}
+
+@media screen and (max-width: $breakpoint-sp){
+	.wrapper {
+		$this: &;
+	}
+
+	.contents {
+		$this: &;
+		display: block;
+		width: auto;
+		&_main {
+			width: auto;
+			& > :first-child {
+				margin-top: 0;
+			}
+		}
+		&_side {
+			width: auto;
+			& > :first-child {
+				margin-top: 0;
+			}
+		}
+		&-noSide {
+		}
+	}
+
+	.section {
+		$this: &;
+	}
+
+	.sideSection {
+		$this: &;
+	}
+}

@@ -1,0 +1,23 @@
+// @import '../_config';
+// @import '../_iconFonts';
+// @import '../_svgSprite';
+// @import '../_imgSprite';
+
+[data-tab] {}
+[data-tab-btn] {}
+[data-tab-btn-active] {}
+[data-tab-content] {
+	height: 0;
+	opacity: 0;
+	overflow: hidden;
+	transition: opacity .4s;
+}
+[data-tab-content-active] {
+	height: auto;
+	opacity: 1;
+}
+
+
+@media screen and (max-width: $breakpoint-sp){
+
+}

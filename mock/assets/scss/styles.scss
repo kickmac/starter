@@ -1,0 +1,112 @@
+@import './_config';
+
+//mqpackerの順番制御用
+@media screen and (min-width: $breakpoint-sp + 1) { .mqDummy {width: auto;} }
+@media screen and (min-width: $breakpoint-sp) { .mqDummy {width: auto;} }
+@media screen and (max-width: $breakpoint-sp) { .mqDummy {width: auto;} }
+
+//
+@import './_iconFonts';
+@import './_svgSprite';
+@import './_imgSprite';
+
+// font-awesome使いうなら以下必要
+// @import './_font-awesome/_solid';
+// @import './_font-awesome/_regular';
+// @import './_font-awesome/_brands';
+// @import './_font-awesome/_fontawesome';
+
+
+//default style
+@import "_default";
+
+/*
+便利クラス
+
+マージン強制とかの便利クラス
+
+Styleguide 1.
+*/
+$guideNum: '1.1'; @import './_shared/_responsiveHidden';
+$guideNum: '1.2'; @import './_shared/_super';
+
+
+
+/*
+グローバル
+
+gNavとかgHeaderとか
+大まかなレイアウトもここに
+
+Styleguide 3.
+*/
+$guideNum: '3.1'; @import './_global/_layout';
+$guideNum: '3.2'; @import './_global/_overlay';
+
+
+/*
+パーツ
+
+見出しとかボタンとかアイコン付きの文字とか
+
+Styleguide 4.
+*/
+$guideNum: '4.1'; @import './_parts/_font';
+$guideNum: '4.2'; @import './_parts/_color';
+$guideNum: '4.3'; @import './_parts/_btn';
+$guideNum: '4.4'; @import './_parts/_btns';
+$guideNum: '4.5.1'; @import './_parts/_headLine1';
+$guideNum: '4.5.2'; @import './_parts/_headLine2';
+$guideNum: '4.5.3'; @import './_parts/_headLine3';
+$guideNum: '4.5.4'; @import './_parts/_headLine4';
+$guideNum: '4.6'; @import './_parts/_customInput';
+$guideNum: '4.7'; @import './_parts/_responsiveTable';
+$guideNum: '4.8'; @import './_parts/_scrollTable';
+$guideNum: '4.9'; @import './_parts/_dataThTable';
+$guideNum: '4.10'; @import './_parts/_youtube';
+
+
+/*
+モジュール
+
+その他モジュール
+
+Styleguide 5.
+*/
+$guideNum: '5.1'; @import './_modules/_pankuzu';
+$guideNum: '5.2'; @import './_modules/_pager';
+$guideNum: '5.3'; @import './_modules/_form';
+$guideNum: '5.4'; @import './_modules/_fileForm';
+$guideNum: '5.5'; @import './_modules/_imgTxt';
+$guideNum: '5.6'; @import './_modules/_grid';
+$guideNum: '5.7.1'; @import './_modules/_treeMenu';
+$guideNum: '5.7.2'; @import './_modules/_treeMenu2';
+
+
+/*
+サイド
+
+サイド用のクラス
+
+Styleguide 6.
+*/
+// $guideNum: '6.1'; @import './_side/xxxxxxxxx';
+
+//============================================================
+//  pages
+//============================================================
+// @import './pages/xxxxxxxxx';
+
+
+//============================================================
+// js
+//
+// js関連の最低限のスタイル　基本いじらない
+// 使い方はフロント開発テンプレートDoc参照
+//============================================================
+@import './_js/_customDialog';
+@import './_js/_contentsModal';
+@import './_js/_accordion';
+@import './_js/_tab';
+@import './_js/_tree';
+@import './_js/_objectFitPolyfil';
