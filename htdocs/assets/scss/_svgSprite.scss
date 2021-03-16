@@ -17,7 +17,7 @@ $coffee-green: (
 
 @mixin svgSprite($code, $width: 100) {
 	$ratio: $width / nth($code, 1);
-	background-image: url(/assets/svg/sprite.svg);
+	background-image: url(/assets/images/sprite.svg);
 	background-repeat: no-repeat;
 	background-size: round($totalWidth * $ratio) + px round($totalHeight * $ratio) + px;
 	background-position: round(nth($code, 3) * $ratio) + px round(nth($code, 4) * $ratio) + px;

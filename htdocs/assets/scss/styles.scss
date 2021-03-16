@@ -9,10 +9,10 @@
 @import './_iconFonts';
 @import './_svgSprite';
 @import './_imgSprite';
-@import './_font-awesome/_solid';
-@import './_font-awesome/_regular';
-@import './_font-awesome/_brands';
-@import './_font-awesome/_fontawesome';
+// @import './_font-awesome/_solid';
+// @import './_font-awesome/_regular';
+// @import './_font-awesome/_brands';
+// @import './_font-awesome/_fontawesome';
 
 @import "_default";
 
@@ -92,20 +92,20 @@ js関連の最低限のスタイル　基本いじらない
 
 Styleguide 7.
 */
-$guideNum: '7.1'; @import './_js/_accordion';
-$guideNum: '7.2'; @import './_js/_tab';
-$guideNum: '7.3'; @import './_js/_imgModal';
-$guideNum: '7.4'; @import './_js/_imgModalGallery';
-$guideNum: '7.5'; @import './_js/_contentsModal';
-$guideNum: '7.6'; @import './_js/_cuntomDialog';
+// $guideNum: '7.1'; @import './_js/_accordion';
+// $guideNum: '7.2'; @import './_js/_tab';
+// $guideNum: '7.3'; @import './_js/_imgModal';
+// $guideNum: '7.4'; @import './_js/_imgModalGallery';
+// $guideNum: '7.5'; @import './_js/_contentsModal';
+// $guideNum: '7.6'; @import './_js/_cuntomDialog';
 $guideNum: '7.8'; @import './_js/_objectFitPolyfil';
-$guideNum: '7.9'; @import './_js/_tree';
+// $guideNum: '7.9'; @import './_js/_tree';
 $guideNum: '7.10'; @import './_js/_sticky';
 
 
 // @import "./_pages/";
 
 //js plugin
-@import "_plugins/_lightgallery";
-@import "_plugins/_lg-transitions";
-@import "_plugins/_slick";
+// @import "_plugins/_lightgallery";
+// @import "_plugins/_lg-transitions";
+// @import "_plugins/_slick";

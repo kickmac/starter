@@ -1,7 +1,23 @@
-const $ = require('jquery');
 /*************************************************************************************
 * disabledToggle
 *************************************************************************************/
+const _getData = el => {
+	let _options = {
+		target: null,
+		inversion: false,
+	};
+	let _data = $(el).data('disabled-target')
+	const _type = typeof _data;
+
+	if (_type === 'object') {
+		$.extend(true, _options, _data);
+	} else if(_type === 'string') {
+		_options.target = _data;
+	}
+
+	return _options;
+}
+
 const init = function(){
 	$(this).each(function(index, el) {
 		change.call(this)
@@ -9,40 +25,64 @@ const init = function(){
 }
 
 const change = function(){
-	const _$target = $(this).data('disabled-target');
-	let _flag;
-
 	if ($(this)[0].type === 'checkbox') {
-		_flag = _checkboxChange.call(this);
+		_checkboxChange.call(this);
 	} else if($(this)[0].type === 'radio') {
-		_flag = _radioChange.call(this);
+		_radioChange.call(this);
 	} else if($(this)[0].localName === 'select') {
-		_flag = _selectChange.call(this);
+		_selectChange.call(this);
 	}
 
-	$(`[data-disabled="${_$target}"]`).prop('disabled', _flag)
 }
 
 const _checkboxChange = function(){
-	let _flag = !$(this).prop('checked');
-	if ($(this).data('disabled-condition')) {
-		_flag = !_flag;
+	const _options = _getData(this);
+	const _$target = $(`[data-disabled="${_options.target}"]`);
+	let _flag = $(this).prop('checked');
+
+	if (_options.inversion) { _flag = !_flag }
+
+	if (_flag) {
+		_$target.prop('disabled', false)
+	} else {
+		_$target.prop('disabled', true)
 	}
-	return _flag;
 }
 
 const _radioChange = function(){
-	const _name = $(this).data('disabled-target');
-	let _flag = $(`[data-disabled-target="${_name}"]:checked`).data('disabled-condition');
-	return _flag;
+	const _$group = $(`[name="${$(this).attr('name')}"]`);
+
+	_$group.each(function(index, el) {
+		const _options = _getData(this);
+		const _$target = $(`[data-disabled="${_options.target}"]`);
+		let _flag = $(this).prop('checked');
+
+		if (_options.inversion) { _flag = !_flag }
+
+		if (_flag) {
+			_$target.prop('disabled', false)
+		} else {
+			_$target.prop('disabled', true)
+		}
+	});
 }
 
 const _selectChange = function(){
-	let _flag = $(this).children(':selected').eq(0).data('disabled-condition');
-	if (_flag === undefined) {
-		_flag = true;
-	}
-	return _flag;
+	const _$group = $(this).find('[data-disabled-target]');
+
+	_$group.each(function(index, el) {
+		const _options = _getData(this);
+		const _$target = $(`[data-disabled="${_options.target}"]`);
+		let _flag = $(this).prop('selected');
+
+		if (_options.inversion) { _flag = !_flag }
+
+		if (_flag) {
+			_$target.prop('disabled', false)
+		} else {
+			_$target.prop('disabled', true)
+		}
+	});
 }
 
 module.exports = {
