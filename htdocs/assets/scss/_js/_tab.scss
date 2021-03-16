@@ -60,7 +60,7 @@ Markup:
 	</div>
 </div>
 <script>
-$jq(function() {
+$(function() {
 	$$$.tab.init.call($('.tab'), {
 		beforeInit: function(){
 			console.log('before init');

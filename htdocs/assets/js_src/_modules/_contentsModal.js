@@ -1,4 +1,3 @@
-const $ = require('jquery');
 const imagesLoadListener = require('../_utils/_imagesLoadListener');
 const anim = require('../_utils/_anim');
 /*************************************************************************************
@@ -12,7 +11,7 @@ const _listTemplate = '<div class="contentsModal"><div class="contentsModal_list
 const _itemTemplate = `
 <div class="contentsModal_item" data-anim="contentsModal_item">
 	<a href="javascript: void(0);" class="contentsModal_overlay" data-anim="contentsModal_overlay"></a>
-	<div class="contentsModal_toolBar"><a href="javascript: void(0);" class="contentsModalclose"></a></div>
+	<div class="contentsModal_toolBar"><a href="javascript: void(0);" class="contentsModal_close"></a></div>
 	<div class="contentsModal_contents" data-anim="contentsModal_contents">
 		<div class="contentsModal_body"></div>
 	</div>

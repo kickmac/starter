@@ -5,16 +5,16 @@
 
 
 /*
-ボタンレイアウト
-
 btns
+
+ボタンレイアウト
 
 Markup:
 <div class="btns {$modifiers}">
 	<ul class="btns_list">
-		<li class="btns_btn btns_btn-4-12pc btns_btn-6-12sp"><a href="" class="btn">PC: 4/12　SP: 6/12</a></li>
-		<li class="btns_btn btns_btn-4-12pc btns_btn-6-12sp"><a href="" class="btn">PC: 4/12　SP: 6/12</a></li>
-		<li class="btns_btn btns_btn-4-12pc btns_btn-12-12sp"><a href="" class="btn">PC: 4/12　SP: 12/12</a></li>
+		<li class="btns_item btns_item-4-12pc btns_item-6-12sp"><a href="" class="btn">PC: 4/12　SP: 6/12</a></li>
+		<li class="btns_item btns_item-4-12pc btns_item-6-12sp"><a href="" class="btn">PC: 4/12　SP: 6/12</a></li>
+		<li class="btns_item btns_item-4-12pc btns_item-12-12sp"><a href="" class="btn">PC: 4/12　SP: 12/12</a></li>
 	</ul>
 </div><!-- /.btns -->
 
@@ -25,7 +25,7 @@ Markup:
 .btns-hr.btns-right - 横並び&右寄せ
 
 Styleguide #{$guideNum}
-============================================================*/
+*/
 .btns {
 	$this: &;
 	margin: 20px 0 0;
@@ -34,7 +34,7 @@ Styleguide #{$guideNum}
 			margin-top: 0;
 		}
 	}
-	&_btn {
+	&_item {
 		margin: 20px auto 0;
 		@for $i from 1 through 13 {
 			&-#{$i}-12 {
@@ -48,12 +48,12 @@ Styleguide #{$guideNum}
 		}
 	}
 	&-left {
-		#{$this}_btn {
+		#{$this}_item {
 			margin-left: 0;
 		}
 	}
 	&-right {
-		#{$this}_btn {
+		#{$this}_item {
 			margin-right: 0;
 		}
 	}
@@ -67,7 +67,7 @@ Styleguide #{$guideNum}
 			justify-content: center;
 			margin: -20px 0 0 -20px;
 		}
-		#{$this}_btn {
+		#{$this}_item {
 			margin: 20px 0 0 20px;
 			@for $i from 1 through 13 {
 				&-#{$i}-12 {
@@ -101,7 +101,7 @@ Styleguide #{$guideNum}
 @media screen and (min-width: $breakpoint-sp + 1){
 	.btns {
 		$this: &;
-		&_btn {
+		&_item {
 			margin: 20px auto 0;
 			@for $i from 1 through 13 {
 				&-#{$i}-12pc {
@@ -115,7 +115,7 @@ Styleguide #{$guideNum}
 			}
 		}
 		&-hr {
-			#{$this}_btn {
+			#{$this}_item {
 				@for $i from 1 through 13 {
 					&-#{$i}-12pc {
 						width: calc(99.9%/12 * #{$i} - 20px);
@@ -135,7 +135,7 @@ Styleguide #{$guideNum}
 	.btns {
 		$this: &;
 		&_list {}
-		&_btn {
+		&_item {
 			margin: 20px auto 0;
 			@for $i from 1 through 13 {
 				&-#{$i}-12sp {
@@ -152,7 +152,7 @@ Styleguide #{$guideNum}
 			#{$this}_list {
 				margin: -10px 0 0 -10px;
 			}
-			#{$this}_btn {
+			#{$this}_item {
 				margin: 10px 0 0 10px;
 				@for $i from 1 through 13 {
 					&-#{$i}-12sp {
@@ -166,7 +166,7 @@ Styleguide #{$guideNum}
 				}
 			}
 		}
-		&_btn {
+		&_item {
 		}
 	}
 }

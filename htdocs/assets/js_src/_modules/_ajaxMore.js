@@ -1,4 +1,3 @@
-const $ = require('jquery');
 /*************************************************************************************
 * ajaxMore
 *************************************************************************************/
@@ -9,7 +8,7 @@ const _init = function() {
 
 		const _option = $(this).data('ajax-more');
 
-		if (_option.page * _option.per >= _option.total) {
+		if (_option.page * _option.per +  _option.default >= _option.total) {
 			_$btn.remove();
 			_$root.trigger('ajaxMore.allShow', [_option.page, _option.page * _option.per, _option.total]);
 		}
@@ -45,7 +44,7 @@ const _load = function(_option){
 
 		_$root.trigger('ajaxMore.show', [_option.page, _option.page * _option.per, _option.total])
 
-		if (_option.page * _option.per >= _option.total) {
+		if (_option.page * _option.per +  _option.default  >= _option.total) {
 			_$btn.remove();
 			_$root.trigger('ajaxMore.allShow', [_option.page, _option.page * _option.per, _option.total]);
 		}

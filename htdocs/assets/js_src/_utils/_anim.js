@@ -9,7 +9,7 @@ const enter = function(cb){
 	_$this.off(`transitionend.${_animName} webkitTransitionEnd.${_animName}`)
 	_$this.on(`transitionend.${_animName} webkitTransitionEnd.${_animName}`, function(e){
 		if (e.target ===  _$this[0]) {
-			if(cb){cb();}
+			if(cb){cb(_$this);}
 		}
 	});
 
@@ -41,7 +41,7 @@ const leave = function(cb){
 				${_animName}-enter
 				${_animName}-enter-to
 			`);
-			if(cb){cb();}
+			if(cb){cb(_$this);}
 		}
 	});
 

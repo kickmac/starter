@@ -10,31 +10,31 @@
 tree
 
 Markup:
-<div class="tree">
-	<ul class="tree_list">
+<div class="tree" data-tree>
+	<ul class="tree_list" data-tree-list>
 		<? for (var i = 0; i < 5; i++) { -?>
-			<li class="tree_item">
+			<li class="tree_item" data-tree-item>
 				<div class="tree_itemHead">
 					<a href="" class="tree_name">111111111111111111</a>
-					<a href="javascript: void(0);"  class="tree_toggle"></a>
+					<a href="javascript: void(0);" class="tree_toggle" data-tree-toggle></a>
 				</div>
-				<ul class="tree_list">
+				<ul class="tree_list" data-tree-list>
 					<? for (var ii = 0; ii < 5; ii++) { -?>
-						<li class="tree_item">
+						<li class="tree_item" data-tree-item>
 							<div class="tree_itemHead">
 								<a href="" class="tree_name">222222222222222222</a>
-								<a href="javascript: void(0);" class="tree_toggle"></a>
+								<a href="javascript: void(0);" class="tree_toggle" data-tree-toggle></a>
 							</div>
-							<ul class="tree_list">
+							<ul class="tree_list" data-tree-list>
 								<? for (var iii = 0; iii < 5; iii++) { -?>
-									<li class="tree_item">
+									<li class="tree_item" data-tree-item>
 										<div class="tree_itemHead">
 											<a href="" class="tree_name">33333333333333333333</a>
-											<a href="javascript: void(0);" class="tree_toggle"></a>
+											<a href="javascript: void(0);" class="tree_toggle" data-tree-toggle></a>
 										</div>
-										<ul class="tree_list">
+										<ul class="tree_list" data-tree-list>
 											<? for (var iiii = 0; iiii < 5; iiii++) { -?>
-												<li class="tree_item">
+												<li class="tree_item" data-tree-item>
 													<div class="tree_itemHead">
 														<a href="" class="tree_name">444444444444444444444444</a>
 													</div>

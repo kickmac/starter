@@ -1,4 +1,3 @@
-const $ = require('jquery');
 const dialog = require('../_modules/_dialog');
 /*************************************************************************************
 * fileForm
@@ -35,15 +34,18 @@ const _add = function(args) {
 		return false
 	};
 
-	_$dom = _parent.find('.fileForm_item-template').clone().removeClass('fileForm_item-template');
-	$(_$dom.find('[type="file"]')).on('change', function(event) {
+	// _$dom = _parent.find('.fileForm_item-template').clone().removeClass('fileForm_item-template');
+	_parent.find('.fileForm_item-template').find('[type="file"]').one('change', function(event) {
+		if(_qtyError(this.files)){
+			return false
+		};
 
-		_preUpload(_$dom.find('[type="file"]')[0].files[0], _option, _$dom);
-
-		$(this).off('change')
+		$(this.files).each(function(index, el) {
+			_preUpload(el, _option, _parent.find('.fileForm_item-template').clone().removeClass('fileForm_item-template'));
+		});
 
 	});
-	_$dom.find('[type="file"]').trigger('click');
+	_parent.find('.fileForm_item-template').find('[type="file"]').trigger('click');
 }
 
 const _drop = function(files){
@@ -100,7 +102,7 @@ const _qtyError = function(files){
 	if (_option.maxQty && _parent.find('.fileForm_item').not('.fileForm_item-template').length + files.length > _option.maxQty) {
 		dialog.open({
 			title: 'エラー',
-			txt: '<p class="tCenter">' + _option.maxQtyError + '</p>',
+			txt: _option.maxQtyError,
 			btns: [{
 				name: 'OK',
 				class: 'btn btn-blue',
@@ -110,23 +112,17 @@ const _qtyError = function(files){
 	}
 }
 
-
 const _typeError = function(file){
-	if (_option.type && _option.type.length > 0) {
-		_option.type = _option.type.map(function(a){
-			return a.toLowerCase()
+	if (_option.type && _option.type.length > 0 && _option.type.indexOf(file.name.toLowerCase().split('.').pop()) < 0) {
+		dialog.open({
+			title: 'エラー',
+			txt: _option.typeError,
+			btns: [{
+				name: 'OK',
+				class: 'btn btn-blue',
+			}]
 		})
-		if (_option.type.indexOf(file.name.toLowerCase().split('.').pop()) < 0) {
-			dialog.open({
-				title: 'エラー',
-				txt: '<p class="tCenter">' + _option.typeError + '</p>',
-				btns: [{
-					name: 'OK',
-					class: 'btn btn-blue',
-				}]
-			})
-			return true;
-		}
+		return true;
 	}
 }
 
@@ -134,7 +130,7 @@ const _sizeError = function(file){
 	if (_option.maxSize && _option.maxSize > 0 && file.size > _option.maxSize) {
 		dialog.open({
 			title: 'エラー',
-			txt: '<p class="tCenter">' + _option.maxSizeError + '</p>',
+			txt: _option.maxSizeError,
 			btns: [{
 				name: 'OK',
 				class: 'btn btn-blue',

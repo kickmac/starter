@@ -68,7 +68,7 @@ Markup:
 	</dd>
 </dl>
 <script>
-$jq(function() {
+$(function() {
 $$$.acc.init.call($('.acc'), {
 	content: '.acc_content',
 	toggleBtn: '.acc_btn',

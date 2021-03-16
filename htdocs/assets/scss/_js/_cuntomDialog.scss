@@ -55,8 +55,8 @@ Markup:
 	</div>
 </div>
 <script>
-$jq(function() {
-	$jq(document).on('click', '.dialogOpen', function(){
+$(function() {
+	$(document).on('click', '.dialogOpen', function(){
 		$$$.dialog.open({
 			title: '<h1 class="headLine1">title</h1>',
 			txt: '<p class="tCenter">aaaaaaa</p>',
